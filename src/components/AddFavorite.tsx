@@ -6,6 +6,7 @@ import { useHistory } from "react-router-dom";
 import { addFavorite } from "../actions/favorites";
 import { useDispatch } from "react-redux";
 import AddCircleIcon from '@material-ui/icons/AddCircle';
+import { IMaterial } from "../interfaces/favorites";
 
 
 export default () => {
@@ -56,7 +57,7 @@ export default () => {
   }
 
   const onMaterialWeightChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    const newMaterials = materials.map((material: any) => {
+    const newMaterials = materials.map((material: IMaterial) => {
       if (material.materialNum === e.target.name && e.target.value.match(/^\d*(\.\d{0,2})*(\/\d{0,1})*$/)) {
         return {...material, materialWeight: e.target.value};
       } else {
@@ -76,17 +77,23 @@ export default () => {
     });
     setMaterials(newMaterials);
   };
+  console.log(materials);
 
   const onPlusClick = () => {
-    const Num = materials.length + 1;
-    const addMaterial = {
-      materialNum: `${Num}`,
-      materialName: '',
-      materialWeight: '',
-      materialUnit: '個'
-    }
-    const newmaterial = [...materials, addMaterial]
-    setMaterials(newmaterial)
+    const Num = materials.length;
+    if(materials[Num - 1].materialName) {
+      const addMaterial = {
+        materialNum: `${Num + 1}`,
+        materialName: '',
+        materialWeight: '',
+        materialUnit: '個'
+      }
+      const newmaterial = [...materials, addMaterial]
+      setMaterials(newmaterial);
+      setAddFromErr('')
+    } else {
+      setAddFromErr('材料名を教えてください。')
+    };
   };
 
   const onSubmit = (e: React.FormEvent<HTMLFormElement>) => {

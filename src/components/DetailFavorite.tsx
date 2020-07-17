@@ -1,8 +1,9 @@
 import React from 'react';
 import { useSelector } from 'react-redux';
 import { Link } from 'react-router-dom';
-import { IState, IMaterial } from '../interfaces/favorites';
+import { IMaterial } from '../interfaces/favorites';
 import Loading from './Loading';
+import { IState } from '../interfaces/state';
 
 export default (props: any) => {
   const favorite = useSelector((state: IState) => state.favorites.find((favorite: any) => favorite.id === props.match.params.id));

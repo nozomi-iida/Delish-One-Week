@@ -2,11 +2,12 @@ import React, { useState, useContext } from 'react';
 import { useSelector, useDispatch } from 'react-redux';
 import { Card, CardActionArea, CardMedia, CardContent, Typography, CardActions, makeStyles, Button, Modal, createStyles, Theme } from '@material-ui/core';
 import { Link } from 'react-router-dom';
-import { IFavorite, IState } from '../interfaces/favorites';
+import { IFavorite } from '../interfaces/favorites';
 import { AuthStore } from '../stores/AuthStore';
 import firebase,  { fireStore } from '../firebase/firebase';
 import { removeFavorite } from '../actions/favorites';
 import Loading from './Loading';
+import { IState } from '../interfaces/state';
 
 function getModalStyle() {
   const top = 50;
@@ -55,7 +56,6 @@ export default () => {
   };
 
   const onDeleteClick = (favorite: any) => {
-    console.log(favorite.foodImg);
     firebase.storage().refFromURL(favorite.foodImg).delete().then(() => {
       fireStore.collection('users').doc(`${user.uid}`).collection('favorites').doc(`${favorite.id}`).delete().then(() => {
         dispatch(removeFavorite(favorite.id))

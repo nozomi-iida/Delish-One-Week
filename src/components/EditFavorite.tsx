@@ -10,7 +10,7 @@ import { IMaterial, IFavorite } from "../interfaces/favorites";
 
 
 export default (props: any) => {
-  const favorites = useSelector((state: any) => state.favorites);
+  const favorites = useSelector((state: any) => state.favorites); //anyやめたい
   const favorite: IFavorite = favorites.find((element: IFavorite) => element.id === props.match.params.id);
   const user = useContext(AuthStore);
   const [foodName, setFoodName] = useState(favorite ? favorite.foodName : '');

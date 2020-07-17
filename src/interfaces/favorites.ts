@@ -6,10 +6,6 @@ export interface IFavorite {
   materials: IMaterial[]
 }
 
-export interface IState {
-  favorites: IFavorite[];
-};
-
 export interface IMaterial {
   materialName: string,
   materialNum: string,

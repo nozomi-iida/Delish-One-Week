@@ -11,6 +11,7 @@ import ReduxStore from './stores/ReduxStore';
 import AddFavorite from './components/AddFavorite';
 import EditFavorite from './components/EditFavorite';
 import DetailFavorite from './components/DetailFavorite';
+import Menues from './components/Menues';
 
 const store = ReduxStore();
 
@@ -25,6 +26,7 @@ export default () => {
               <LoggedInRouter path="/addFavorite" component={AddFavorite} />  
               <LoggedInRouter path="/detail/:id" component={DetailFavorite} />  
               <LoggedInRouter path="/edit/:id" component={EditFavorite} />  
+              <LoggedInRouter path="/menues" component={Menues} />  
               <Route path='/login' component={LogIn} />
               <Route path='/signUp' component={SignUp} />
           </Switch>
