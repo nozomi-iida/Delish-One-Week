@@ -35,6 +35,7 @@ const useStyles = makeStyles((theme: Theme) =>
 export default function SimpleAccordion() {
   const classes = useStyles();
   const menues = useSelector((state: IState) => state.menues);
+  console.log(menues);
 
   return (
     <>
@@ -54,12 +55,12 @@ export default function SimpleAccordion() {
               <CardActionArea>
                 <CardMedia
                   className={classes.media}
-                  image="/static/images/cards/contemplative-reptile.jpg"
+                  image={menu.foodImg}
                   title="Contemplative Reptile"
                 />
                 <CardContent>
                   <Typography gutterBottom variant="h5" component="h2">
-                    Lizard
+                    {menu.foodName}
                   </Typography>
                   <Typography variant="body2" color="textSecondary" component="p">
                     Lizards are a widespread group of squamate reptiles, with over 6,000 species, ranging

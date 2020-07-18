@@ -98,7 +98,7 @@ export default () => {
 
   const onSubmit = (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
-    if(foodName.trim() !== '' && foodImg !== '') {
+    if(foodName.trim() !== '' && foodImg.trim() !== '') {
       let foodImgUrl: string = ''
       firebase.storage().ref().child(`${user.uid}/${created_at}.png`).put(foodImgFile)
       .then((snapshot) => {
@@ -112,7 +112,7 @@ export default () => {
         });
       });
     } else if (foodName.trim() !== '') {
-      const foodImg = "https://firebasestorage.googleapis.com/v0/b/delish-one-week.appspot.com/o/noimage.png?alt=media&token=fbfc573e-6d3f-4a15-a0a0-6b07541567ac";
+      const foodImg = "https://firebasestorage.googleapis.com/v0/b/delish-one-week.appspot.com/o/noimage.png?alt=media&token=7d10ebb8-eca8-4795-8129-0ae6118b8944";
       fireStore.collection("users").doc(`${user.uid}`).collection("favorites").add({foodName, foodImg, materials, created_at}).then((docRef) => {
         dispatch(addFavorite({id: docRef.id, foodName, foodImg, materials, created_at}));
         history.push('/');

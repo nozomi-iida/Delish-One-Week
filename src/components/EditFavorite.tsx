@@ -100,7 +100,7 @@ export default (props: any) => {
 
   const onSubmit = (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
-    if(foodImg === 'https://firebasestorage.googleapis.com/v0/b/delish-one-week.appspot.com/o/noimage.png?alt=media&token=fbfc573e-6d3f-4a15-a0a0-6b07541567ac') {
+    if(foodImg === 'https://firebasestorage.googleapis.com/v0/b/delish-one-week.appspot.com/o/noimage.png?alt=media&token=6177267d-6991-46f8-b999-ba505d38e927') {
       let foodImgUrl: string = ''
       firebase.storage().ref().child(`${user.uid}/${created_at}.png`).put(foodImgFile)
       .then((snapshot) => {

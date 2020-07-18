@@ -56,12 +56,19 @@ export default () => {
   };
 
   const onDeleteClick = (favorite: any) => {
-    firebase.storage().refFromURL(favorite.foodImg).delete().then(() => {
+    if(favorite.foodImg === 'https://firebasestorage.googleapis.com/v0/b/delish-one-week.appspot.com/o/noimage.png?alt=media&token=7d10ebb8-eca8-4795-8129-0ae6118b8944') {
       fireStore.collection('users').doc(`${user.uid}`).collection('favorites').doc(`${favorite.id}`).delete().then(() => {
         dispatch(removeFavorite(favorite.id))
         setOpen(false);
       });
-    })
+    } else {
+      firebase.storage().refFromURL(favorite.foodImg).delete().then(() => {
+        fireStore.collection('users').doc(`${user.uid}`).collection('favorites').doc(`${favorite.id}`).delete().then(() => {
+          dispatch(removeFavorite(favorite.id))
+          setOpen(false);
+        });
+      })
+    }
   };
 
   const body = (favorite: any) => (

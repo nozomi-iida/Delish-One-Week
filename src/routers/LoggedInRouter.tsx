@@ -20,7 +20,7 @@ export default ({ component: Component, ...rest }: any): JSX.Element => {
       });
     }).then(() => {
       dispatch(setFavorites(getFavorites))
-    })
+    });
   // eslint-disable-next-line
   },[user]);
 
