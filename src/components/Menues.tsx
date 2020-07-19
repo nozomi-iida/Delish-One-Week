@@ -13,7 +13,7 @@ import { IMenu } from '../interfaces/menues';
 import { IFavorite } from '../interfaces/favorites';
 import { fireStore } from '../firebase/firebase';
 import { AuthStore } from '../stores/AuthStore';
-import { addMenues } from '../actions/menues';
+import { addMenues, updateMenues } from '../actions/menues';
 
 const useStyles = makeStyles((theme: Theme) =>
   createStyles({
@@ -51,16 +51,28 @@ export default function SimpleAccordion() {
       return a.value
     }).slice(0, 7);
 
-    if(menues[1]) {
-      return 
-    } else {
+    if(menues[0]) {
       newFavoritesArray.map((favorite: IFavorite, index: number) => {
-        fireStore.collection('users').doc(`${user.uid}`).collection("menues").doc(`day${index}`).set({
+        fireStore.collection('users').doc(`${user.uid}`).collection("menues").doc(`day${index + 1}`).update({
           foodName: favorite.foodName,
           foodImg: favorite.foodImg,
           materials: favorite.materials,
         }).then(() => {
-          dispatch(addMenues({ ...favorite, id: `day${index}` }));
+          dispatch(updateMenues(`day${index + 1}`, {
+            foodName: favorite.foodName,
+            foodImg: favorite.foodImg,
+            materials: favorite.materials,
+          }));
+        }); 
+      });
+    } else {
+      newFavoritesArray.map((favorite: IFavorite, index: number) => {
+        fireStore.collection('users').doc(`${user.uid}`).collection("menues").doc(`day${index + 1}`).set({
+          foodName: favorite.foodName,
+          foodImg: favorite.foodImg,
+          materials: favorite.materials,
+        }).then(() => {
+          dispatch(addMenues({ ...favorite, id: `day${index + 1}` }));
         });
       });
     }
