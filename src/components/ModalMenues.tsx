@@ -1,10 +1,13 @@
-import React from 'react';
+import React, { useContext } from 'react';
 import { makeStyles } from '@material-ui/core/styles';
 import Modal from '@material-ui/core/Modal';
 import { Button } from '@material-ui/core';
-import { useSelector } from 'react-redux';
+import { useSelector, useDispatch } from 'react-redux';
 import { IState } from '../interfaces/state';
 import { IFavorite } from '../interfaces/favorites';
+import { fireStore } from '../firebase/firebase';
+import { AuthStore } from '../stores/AuthStore';
+import { editMenu } from '../actions/menues';
 
 function getModalStyle() {
   const top = 50;
@@ -28,12 +31,15 @@ const useStyles = makeStyles((theme) => ({
   },
 }));
 
-export default function SimpleModal({ onClick, favorite }: any) {
+export default function SimpleModal({ onClick, favorite, selectedMenu }: any) {
+  console.log(selectedMenu);
   const classes = useStyles();
   // getModalStyle is not a pure function, we roll the style only on the first render
   const [modalStyle] = React.useState(getModalStyle);
   const [open, setOpen] = React.useState(false);
   const favorites = useSelector((state: IState) => state.favorites);
+  const user = useContext(AuthStore);
+  const dispatch = useDispatch();
 
   const handleOpen = () => {
     setOpen(true);
@@ -53,9 +59,19 @@ export default function SimpleModal({ onClick, favorite }: any) {
   };
 
   const onChoiceClick = (favorite: IFavorite) => {
-    
+    fireStore.collection('users').doc(`${user.uid}`).collection("menues").doc(`${selectedMenu.id}`).update({
+      foodName: favorite.foodName,
+      foodImg: favorite.foodImg,
+      materials: favorite.materials
+    }).then(() => {
+      dispatch(editMenu(selectedMenu.id, {
+        foodName: favorite.foodName,
+        foodImg: favorite.foodImg,
+        materials: favorite.materials,
+      }));
+    });
     setOpen(false);
-  }
+  };
 
   const body = (
     <div style={modalStyle} className={classes.paper}>

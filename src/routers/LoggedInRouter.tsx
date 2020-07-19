@@ -32,7 +32,6 @@ export default ({ component: Component, ...rest }: any): JSX.Element => {
       });
     }).then(() => {
       dispatch(setMenues(getMenues))
-      console.log(getMenues);
     });
   // eslint-disable-next-line
   },[user]);

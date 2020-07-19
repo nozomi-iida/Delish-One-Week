@@ -1,4 +1,4 @@
-import React, { useState, useContext } from 'react';
+import React, { useContext } from 'react';
 import { Theme, createStyles, makeStyles } from '@material-ui/core/styles';
 import Accordion from '@material-ui/core/Accordion';
 import AccordionDetails from '@material-ui/core/AccordionDetails';
@@ -14,6 +14,7 @@ import { IFavorite } from '../interfaces/favorites';
 import { fireStore } from '../firebase/firebase';
 import { AuthStore } from '../stores/AuthStore';
 import { addMenues, updateMenues } from '../actions/menues';
+import { Link } from 'react-router-dom';
 
 const useStyles = makeStyles((theme: Theme) =>
   createStyles({
@@ -56,7 +57,7 @@ export default function SimpleAccordion() {
         fireStore.collection('users').doc(`${user.uid}`).collection("menues").doc(`day${index + 1}`).update({
           foodName: favorite.foodName,
           foodImg: favorite.foodImg,
-          materials: favorite.materials,
+          materials: favorite.materials
         }).then(() => {
           dispatch(updateMenues(`day${index + 1}`, {
             foodName: favorite.foodName,
@@ -75,7 +76,7 @@ export default function SimpleAccordion() {
           dispatch(addMenues({ ...favorite, id: `day${index + 1}` }));
         });
       });
-    }
+    };
   };
 
   return (
@@ -89,28 +90,30 @@ export default function SimpleAccordion() {
             aria-controls="panel1a-content"
             id="panel1a-header"
           >
-            <Typography className={classes.heading}>Day {index + 1}</Typography>
+            <Typography className={classes.heading}>Day {index + 1} {menu.foodName}</Typography>
           </AccordionSummary>
           <AccordionDetails className={classes.container}>
             <Card className={classes.card}>
-              <CardActionArea>
-                <CardMedia
-                  className={classes.media}
-                  image={menu.foodImg}
-                  title="Contemplative Reptile"
-                />
-                <CardContent>
-                  <Typography gutterBottom variant="h5" component="h2">
-                    {menu.foodName}
-                  </Typography>
-                  <Typography variant="body2" color="textSecondary" component="p">
-                    Lizards are a widespread group of squamate reptiles, with over 6,000 species, ranging
-                    across all continents except Antarctica
-                  </Typography>
-                </CardContent>
-              </CardActionArea>
+              <Link to={`/detail/${menu.id}`}>
+                <CardActionArea>
+                  <CardMedia
+                    className={classes.media}
+                    image={menu.foodImg}
+                    title="Contemplative Reptile"
+                  />
+                  <CardContent>
+                    <Typography gutterBottom variant="h5" component="h2">
+                      {menu.foodName}
+                    </Typography>
+                    <Typography variant="body2" color="textSecondary" component="p">
+                      Lizards are a widespread group of squamate reptiles, with over 6,000 species, ranging
+                      across all continents except Antarctica
+                    </Typography>
+                  </CardContent>
+                </CardActionArea>
+              </Link>
               <CardActions>
-                <ModalMenues />
+                <ModalMenues selectedMenu={menu}/>
               </CardActions>
             </Card>
           </AccordionDetails>
