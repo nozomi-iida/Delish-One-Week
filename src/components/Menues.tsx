@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState, useContext } from 'react';
 import { Theme, createStyles, makeStyles } from '@material-ui/core/styles';
 import Accordion from '@material-ui/core/Accordion';
 import AccordionDetails from '@material-ui/core/AccordionDetails';
@@ -7,9 +7,13 @@ import Typography from '@material-ui/core/Typography';
 import ExpandMoreIcon from '@material-ui/icons/ExpandMore';
 import { Card, CardActionArea, CardMedia, CardContent, CardActions } from '@material-ui/core';
 import ModalMenues from './ModalMenues';
-import { useSelector } from 'react-redux';
+import { useSelector, useDispatch } from 'react-redux';
 import { IState } from '../interfaces/state';
 import { IMenu } from '../interfaces/menues';
+import { IFavorite } from '../interfaces/favorites';
+import { fireStore } from '../firebase/firebase';
+import { AuthStore } from '../stores/AuthStore';
+import { addMenues } from '../actions/menues';
 
 const useStyles = makeStyles((theme: Theme) =>
   createStyles({
@@ -35,11 +39,36 @@ const useStyles = makeStyles((theme: Theme) =>
 export default function SimpleAccordion() {
   const classes = useStyles();
   const menues = useSelector((state: IState) => state.menues);
-  console.log(menues);
+  const favorites = useSelector((state: IState) => state.favorites);
+  const user = useContext(AuthStore);
+  const dispatch = useDispatch();
+
+  const shuffleFavorites = () => {
+    let newFavoritesArray = favorites;
+    newFavoritesArray = newFavoritesArray.map((a: any) => {return {weight: Math.random(), value:a}}).sort((a, b) => {
+      return a.weight - b.weight
+    }).map((a: any) => {
+      return a.value
+    }).slice(0, 7);
+
+    if(menues[1]) {
+      return 
+    } else {
+      newFavoritesArray.map((favorite: IFavorite, index: number) => {
+        fireStore.collection('users').doc(`${user.uid}`).collection("menues").doc(`day${index}`).set({
+          foodName: favorite.foodName,
+          foodImg: favorite.foodImg,
+          materials: favorite.materials,
+        }).then(() => {
+          dispatch(addMenues({ ...favorite, id: `day${index}` }));
+        });
+      });
+    }
+  };
 
   return (
     <>
-      <ModalMenues />
+      <ModalMenues onClick={shuffleFavorites} />
       <div className={classes.root}>
       {menues.map((menu: IMenu, index: number) => (
         <Accordion key={index}>
@@ -48,7 +77,7 @@ export default function SimpleAccordion() {
             aria-controls="panel1a-content"
             id="panel1a-header"
           >
-            <Typography className={classes.heading}>Day 1</Typography>
+            <Typography className={classes.heading}>Day {index + 1}</Typography>
           </AccordionSummary>
           <AccordionDetails className={classes.container}>
             <Card className={classes.card}>

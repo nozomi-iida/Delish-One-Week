@@ -1,4 +1,4 @@
 export interface IMenu {
   foodName: string,
-  foodImg: string
+  foodImg: string,
 };

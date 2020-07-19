@@ -77,7 +77,6 @@ export default () => {
     });
     setMaterials(newMaterials);
   };
-  console.log(materials);
 
   const onPlusClick = () => {
     const Num = materials.length;
