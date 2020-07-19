@@ -32,6 +32,7 @@ export default () => {
           </Switch>
         </BrowserRouter>
       </Provider>
+      <div>こんにちは</div>
     </AuthStoreProvider>
   )
 }
