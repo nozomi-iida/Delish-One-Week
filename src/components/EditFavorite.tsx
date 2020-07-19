@@ -87,15 +87,20 @@ export default (props: any) => {
   };
 
   const onPlusClick = () => {
-    const Num = materials.length + 1;
-    const addMaterial = {
-      materialNum: `${Num}`,
-      materialName: '',
-      materialWeight: '',
-      materialUnit: '個'
-    }
-    const newmaterial = [...materials, addMaterial]
-    setMaterials(newmaterial)
+    const Num = materials.length;
+    if(materials[Num - 1].materialName) {
+      const addMaterial = {
+        materialNum: `${Num + 1}`,
+        materialName: '',
+        materialWeight: '',
+        materialUnit: '個'
+      }
+      const newmaterial = [...materials, addMaterial]
+      setMaterials(newmaterial);
+      setAddFromErr('')
+    } else {
+      setAddFromErr('材料名を教えてください。')
+    };
   };
 
   const onSubmit = (e: React.FormEvent<HTMLFormElement>) => {
