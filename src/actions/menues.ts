@@ -14,4 +14,10 @@ export const updateMenues = (id: string, updates: any) => ({
   type: 'UPDATE_MENUES',
   id,
   updates
-})
+});
+
+export const editMenu = (id: string, update: any) => ({
+  type: 'EDIT_MENU',
+  id,
+  update
+});

@@ -6,19 +6,31 @@ import Loading from './Loading';
 import { IState } from '../interfaces/state';
 
 export default (props: any) => {
-  const favorite = useSelector((state: IState) => state.favorites.find((favorite: any) => favorite.id === props.match.params.id));
-  if(favorite) {
+  const selectedFavorite = useSelector((state: IState) => state.favorites.find((favorite: any) => favorite.id === props.match.params.id));
+  const selectedMenu = useSelector((state: IState) => state.menues.find((menu: any) => menu.id === props.match.params.id));
+  if(selectedFavorite) {
     return (
       <div>
-        <h1>{favorite.foodName}</h1>
-        <img src={favorite.foodImg} alt=""/>
-        {favorite.materials.map((material: IMaterial, index: number) => (
+        <h1>{selectedFavorite.foodName}</h1>
+        <img src={selectedFavorite.foodImg} alt=""/>
+        {selectedFavorite.materials.map((material: IMaterial, index: number) => (
           material.materialName.trim() !== '' &&  <li key={index}>{material.materialName}</li>
         ))}
-        <Link to={`/edit/${favorite.id}`}>編集する</Link>
+        <Link to={`/edit/${selectedFavorite.id}`}>編集する</Link>
       </div>
     );
-  } else {
+  } else if (selectedMenu) {
+    return (
+      <div>
+        <h1>{selectedMenu.foodName}</h1>
+        <img src={selectedMenu.foodImg} alt=""/>
+        {selectedMenu.materials.map((material: IMaterial, index: number) => (
+          material.materialName.trim() !== '' &&  <li key={index}>{material.materialName}</li>
+        ))}
+        <Link to={`/edit/${selectedMenu.id}`}>編集する</Link>
+      </div>
+    )
+  }else {
     return (
       <>
         <Loading />
