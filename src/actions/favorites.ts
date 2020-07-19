@@ -1,9 +1,11 @@
-export const addFavorite = (favorite: any) => ({
+import { IFavorite } from "../interfaces/favorites";
+
+export const addFavorite = (favorite: IFavorite) => ({
   type: 'ADD_FAV',
   favorite
 });
 
-export const setFavorites = (favorites: any) => ({
+export const setFavorites = (favorites: IFavorite[]) => ({
   type: 'SET_FAVES',
   favorites
 });

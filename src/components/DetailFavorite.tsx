@@ -12,11 +12,9 @@ export default (props: any) => {
       <div>
         <h1>{favorite.foodName}</h1>
         <img src={favorite.foodImg} alt=""/>
-        {favorite.materials.map((material: IMaterial, index: number) => {
-          if(material.materialName.trim() !== '') {
-            return <li key={index}>{material.materialName}</li>
-          }
-        })}
+        {favorite.materials.map((material: IMaterial, index: number) => (
+          material.materialName.trim() !== '' &&  <li key={index}>{material.materialName}</li>
+        ))}
         <Link to={`/edit/${favorite.id}`}>編集する</Link>
       </div>
     );
