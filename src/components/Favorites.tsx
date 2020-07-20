@@ -1,6 +1,6 @@
 import React, { useContext } from 'react';
 import { useSelector, useDispatch } from 'react-redux';
-import { Card, CardActionArea, CardMedia, CardContent, Typography, CardActions, makeStyles, createStyles, Theme } from '@material-ui/core';
+import { Card, CardActionArea, CardMedia, CardContent, Typography, CardActions, makeStyles, createStyles, Theme, Button } from '@material-ui/core';
 import { Link } from 'react-router-dom';
 import { IFavorite } from '../interfaces/favorites';
 import { AuthStore } from '../stores/AuthStore';
@@ -52,6 +52,9 @@ export default () => {
   if(favorites.length !== 0) {
     return (
       <div>
+        <Link to="addFavorite">
+          <Button variant="contained" color="primary">追加</Button>
+        </Link>
         {favorites.map((favorite: IFavorite) => (
           <div key={favorite.id}>
             <Card className={classes.root}>

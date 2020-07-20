@@ -5,7 +5,7 @@ import AccordionDetails from '@material-ui/core/AccordionDetails';
 import AccordionSummary from '@material-ui/core/AccordionSummary';
 import Typography from '@material-ui/core/Typography';
 import ExpandMoreIcon from '@material-ui/icons/ExpandMore';
-import { Card, CardActionArea, CardMedia, CardContent, CardActions } from '@material-ui/core';
+import { Card, CardActionArea, CardMedia, CardContent, CardActions, Button } from '@material-ui/core';
 import ModalMenues from './ModalMenues';
 import { useSelector, useDispatch } from 'react-redux';
 import { IState } from '../interfaces/state';
@@ -89,6 +89,9 @@ export default function SimpleAccordion() {
   return (
     <>
       <ModalMenues onClick={shuffleFavorites} />
+      <Link to="/shoppinglists">
+        <Button variant="contained" color="primary" >買い物リスト</Button>
+      </Link>
       <div className={classes.root}>
       {menues.map((menu: IMenu, index: number) => (
         <Accordion key={index}>
@@ -97,7 +100,7 @@ export default function SimpleAccordion() {
             aria-controls="panel1a-content"
             id="panel1a-header"
           >
-            <Typography className={classes.heading}>Day {index + 1} {menu.foodName}</Typography>
+            <Typography className={classes.heading}>{index + 1}日目{menu.foodName}</Typography>
           </AccordionSummary>
           <AccordionDetails className={classes.container}>
             <Card className={classes.card}>

@@ -14,7 +14,8 @@ export default () => {
       <Typography variant="h1" >Delish One Week</Typography>
       <NavLink to='/' >Favorites</NavLink>:
       <NavLink to='/menues' >Menues</NavLink>:
-      <NavLink to='/addFavorite' >Add Favorite</NavLink>:
+      <NavLink to='/shoppinglists' >Shopping List</NavLink>:
+      <NavLink to='/mypage' >My Page</NavLink>:
       <Button variant="contained" color="primary" onClick={onLogOutClick}>
         ログアウト
       </Button>
