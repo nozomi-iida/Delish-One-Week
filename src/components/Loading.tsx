@@ -2,8 +2,9 @@ import React from 'react';
 
 export default () => {
   return (
-    <div>
-      <h1>Loading...</h1>
+    <div className="blocks">
+      <div className="block orange"></div>
+      <div className="block blue"></div>
     </div>
   )
 }

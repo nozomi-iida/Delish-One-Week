@@ -19,7 +19,7 @@ export default () => {
   const [passwordOpen, setPasswordOpen] = useState(false);
 
   const [errMessage, setErrMessage] = useState('');
-  const { register, setValue, handleSubmit, errors } = useForm<FormData>();
+  const { register, handleSubmit } = useForm<FormData>();
   
   const onNameClick = () => {
     setNameOpen(true);
