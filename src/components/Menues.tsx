@@ -6,7 +6,7 @@ import AccordionSummary from '@material-ui/core/AccordionSummary';
 import Typography from '@material-ui/core/Typography';
 import ExpandMoreIcon from '@material-ui/icons/ExpandMore';
 import { Card, CardActionArea, CardMedia, CardContent, CardActions, Button } from '@material-ui/core';
-import ModalMenues from './ModalMenues';
+import ModalMenues from './ConfirmModal';
 import { useSelector, useDispatch } from 'react-redux';
 import { IState } from '../interfaces/state';
 import { IMenu } from '../interfaces/menues';

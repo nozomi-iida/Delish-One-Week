@@ -8,7 +8,7 @@ import firebase,  { fireStore } from '../firebase/firebase';
 import { removeFavorite } from '../actions/favorites';
 import Loading from './Loading';
 import { IState } from '../interfaces/state';
-import ModalMenues from './ModalMenues';
+import ConfirmModal from './ConfirmModal';
 
 const useStyles = makeStyles((theme: Theme) =>
 createStyles({
@@ -73,7 +73,7 @@ export default () => {
                 </CardActionArea>
               </Link>
               <CardActions>
-                <ModalMenues onClick={onDeleteClick} favorite={favorite} />
+                <ConfirmModal onClick={onDeleteClick} favorite={favorite} />
               </CardActions>
             </Card>
           </div>
