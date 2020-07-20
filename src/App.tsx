@@ -14,6 +14,7 @@ import DetailFavorite from './components/DetailFavorite';
 import Menues from './components/Menues';
 import ShoppingLists from './components/ShoppingLists';
 import MyPage from './components/MyPage';
+import './styles/styles.scss';
 
 const store = ReduxStore();
 
