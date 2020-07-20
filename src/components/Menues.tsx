@@ -1,4 +1,4 @@
-import React, { useContext } from 'react';
+import React, { useContext, useState } from 'react';
 import { Theme, createStyles, makeStyles } from '@material-ui/core/styles';
 import Accordion from '@material-ui/core/Accordion';
 import AccordionDetails from '@material-ui/core/AccordionDetails';
@@ -43,15 +43,22 @@ export default function SimpleAccordion() {
   const favorites = useSelector((state: IState) => state.favorites);
   const user = useContext(AuthStore);
   const dispatch = useDispatch();
+  // const [newFavoritesArray, setNewFavoritesArray] = useState<any>();
 
   const shuffleFavorites = () => {
-    let newFavoritesArray = favorites;
-    newFavoritesArray = newFavoritesArray.map((a: any) => {return {weight: Math.random(), value:a}}).sort((a, b) => {
-      return a.weight - b.weight
-    }).map((a: any) => {
-      return a.value
-    }).slice(0, 7);
+    // newFavoritesArray = newFavoritesArray.map((a: any) => {return {weight: Math.random(), value:a}}).sort((a, b) => {
+    //   return a.weight - b.weight
+    // }).map((a: any) => {
+    //   return a.value
+    // }).slice(0, 7);
 
+    const newFavoritesArray = []
+
+    for(let i = 0; i < 7; i++) {
+      let num = Math.floor(Math.random() * favorites.length);
+      newFavoritesArray.push(favorites[num]);
+    };
+    
     if(menues[0]) {
       newFavoritesArray.map((favorite: IFavorite, index: number) => {
         fireStore.collection('users').doc(`${user.uid}`).collection("menues").doc(`day${index + 1}`).update({
