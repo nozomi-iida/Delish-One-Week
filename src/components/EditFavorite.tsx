@@ -19,19 +19,18 @@ export default (props: any) => {
   const [previewFoodImg, setPreviewFoodImg] = useState(favorite ? favorite.foodImg : '');
   const [created_at] = useState(favorite ? favorite.created_at : new Date().valueOf());
   const [addFromErr, setAddFromErr] = useState('');
-  const [materials, setMaterials] = useState(favorite? favorite.materials.map((material: IMaterial) => {
+  const [materials, setMaterials] = useState(favorite ? favorite.materials.map((material: any) => {
     return {
       materialNum: material.materialNum,
       materialName: material.materialName,
-      materialWeight: material.materialWeight,
-      materialUnit: material.materialUnit
+      checked: material.checked
     }
   }): [{
     materialNum: '1',
     materialName: '',
-    materialWeight: '',
-    materialUnit: '個'
+    checked: false
   }]);
+
   const history = useHistory();
   const dispatch = useDispatch();
   const onFoodNameChange = (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -64,63 +63,45 @@ export default (props: any) => {
     setMaterials(newMaterials);
   }
 
-  const onMaterialWeightChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    const newMaterials = materials.map((material: any) => {
-      if (material.materialNum === e.target.name && e.target.value.match(/^\d*(\.\d{0,2})*(\/\d{0,1})*$/)) {
-        return {...material, materialWeight: e.target.value};
-      } else {
-        return material;
-      };
-    });
-    setMaterials(newMaterials);
-  };
-
-  const onMaterialUnitChange = (e: React.ChangeEvent<HTMLSelectElement>) => {
-    const newMaterials = materials.map((material: any) => {
-      if (material.materialNum === e.target.name) {
-        return {...material, materialUnit: e.target.value};
-      } else {
-        return material;
-      };
-    });
-    setMaterials(newMaterials);
-  };
-
   const onPlusClick = () => {
     const Num = materials.length;
     if(materials[Num - 1].materialName) {
       const addMaterial = {
         materialNum: `${Num + 1}`,
         materialName: '',
-        materialWeight: '',
-        materialUnit: '個'
-      }
+        checked: false
+      } 
       const newmaterial = [...materials, addMaterial]
       setMaterials(newmaterial);
-      setAddFromErr('')
+      setAddFromErr('');
     } else {
-      setAddFromErr('材料名を教えてください。')
+      setAddFromErr('材料名を教えてください。');
     };
   };
 
   const onSubmit = (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
-    if(foodImg === 'https://firebasestorage.googleapis.com/v0/b/delish-one-week.appspot.com/o/noimage.png?alt=media&token=6177267d-6991-46f8-b999-ba505d38e927') {
+
+    const newMaterials = materials.filter((material: any) => {
+      return [material.materialName]
+    });
+
+    if(foodName.trim() !== '' && foodImg === 'https://firebasestorage.googleapis.com/v0/b/delish-one-week.appspot.com/o/noimage.png?alt=media&token=6177267d-6991-46f8-b999-ba505d38e927') {
       let foodImgUrl: string = ''
       firebase.storage().ref().child(`${user.uid}/${created_at}.png`).put(foodImgFile)
       .then((snapshot) => {
         snapshot.ref.getDownloadURL().then((downloadURL) => {
           foodImgUrl = downloadURL
         }).then(() => {
-          fireStore.collection("users").doc(`${user.uid}`).collection("favorites").doc(`${favorite.id}`).update({foodName, foodImg: foodImgUrl, materials, created_at}).then(() => {
-            dispatch(editFavorite(favorite.id, {foodName, foodImg: foodImgUrl, materials, created_at}))
+          fireStore.collection("users").doc(`${user.uid}`).collection("favorites").doc(`${favorite.id}`).update({foodName, foodImg: foodImgUrl, materials: newMaterials, created_at}).then(() => {
+            dispatch(editFavorite(favorite.id, {foodName, foodImg: foodImgUrl, materials: newMaterials, created_at}))
             history.push('/');
           });
         });
       });
-    } else if(foodImgFile === '') {
-      fireStore.collection("users").doc(`${user.uid}`).collection("favorites").doc(`${favorite.id}`).update({foodName, foodImg, materials, created_at}).then(() => {
-        dispatch(editFavorite(favorite.id, {foodName, foodImg, materials, created_at}))
+    } else if(foodName.trim() !== '' && foodImgFile === '') {
+      fireStore.collection("users").doc(`${user.uid}`).collection("favorites").doc(`${favorite.id}`).update({foodName, foodImg, materials: newMaterials, created_at}).then(() => {
+        dispatch(editFavorite(favorite.id, {foodName, foodImg, materials: newMaterials, created_at}))
         history.push('/');
       });
     } else if (foodName.trim() !== '' && foodImg !== '') {
@@ -131,8 +112,8 @@ export default (props: any) => {
         snapshot.ref.getDownloadURL().then((downloadURL) => {
           foodImgUrl = downloadURL
         }).then(() => {
-          fireStore.collection("users").doc(`${user.uid}`).collection("favorites").doc(`${favorite.id}`).update({foodName, foodImg: foodImgUrl, materials, created_at}).then(() => {
-            dispatch(editFavorite(favorite.id, {foodName, foodImg: foodImgUrl, materials, created_at}))
+          fireStore.collection("users").doc(`${user.uid}`).collection("favorites").doc(`${favorite.id}`).update({foodName, foodImg: foodImgUrl, materials: newMaterials, created_at}).then(() => {
+            dispatch(editFavorite(favorite.id, {foodName, foodImg: foodImgUrl, materials: newMaterials, created_at}))
             history.push('/');
           });
         });
@@ -153,24 +134,12 @@ export default (props: any) => {
           <thead>
               <tr>
                   <th>材料名</th>
-                  <th>量</th>
-                  <th>単位</th>
               </tr>
           </thead>
           <tbody>
             {materials.map((material: any, index: number) => (
               <tr key={index}>
                 <td><input type="text" name={material.materialNum} value={material.materialName} onChange={onMaterialNameChange} /></td>
-                <td><input type="text" name={material.materialNum} value={material.materialWeight} onChange={onMaterialWeightChange} /></td>
-                <td>
-                  <select name={material.materialNum} onChange={onMaterialUnitChange}>
-                    <option value="個">個</option>
-                    <option value="本">本</option>
-                    <option value="g">g</option>
-                    <option value="束">束</option>
-                    <option value="袋">袋</option>
-                  </select>
-                </td>
               </tr>
             ))}
           </tbody>
