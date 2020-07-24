@@ -6,7 +6,6 @@ import { IFavorite } from '../interfaces/favorites';
 import { AuthStore } from '../stores/AuthStore';
 import firebase,  { fireStore } from '../firebase/firebase';
 import { removeFavorite } from '../actions/favorites';
-import Loading from './Loading';
 import { IState } from '../interfaces/state';
 import ConfirmModal from './ConfirmModal';
 
@@ -82,9 +81,9 @@ export default () => {
     );
   } else {
     return (
-      <>
-        <Loading />
-      </>
+      <Link to="addFavorite">
+        <Button variant="contained" color="primary">追加</Button>
+      </Link>
     );
   };
 };

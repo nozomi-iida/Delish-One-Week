@@ -11,10 +11,10 @@ export default () => {
   };
   return (
     <div>
-      <Typography variant="h1" >Delish One Week</Typography>
+      <Typography variant="h1" >一週間の献立表</Typography>
       <NavLink to='/' >Favorites</NavLink>:
       <NavLink to='/menues' >Menues</NavLink>:
-      <NavLink to='/shoppinglists' >Shopping List</NavLink>:
+      <NavLink to='/cookinglists' >Cooking Lists</NavLink>:
       <NavLink to='/mypage' >My Page</NavLink>:
       <Button variant="contained" color="primary" onClick={onLogOutClick}>
         ログアウト

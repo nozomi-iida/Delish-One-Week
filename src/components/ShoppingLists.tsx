@@ -18,7 +18,7 @@ export default () => {
                 {material.materialName !== '' && 
                   <li>
                     <input type="checkbox"/>
-                    <span>{material.materialName}:{material.materialWeight}{material.materialUnit}</span>
+                    <span>{material.materialName}</span>
                   </li>
                 }
               </div>

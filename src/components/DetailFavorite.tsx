@@ -1,12 +1,12 @@
 import React from 'react';
 import { useSelector } from 'react-redux';
 import { Link } from 'react-router-dom';
-import { IMaterial } from '../interfaces/favorites';
+import { IMaterial, IFavorite } from '../interfaces/favorites';
 import Loading from './Loading';
 import { IState } from '../interfaces/state';
 
 export default (props: any) => {
-  const selectedFavorite = useSelector((state: IState) => state.favorites.find((favorite: any) => favorite.id === props.match.params.id));
+  const selectedFavorite = useSelector((state: IState) => state.favorites.find((favorite: IFavorite) => favorite.id === props.match.params.id));
   const selectedMenu = useSelector((state: IState) => state.menues.find((menu: any) => menu.id === props.match.params.id));
   if(selectedFavorite) {
     return (
@@ -27,7 +27,6 @@ export default (props: any) => {
         {selectedMenu.materials.map((material: IMaterial, index: number) => (
           material.materialName.trim() !== '' &&  <li key={index}>{material.materialName}</li>
         ))}
-        <Link to={`/edit/${selectedMenu.id}`}>編集する</Link>
       </div>
     )
   }else {
