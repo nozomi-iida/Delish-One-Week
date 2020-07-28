@@ -6,6 +6,7 @@ import { useHistory } from "react-router-dom";
 import { addFavorite } from "../actions/favorites";
 import { useDispatch } from "react-redux";
 import AddCircleIcon from '@material-ui/icons/AddCircle';
+import { v4 as uuid } from 'uuid';
 
 export default () => {
   const user = useContext(AuthStore);
@@ -16,7 +17,7 @@ export default () => {
   const [addFromErr, setAddFromErr] = useState('');
   const [materials, setMaterials] = useState([
     {
-      materialNum: '1',
+      materialNum: uuid(),
       materialName: '',
       checked: false
     }
@@ -58,7 +59,7 @@ export default () => {
     const Num = materials.length;
     if(materials[Num - 1].materialName) {
       const addMaterial = {
-        materialNum: `${Num + 1}`,
+        materialNum: uuid(),
         materialName: '',
         checked: false
       }

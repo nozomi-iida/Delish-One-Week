@@ -15,7 +15,8 @@ import Menues from './components/Menues';
 import ShoppingLists from './components/ShoppingLists';
 import MyPage from './components/MyPage';
 import './styles/styles.scss';
-import CookingLists from './components/Cooking';
+import Cooking from './components/Cooking';
+import CookingLists from './components/CookingLists';
 
 const store = ReduxStore();
 
@@ -33,7 +34,8 @@ export default () => {
               <LoggedInRouter path="/menues" component={Menues} />  
               <LoggedInRouter path="/shoppinglists" component={ShoppingLists} />  
               <LoggedInRouter path="/mypage" component={MyPage} />  
-              <LoggedInRouter path="/cookinglists" component={CookingLists} />  
+              <LoggedInRouter path="/cooking" component={Cooking} />  
+              <LoggedInRouter path="/cookingLists/:id" component={CookingLists} />  
               <Route path='/login' component={LogIn} />
               <Route path='/signUp' component={SignUp} />
           </Switch>
@@ -41,4 +43,4 @@ export default () => {
       </Provider>
     </AuthStoreProvider>
   )
-}
+};
