@@ -7,7 +7,9 @@ import { IState } from '../interfaces/state';
 
 export default (props: any) => {
   const selectedFavorite = useSelector((state: IState) => state.favorites.find((favorite: IFavorite) => favorite.id === props.match.params.id));
+  console.log(selectedFavorite)
   const selectedMenu = useSelector((state: IState) => state.menues.find((menu: any) => menu.id === props.match.params.id));
+  
   if(selectedFavorite) {
     return (
       <div>
