@@ -61,7 +61,7 @@ export default function SimpleAccordion() {
     
     if(menues[0]) {
       newFavoritesArray.map((favorite: IFavorite, index: number) => {
-        fireStore.collection('users').doc(`${user.uid}`).collection("menues").doc(`day${index + 1}`).update({
+        return fireStore.collection('users').doc(`${user.uid}`).collection("menues").doc(`day${index + 1}`).update({
           foodName: favorite.foodName,
           foodImg: favorite.foodImg,
           materials: favorite.materials
@@ -75,7 +75,7 @@ export default function SimpleAccordion() {
       });
     } else {
       newFavoritesArray.map((favorite: IFavorite, index: number) => {
-        fireStore.collection('users').doc(`${user.uid}`).collection("menues").doc(`day${index + 1}`).set({
+        return fireStore.collection('users').doc(`${user.uid}`).collection("menues").doc(`day${index + 1}`).set({
           foodName: favorite.foodName,
           foodImg: favorite.foodImg,
           materials: favorite.materials,

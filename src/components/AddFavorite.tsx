@@ -1,5 +1,5 @@
 import React, { useState, useContext } from "react";
-import { TextField, Button, IconButton } from "@material-ui/core";
+import { TextField, Button, IconButton, Fab } from "@material-ui/core";
 import firebase, { fireStore } from '../firebase/firebase';
 import { AuthStore } from "../stores/AuthStore";
 import { useHistory } from "react-router-dom";
@@ -7,6 +7,8 @@ import { addFavorite } from "../actions/favorites";
 import { useDispatch } from "react-redux";
 import AddCircleIcon from '@material-ui/icons/AddCircle';
 import { v4 as uuid } from 'uuid';
+import RemoveIcon from '@material-ui/icons/Remove';
+import { IMaterial } from "../interfaces/favorites";
 
 export default () => {
   const user = useContext(AuthStore);
@@ -57,18 +59,21 @@ export default () => {
 
   const onPlusClick = () => {
     const Num = materials.length;
-    if(materials[Num - 1].materialName) {
-      const addMaterial = {
-        materialNum: uuid(),
-        materialName: '',
-        checked: false
-      }
-      const newmaterial = [...materials, addMaterial]
-      setMaterials(newmaterial);
-      setAddFromErr('')
-    } else {
-      setAddFromErr('材料名を教えてください。');
-    };
+    const addMaterial = {
+      materialNum: uuid(),
+      materialName: '',
+      checked: false
+    }
+    const newmaterial = [...materials, addMaterial]
+    setMaterials(newmaterial);
+    setAddFromErr('')
+  };
+
+  const onRemoveClick = (id: string) => {
+    const newMaterials = materials.filter((material: IMaterial) => {
+      return (material.materialNum !== id)
+    });
+    setMaterials(newMaterials);
   };
 
   const onSubmit = (e: React.FormEvent<HTMLFormElement>) => {
@@ -92,7 +97,7 @@ export default () => {
         });
       });
     } else if (foodName.trim() !== '') {
-      const foodImg = "https://firebasestorage.googleapis.com/v0/b/delish-one-week.appspot.com/o/noimage.png?alt=media&token=7d10ebb8-eca8-4795-8129-0ae6118b8944";
+      const foodImg = "https://firebasestorage.googleapis.com/v0/b/delish-one-week.appspot.com/o/FEmEUOuERESVg52Jixei2FjDKws1%2Fnoimg.png?alt=media&token=926ff900-e8e8-42e4-aa0d-92c043a5e876";
       fireStore.collection("users").doc(`${user.uid}`).collection("favorites").add({foodName, foodImg, materials: newMaterials, created_at}).then((docRef) => {
         dispatch(addFavorite({id: docRef.id, foodName, foodImg, materials: newMaterials, created_at}));
         history.push('/');
@@ -117,7 +122,12 @@ export default () => {
         <tbody>
           {materials.map((material: any, index: number) => (
             <tr key={index}>
-              <td><input type="text" name={material.materialNum} value={material.materialName} onChange={onMaterialNameChange} /></td>
+              <td>
+                <input type="text" name={material.materialNum} value={material.materialName} onChange={onMaterialNameChange} />
+                <IconButton color="primary" aria-label="remove material" onClick={() => onRemoveClick(material.materialNum)}>
+                  <RemoveIcon />
+                </IconButton>
+              </td>
             </tr>
           ))}
         </tbody>

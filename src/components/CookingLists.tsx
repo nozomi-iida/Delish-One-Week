@@ -62,7 +62,7 @@ export default () => {
 
   const onFavClick = (recipe: any) => {
     const newMaterials: Array<any> = [];
-    recipe.recipeMaterial.map((material: any) =>{
+    return recipe.recipeMaterial.map((material: any) =>{
       newMaterials.push({
         materialNum: uuid(),
         materialName: material,

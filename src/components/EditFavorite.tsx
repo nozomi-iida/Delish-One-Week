@@ -8,6 +8,7 @@ import { useDispatch, useSelector } from "react-redux";
 import AddCircleIcon from '@material-ui/icons/AddCircle';
 import { IMaterial, IFavorite } from "../interfaces/favorites";
 import { v4 as uuid } from 'uuid';
+import RemoveIcon from '@material-ui/icons/Remove';
 
 export default (props: any) => {
   const favorites = useSelector((state: any) => state.favorites); //anyやめたい
@@ -77,6 +78,13 @@ export default (props: any) => {
       setAddFromErr('');
   };
 
+  const onRemoveClick = (id: string) => {
+    const newMaterials = materials.filter((material: IMaterial) => {
+      return (material.materialNum !== id)
+    });
+    setMaterials(newMaterials);
+  };
+
   const onSubmit = (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
 
@@ -138,7 +146,12 @@ export default (props: any) => {
           <tbody>
             {materials.map((material: any, index: number) => (
               <tr key={index}>
-                <td><input type="text" name={material.materialNum} value={material.materialName} onChange={onMaterialNameChange} /></td>
+                <td>
+                    <input type="text" name={material.materialNum} value={material.materialName} onChange={onMaterialNameChange} />
+                    <IconButton color="primary" aria-label="remove material" onClick={() => onRemoveClick(material.materialNum)}>
+                      <RemoveIcon />
+                    </IconButton>
+                  </td>
               </tr>
             ))}
           </tbody>
