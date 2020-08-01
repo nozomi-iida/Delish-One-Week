@@ -8,6 +8,7 @@ import { AuthStore } from '../stores/AuthStore';
 import { v4 as uuid } from 'uuid';
 import { useDispatch, useSelector } from 'react-redux';
 import { addFavorite } from '../actions/favorites';
+import { IFavorite } from '../interfaces/favorites';
 
 const RAKUTEN_API_KEY = process.env.REACT_APP_RAKUTEN_API_KEY;
 
@@ -38,7 +39,6 @@ export default () => {
   const {id} = useParams();
   const [recipes, setRecipes] = useState([]);
   const favorites = useSelector((state: any) => state.favorites)
-  const [clicked, setClicked] = useState('');
   const user = useContext(AuthStore);
   const dispatch = useDispatch();
   const [created_at] = useState(new Date().valueOf());
@@ -62,7 +62,7 @@ export default () => {
 
   const onFavClick = (recipe: any) => {
     const newMaterials: Array<any> = [];
-    return recipe.recipeMaterial.map((material: any) =>{
+    recipe.recipeMaterial.map((material: any) =>{
       newMaterials.push({
         materialNum: uuid(),
         materialName: material,
@@ -70,7 +70,7 @@ export default () => {
       })
     });
 
-    fireStore.collection('users').doc(`${user.uid}`).collection("favorites").add(
+    return fireStore.collection('users').doc(`${user.uid}`).collection("favorites").add(
       {
         foodName: recipe.recipeTitle,
         foodImg: recipe.foodImageUrl,
@@ -108,7 +108,7 @@ export default () => {
               </CardActionArea>
             </a>
             <CardActions>
-              <Fab size="small" color ={clicked ? "secondary" : "default"} aria-label="add" className={classes.margin} onClick={() => onFavClick(recipe)}>
+              <Fab size="small" color ={favorites.find((favorite: IFavorite) => favorite.foodName === recipe.recipeTitle) ? "secondary" : "default"} aria-label="add" className={classes.margin} onClick={() => onFavClick(recipe)}>
                 <FavoriteIcon />
               </Fab>
             </CardActions>

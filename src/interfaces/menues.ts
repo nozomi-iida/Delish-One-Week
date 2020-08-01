@@ -1,8 +1,8 @@
-import { IMaterial } from "./favorites";
+import { IMaterial } from './favorites';
 
 export interface IMenu {
-  id: string,
-  foodName: string,
-  foodImg: string,
-  materials: IMaterial[]
-};
+  id: string;
+  foodName: string;
+  foodImg: string;
+  materials: IMaterial[];
+}

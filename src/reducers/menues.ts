@@ -1,43 +1,38 @@
-import { IMenu } from "../interfaces/menues";
+import { IMenu } from '../interfaces/menues';
 
-type IMenuesActions = any
+type IMenuesActions = any;
 
 const initialState: IMenu[] = [];
 
 export default (state = initialState, action: IMenuesActions) => {
-  switch(action.type) {
+  switch (action.type) {
     case 'ADD_MENUES':
-      return [
-        ...state,
-        action.menues
-      ]
+      return [...state, action.menues];
     case 'SET_MENUES':
-      return [
-        ...action.menues
-      ]
+      return [...action.menues];
     case 'UPDATE_MENUES':
       return state.map((menu: IMenu) => {
-        if(menu.id === action.id) {
+        if (menu.id === action.id) {
           return {
             ...menu,
-            ...action.updates
-          }
+            ...action.updates,
+          };
         } else {
-          return menu
-        };
+          return menu;
+        }
       });
     case 'EDIT_MENU':
       return state.map((menu: IMenu) => {
-        if(menu.id === action.id) {
+        if (menu.id === action.id) {
           return {
             ...menu,
-            ...action.update
-          }
+            ...action.update,
+          };
         } else {
-          return menu
-        };
+          return menu;
+        }
       });
-    default: 
+    default:
       return state;
-  };
+  }
 };
