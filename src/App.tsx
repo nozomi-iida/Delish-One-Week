@@ -27,20 +27,20 @@ export default () => {
         <BrowserRouter>
           <Header />
           <Switch>
-              <LoggedInRouter path="/" component={Faborites} exact />  
-              <LoggedInRouter path="/addFavorite" component={AddFavorite} />  
-              <LoggedInRouter path="/detail/:id" component={DetailFavorite} />  
-              <LoggedInRouter path="/edit/:id" component={EditFavorite} />  
-              <LoggedInRouter path="/menues" component={Menues} />  
-              <LoggedInRouter path="/shoppinglists" component={ShoppingLists} />  
-              <LoggedInRouter path="/mypage" component={MyPage} />  
-              <LoggedInRouter path="/cooking" component={Cooking} />  
-              <LoggedInRouter path="/cookingLists/:id" component={CookingLists} />  
-              <Route path='/login' component={LogIn} />
-              <Route path='/signUp' component={SignUp} />
+            <LoggedInRouter path='/' component={Faborites} exact />
+            <LoggedInRouter path='/addFavorite' component={AddFavorite} />
+            <LoggedInRouter path='/detail/:id' component={DetailFavorite} />
+            <LoggedInRouter path='/edit/:id' component={EditFavorite} />
+            <LoggedInRouter path='/menues' component={Menues} />
+            <LoggedInRouter path='/shoppinglists' component={ShoppingLists} />
+            <LoggedInRouter path='/mypage' component={MyPage} />
+            <LoggedInRouter path='/cooking' component={Cooking} />
+            <LoggedInRouter path='/cookingLists/:id' component={CookingLists} />
+            <Route path='/login' component={LogIn} />
+            <Route path='/signUp' component={SignUp} />
           </Switch>
         </BrowserRouter>
       </Provider>
     </AuthStoreProvider>
-  )
+  );
 };

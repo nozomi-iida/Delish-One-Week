@@ -1,10 +1,9 @@
 import React, { createContext, useState, useEffect } from 'react';
 import firebase from '../firebase/firebase';
 
-
 interface IAuthState {
   user: firebase.User[];
-};
+}
 
 const initialState: IAuthState = {
   user: [],
@@ -12,7 +11,9 @@ const initialState: IAuthState = {
 
 export const AuthStore = createContext<IAuthState | any>(initialState);
 
-export const AuthStoreProvider = ({ children }: JSX.ElementChildrenAttribute) => {
+export const AuthStoreProvider = ({
+  children,
+}: JSX.ElementChildrenAttribute) => {
   const [user, setUser] = useState<IAuthState>(initialState);
 
   useEffect(() => {
@@ -21,9 +22,5 @@ export const AuthStoreProvider = ({ children }: JSX.ElementChildrenAttribute) =>
     });
   }, []);
 
-  return (
-    <AuthStore.Provider value={user} >
-      { children }
-    </AuthStore.Provider>
-  );
+  return <AuthStore.Provider value={user}>{children}</AuthStore.Provider>;
 };

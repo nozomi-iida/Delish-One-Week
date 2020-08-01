@@ -20,7 +20,7 @@ function getModalStyle() {
   };
 }
 
-const useStyles = makeStyles((theme) => ({
+const useStyles = makeStyles(theme => ({
   paper: {
     position: 'absolute',
     width: 400,
@@ -49,80 +49,122 @@ export default function SimpleModal({ onClick, favorite, selectedMenu }: any) {
   };
 
   const handleYesClick = () => {
-    if(favorite !== undefined) {
+    if (favorite !== undefined) {
       onClick(favorite);
     } else {
       onClick();
-    };
+    }
     setOpen(false);
   };
 
   const onChoiceClick = (favorite: IFavorite) => {
-    fireStore.collection('users').doc(`${user.uid}`).collection("menues").doc(`${selectedMenu.id}`).update({
-      foodName: favorite.foodName,
-      foodImg: favorite.foodImg,
-      materials: favorite.materials
-    }).then(() => {
-      dispatch(editMenu(selectedMenu.id, {
+    fireStore
+      .collection('users')
+      .doc(`${user.uid}`)
+      .collection('menues')
+      .doc(`${selectedMenu.id}`)
+      .update({
         foodName: favorite.foodName,
         foodImg: favorite.foodImg,
         materials: favorite.materials,
-      }));
-    });
+      })
+      .then(() => {
+        dispatch(
+          editMenu(selectedMenu.id, {
+            foodName: favorite.foodName,
+            foodImg: favorite.foodImg,
+            materials: favorite.materials,
+          })
+        );
+      });
     setOpen(false);
   };
 
   const body = (
     <div style={modalStyle} className={classes.paper}>
-      {onClick !== undefined ?
-        (favorite === undefined ?
-          (<div>
-            <h2 id="simple-modal-title">本当に再表示しますか？</h2>
-            <Button variant="contained" color="primary" onClick={handleYesClick} >はい</Button>
-            <Button variant="contained" color="primary" onClick={handleClose}>いいえ</Button>
-          </div>) :
-          (<div>
-            <h2 id="simple-modal-title">本当に削除しますか？</h2>
-            <Button variant="contained" color="primary" onClick={handleYesClick} >はい</Button>
-            <Button variant="contained" color="primary" onClick={handleClose}>いいえ</Button>
-          </div>)
-        ) :
-        (<ul>
+      {onClick !== undefined ? (
+        favorite === undefined ? (
+          <div>
+            <h2 id='simple-modal-title'>本当に再表示しますか？</h2>
+            <Button
+              variant='contained'
+              color='primary'
+              onClick={handleYesClick}
+            >
+              はい
+            </Button>
+            <Button variant='contained' color='primary' onClick={handleClose}>
+              いいえ
+            </Button>
+          </div>
+        ) : (
+          <div>
+            <h2 id='simple-modal-title'>本当に削除しますか？</h2>
+            <Button
+              variant='contained'
+              color='primary'
+              onClick={handleYesClick}
+            >
+              はい
+            </Button>
+            <Button variant='contained' color='primary' onClick={handleClose}>
+              いいえ
+            </Button>
+          </div>
+        )
+      ) : (
+        <ul>
           {favorites.map((favorite: IFavorite) => (
-              <li key={favorite.id}>
-                <span>{favorite.foodName}</span>
-                <button onClick={()=>onChoiceClick(favorite)}>選択</button> 
-              </li>
+            <li key={favorite.id}>
+              <span>{favorite.foodName}</span>
+              <button onClick={() => onChoiceClick(favorite)}>選択</button>
+            </li>
           ))}
-        </ul>)
-      }
+        </ul>
+      )}
     </div>
   );
 
   return (
     <div>
-      {onClick !== undefined ?
-        (favorite === undefined ? 
-          (<Button variant="contained" color="primary" type="button" onClick={handleOpen}>
+      {onClick !== undefined ? (
+        favorite === undefined ? (
+          <Button
+            variant='contained'
+            color='primary'
+            type='button'
+            onClick={handleOpen}
+          >
             表示する
-          </Button>) : 
-          (<Button  type="button" variant="contained" color="primary" onClick={handleOpen}>
-            削除する
-          </Button> )
+          </Button>
         ) : (
-          <Button variant="contained" color="primary" type="button" onClick={handleOpen}>
-            選択する
+          <Button
+            type='button'
+            variant='contained'
+            color='primary'
+            onClick={handleOpen}
+          >
+            削除する
           </Button>
         )
-      }
+      ) : (
+        <Button
+          variant='contained'
+          color='primary'
+          type='button'
+          onClick={handleOpen}
+        >
+          選択する
+        </Button>
+      )}
       <Modal
         open={open}
         onClose={handleClose}
-        aria-labelledby="simple-modal-title"
-        aria-describedby="simple-modal-description"
+        aria-labelledby='simple-modal-title'
+        aria-describedby='simple-modal-description'
       >
         {body}
       </Modal>
     </div>
   );
-}
+};

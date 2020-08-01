@@ -1,57 +1,57 @@
-import { IFavorite } from "../interfaces/favorites";
+import { IFavorite } from '../interfaces/favorites';
 
 interface IAddFavoriteAction {
-  type: "ADD_FAV";
+  type: 'ADD_FAV';
   favorite: IFavorite;
-};
+}
 
 interface ISetFavesAction {
-  type: "SET_FAVES";
+  type: 'SET_FAVES';
   favorites: IFavorite[];
 }
 
 interface IRemoveFavAction {
-  type: "REMOVE_FAV";
-  id: string
+  type: 'REMOVE_FAV';
+  id: string;
 }
 
 interface IEditFavAction {
-  type: "EDIT_FAV";
-  id: string,
-  updates: any
-};
+  type: 'EDIT_FAV';
+  id: string;
+  updates: IFavorite;
+}
 
-type IFavoritesActions = | IAddFavoriteAction | ISetFavesAction | IRemoveFavAction | IEditFavAction
+type IFavoritesActions =
+  | IAddFavoriteAction
+  | ISetFavesAction
+  | IRemoveFavAction
+  | IEditFavAction;
 
 const initialState: IFavorite[] = [];
 
 export default (state = initialState, action: IFavoritesActions) => {
-  switch(action.type) {
+  switch (action.type) {
     case 'ADD_FAV':
-      return [
-        ...state,
-        action.favorite
-      ]
+      return [...state, action.favorite];
     case 'SET_FAVES':
-      return [
-        ...action.favorites
-      ];
+      return [...action.favorites];
     case 'REMOVE_FAV':
-      return state.filter(({id}) => {
-        return id !== action.id
+      return state.filter(({ id }) => {
+        return id !== action.id;
       });
     case 'EDIT_FAV':
       return state.map((favorite: any) => {
         if (favorite.id === action.id) {
+          console.log(action.updates);
           return {
             ...favorite,
-            ...action.updates
+            ...action.updates,
           };
         } else {
-          return favorite
-        };
+          return favorite;
+        }
       });
-    default: 
+    default:
       return state;
-  };
+  }
 };

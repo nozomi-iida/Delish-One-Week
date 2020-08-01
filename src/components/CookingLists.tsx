@@ -1,7 +1,14 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useContext } from 'react';
 import { useParams } from 'react-router-dom';
 import Axios from 'axios';
-import { Card, CardActionArea, CardMedia, CardContent, Typography, CardActions, makeStyles, createStyles, Theme} from '@material-ui/core';
+import { Card, CardActionArea, CardMedia, CardContent, Typography, CardActions, makeStyles, createStyles, Theme, Fab} from '@material-ui/core';
+import FavoriteIcon from '@material-ui/icons/Favorite';
+import { fireStore } from '../firebase/firebase';
+import { AuthStore } from '../stores/AuthStore';
+import { v4 as uuid } from 'uuid';
+import { useDispatch, useSelector } from 'react-redux';
+import { addFavorite } from '../actions/favorites';
+import { IFavorite } from '../interfaces/favorites';
 
 const RAKUTEN_API_KEY = process.env.REACT_APP_RAKUTEN_API_KEY;
 
@@ -21,6 +28,9 @@ createStyles({
       boxShadow: theme.shadows[5],
       padding: theme.spacing(2, 4, 3),
     },
+    margin: {
+      margin: theme.spacing(1),
+    },
   }),
 );
 
@@ -28,7 +38,10 @@ export default () => {
   const classes = useStyles();
   const {id} = useParams();
   const [recipes, setRecipes] = useState([]);
-  console.log(recipes);
+  const favorites = useSelector((state: any) => state.favorites)
+  const user = useContext(AuthStore);
+  const dispatch = useDispatch();
+  const [created_at] = useState(new Date().valueOf());
 
   const fetchData = () => {
     const url = `https://app.rakuten.co.jp/services/api/Recipe/CategoryRanking/20170426?format=json&categoryId=${id}&applicationId=${RAKUTEN_API_KEY}`;
@@ -46,6 +59,34 @@ export default () => {
   useEffect(() => {
     recipes.length === 0 && fetchData()
   }, []);
+
+  const onFavClick = (recipe: any) => {
+    const newMaterials: Array<any> = [];
+    recipe.recipeMaterial.map((material: any) =>{
+      newMaterials.push({
+        materialNum: uuid(),
+        materialName: material,
+        checked: false,
+      })
+    });
+
+    return fireStore.collection('users').doc(`${user.uid}`).collection("favorites").add(
+      {
+        foodName: recipe.recipeTitle,
+        foodImg: recipe.foodImageUrl,
+        materials: newMaterials,
+        created_at,
+      }
+    ).then((docRef) => {
+      dispatch(addFavorite({
+        id: docRef.id,
+        foodName: recipe.recipeTitle,
+        foodImg: recipe.foodImageUrl,
+        materials: newMaterials,
+        created_at,
+      }));
+    });
+  };
 
   return (
     <div>
@@ -67,10 +108,13 @@ export default () => {
               </CardActionArea>
             </a>
             <CardActions>
+              <Fab size="small" color ={favorites.find((favorite: IFavorite) => favorite.foodName === recipe.recipeTitle) ? "secondary" : "default"} aria-label="add" className={classes.margin} onClick={() => onFavClick(recipe)}>
+                <FavoriteIcon />
+              </Fab>
             </CardActions>
           </Card>
         </div>
       ))}
     </div>
-  )
-}
+  );
+};

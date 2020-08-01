@@ -1,5 +1,5 @@
 import React from 'react';
-import {  NavLink } from 'react-router-dom';
+import { NavLink } from 'react-router-dom';
 import Button from '@material-ui/core/Button';
 import { Typography } from '@material-ui/core';
 import firebase from '../firebase/firebase';
@@ -11,14 +11,13 @@ export default () => {
   };
   return (
     <div>
-      <Typography variant="h1" >一週間の献立表</Typography>
-      <NavLink to='/' >Favorites</NavLink>:
-      <NavLink to='/menues' >Menues</NavLink>:
-      <NavLink to='/cooking' >Cooking Lists</NavLink>:
-      <NavLink to='/mypage' >My Page</NavLink>:
-      <Button variant="contained" color="primary" onClick={onLogOutClick}>
+      <Typography variant='h1'>一週間の献立表</Typography>
+      <NavLink to='/'>Favorites</NavLink>:<NavLink to='/menues'>Menues</NavLink>
+      :<NavLink to='/cooking'>Cooking Lists</NavLink>:
+      <NavLink to='/mypage'>My Page</NavLink>:
+      <Button variant='contained' color='primary' onClick={onLogOutClick}>
         ログアウト
       </Button>
     </div>
-  )
-}
+  );
+};

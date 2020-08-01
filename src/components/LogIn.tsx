@@ -1,19 +1,27 @@
-import * as React from "react";
+import * as React from 'react';
 import clsx from 'clsx';
-import { useForm } from "react-hook-form";
+import { useForm } from 'react-hook-form';
 import { createStyles, Theme, makeStyles } from '@material-ui/core/styles';
 import TextField from '@material-ui/core/TextField';
 import Visibility from '@material-ui/icons/Visibility';
 import VisibilityOff from '@material-ui/icons/VisibilityOff';
-import { InputLabel, FormControl, Input, InputAdornment, IconButton, Button, Typography } from "@material-ui/core";
+import {
+  InputLabel,
+  FormControl,
+  Input,
+  InputAdornment,
+  IconButton,
+  Button,
+  Typography,
+} from '@material-ui/core';
 import firebase from '../firebase/firebase';
-import { useHistory, Redirect, Link } from "react-router-dom";
-import { AuthStore } from "../stores/AuthStore";
+import { useHistory, Redirect, Link } from 'react-router-dom';
+import { AuthStore } from '../stores/AuthStore';
 
 interface FormData {
   email: string;
   password: string;
-};
+}
 
 const useStyles = makeStyles((theme: Theme) =>
   createStyles({
@@ -30,7 +38,7 @@ const useStyles = makeStyles((theme: Theme) =>
     textField: {
       width: '25ch',
     },
-  }),
+  })
 );
 
 export default () => {
@@ -42,12 +50,14 @@ export default () => {
 
   const { register, handleSubmit } = useForm<FormData>();
   const onSubmit = handleSubmit(({ email, password }) => {
-    firebase.auth().signInWithEmailAndPassword(email, password)
+    firebase
+      .auth()
+      .signInWithEmailAndPassword(email, password)
       .then(() => {
-        history.push('/')
-        console.log("log in!")
+        history.push('/');
+        console.log('log in!');
       })
-      .catch(function(error) {
+      .catch(function (error) {
         var errorCode = error.code;
         if (errorCode === 'auth/wrong-password') {
           setSignInErr('パスワードが違います。');
@@ -56,34 +66,36 @@ export default () => {
         }
         console.log(error);
       });
-  }); 
+  });
 
   const handleClickShowPassword = () => {
-    setShowPassword(!showPassword)
+    setShowPassword(!showPassword);
   };
 
   if (user) {
-    return <Redirect to='/addFavorite' />
+    return <Redirect to='/addFavorite' />;
   }
 
   return (
     <>
-      <Typography variant="h4" >ログインする</Typography>
+      <Typography variant='h4'>ログインする</Typography>
       <form onSubmit={onSubmit}>
         <div className={classes.margin}>
-          <TextField label="メールアドレス" name="email" inputRef={register} />
+          <TextField label='メールアドレス' name='email' inputRef={register} />
         </div>
         <div className={classes.margin}>
           <FormControl className={clsx(classes.margin, classes.textField)}>
-            <InputLabel htmlFor="standard-adornment-password">パスワード</InputLabel>
+            <InputLabel htmlFor='standard-adornment-password'>
+              パスワード
+            </InputLabel>
             <Input
               type={showPassword ? 'text' : 'password'}
-              name="password"
+              name='password'
               inputRef={register}
               endAdornment={
-                <InputAdornment position="end">
+                <InputAdornment position='end'>
                   <IconButton
-                    aria-label="toggle password visibility"
+                    aria-label='toggle password visibility'
                     onClick={handleClickShowPassword}
                   >
                     {showPassword ? <Visibility /> : <VisibilityOff />}
@@ -93,11 +105,13 @@ export default () => {
             />
           </FormControl>
         </div>
-        <Button type="submit" variant="contained" color="primary">ログイン</Button>
+        <Button type='submit' variant='contained' color='primary'>
+          ログイン
+        </Button>
       </form>
-      { signInErr && <p>{signInErr}</p>}
+      {signInErr && <p>{signInErr}</p>}
       <p>アカウントを持っていませんか？</p>
-      <Link to="/signup">登録画面へ</Link>
+      <Link to='/signup'>登録画面へ</Link>
     </>
   );
-}
+};
