@@ -1,5 +1,5 @@
 import React, { useContext } from 'react';
-import { NavLink } from 'react-router-dom';
+import { NavLink, Link } from 'react-router-dom';
 import Button from '@material-ui/core/Button';
 import {
   Typography,
@@ -19,17 +19,20 @@ const useStyles = makeStyles((theme: Theme) =>
       width: '100vw',
       color: '#fff',
     },
-    title: {
+    titleContainer: {
       backgroundColor: green[400],
-      fontWeight: 'bold',
-      padding: theme.spacing(1, 10),
+
     },
-    span: {
-      position: 'absolute',
-      right: '10%',
+    title: {
+      fontWeight: 'bold',
+      margin: theme.spacing(1, 10),
+      display: 'inline-block',
     },
     btn: {
       backgroundColor: green[600],
+      position: 'absolute',
+      right: '10%',
+      top: '30%',
       '&:hover': {
         backgroundColor: green[400],
       },
@@ -55,20 +58,23 @@ export default () => {
 
   return (
     <header className={classes.header}>
-      <Typography variant='h2' component='h1' className={classes.title}>
-        一週間の献立表
+      <div className={classes.titleContainer}>
+        <Link to='/'>
+          <Typography variant='h2' component='h1' className={classes.title}>
+            一週間の献立表
+          </Typography>
+        </Link>
         {user && (
-          <span className={classes.span}>
-            <Button
-              startIcon={<ExitToAppIcon />}
-              className={classes.btn}
-              onClick={onLogOutClick}
-            >
-              ログアウト
-            </Button>
-          </span>
+          <Button
+            startIcon={<ExitToAppIcon />}
+            className={classes.btn}
+            onClick={onLogOutClick}
+          >
+            ログアウト
+          </Button>
         )}
-      </Typography>
+
+      </div>
       {user && (
         <div className={classes.menuContainer}>
           <NavLink to='/'>お気に入り</NavLink>
