@@ -1,7 +1,7 @@
 import React, { useState, useEffect, useContext } from 'react';
 import { useParams } from 'react-router-dom';
 import Axios from 'axios';
-import { Card, CardActionArea, CardMedia, CardContent, Typography, CardActions, makeStyles, createStyles, Theme, Fab} from '@material-ui/core';
+import { Card, CardActionArea, CardMedia, CardContent, Typography, CardActions, makeStyles, createStyles, Theme, Fab, Container} from '@material-ui/core';
 import FavoriteIcon from '@material-ui/icons/Favorite';
 import { fireStore } from '../firebase/firebase';
 import { AuthStore } from '../stores/AuthStore';
@@ -89,7 +89,7 @@ export default () => {
   };
 
   return (
-    <div>
+    <Container component='main'>
       {recipes.map((recipe: any) => (
         <div key={recipe.recipeId}>
           <Card className={classes.root}>
@@ -115,6 +115,6 @@ export default () => {
           </Card>
         </div>
       ))}
-    </div>
+    </Container>
   );
 };

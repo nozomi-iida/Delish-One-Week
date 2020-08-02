@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import axios from 'axios';
-import { Button } from '@material-ui/core';
+import { Button, Container } from '@material-ui/core';
 import { Link } from 'react-router-dom';
 
 const RAKUTEN_API_KEY = process.env.REACT_APP_RAKUTEN_API_KEY;
@@ -35,30 +35,28 @@ export default () => {
   };
 
   return (
-    <>
-      <div>
-        {selectedCategory.map((recipe: any) => (
-          <div key={recipe.categoryId}>
-            {recipe.parentCategoryId ? (
-              <Link
-                to={`cookingLists/${recipe.parentCategoryId}-${recipe.categoryId}`}
-              >
-                <Button variant='contained' color='primary'>
-                  {recipe.categoryName}
-                </Button>
-              </Link>
-            ) : (
-              <Button
-                variant='contained'
-                color='primary'
-                onClick={() => onLargeRecipeClick(recipe.categoryId)}
-              >
+    <Container component='main'>
+      {selectedCategory.map((recipe: any) => (
+        <div key={recipe.categoryId}>
+          {recipe.parentCategoryId ? (
+            <Link
+              to={`cookingLists/${recipe.parentCategoryId}-${recipe.categoryId}`}
+            >
+              <Button variant='contained' color='primary'>
                 {recipe.categoryName}
               </Button>
-            )}
-          </div>
-        ))}
-      </div>
-    </>
+            </Link>
+          ) : (
+            <Button
+              variant='contained'
+              color='primary'
+              onClick={() => onLargeRecipeClick(recipe.categoryId)}
+            >
+              {recipe.categoryName}
+            </Button>
+          )}
+        </div>
+      ))}
+    </Container>
   );
 };

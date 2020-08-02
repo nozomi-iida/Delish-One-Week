@@ -4,6 +4,7 @@ import { Link } from 'react-router-dom';
 import { IMaterial, IFavorite } from '../interfaces/favorites';
 import Loading from './Loading';
 import { IState } from '../interfaces/state';
+import { Container } from '@material-ui/core';
 
 export default (props: any) => {
   const selectedFavorite = useSelector((state: IState) =>
@@ -18,7 +19,7 @@ export default (props: any) => {
 
   if (selectedFavorite) {
     return (
-      <div>
+      <Container component='main'>
         <h1>{selectedFavorite.foodName}</h1>
         <img src={selectedFavorite.foodImg} alt='' />
         {selectedFavorite.materials.map(
@@ -28,11 +29,11 @@ export default (props: any) => {
             )
         )}
         <Link to={`/edit/${selectedFavorite.id}`}>編集する</Link>
-      </div>
+      </Container>
     );
   } else if (selectedMenu) {
     return (
-      <div>
+      <Container component='main'>
         <h1>{selectedMenu.foodName}</h1>
         <img src={selectedMenu.foodImg} alt='' />
         {selectedMenu.materials.map(
@@ -41,7 +42,7 @@ export default (props: any) => {
               <li key={index}>{material.materialName}</li>
             )
         )}
-      </div>
+      </Container>
     );
   } else {
     return (

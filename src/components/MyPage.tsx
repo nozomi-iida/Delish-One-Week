@@ -1,6 +1,6 @@
 import React, { useContext, useState } from 'react';
 import { AuthStore } from '../stores/AuthStore';
-import { Button, Link } from '@material-ui/core';
+import { Button, Link, Container } from '@material-ui/core';
 import { useForm } from 'react-hook-form';
 import firebase from '../firebase/firebase';
 
@@ -102,7 +102,7 @@ export default () => {
   );
 
   return (
-    <div>
+    <Container component='main'>
       {errMessage !== '' && <p>{errMessage}</p>}
       <p>
         {user.displayName}{' '}
@@ -158,6 +158,6 @@ export default () => {
           </Button>
         </form>
       )}
-    </div>
+    </Container>
   );
 };

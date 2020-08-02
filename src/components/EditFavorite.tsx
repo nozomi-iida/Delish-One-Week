@@ -1,5 +1,5 @@
 import React, { useState, useContext, useEffect } from 'react';
-import { TextField, Button, IconButton } from '@material-ui/core';
+import { TextField, Button, IconButton, Container } from '@material-ui/core';
 import firebase, { fireStore } from '../firebase/firebase';
 import { AuthStore } from '../stores/AuthStore';
 import { useHistory } from 'react-router-dom';
@@ -201,7 +201,7 @@ export default (props: any) => {
   };
 
   return (
-    <>
+    <Container component='main'>
       {addFromErr && <p>{addFromErr}</p>}
       {selectedFavorite && (
         <form onSubmit={onSubmit}>
@@ -254,6 +254,6 @@ export default (props: any) => {
           </Button>
         </form>
       )}
-    </>
+    </Container>
   );
 };

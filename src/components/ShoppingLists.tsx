@@ -2,7 +2,7 @@ import React, { useState } from 'react';
 import { useSelector } from 'react-redux';
 import { IState } from '../interfaces/state';
 import { IMenu } from '../interfaces/menues';
-import { Typography } from '@material-ui/core';
+import { Typography, Container } from '@material-ui/core';
 import { IMaterial } from '../interfaces/favorites';
 
 interface IMaterialList {
@@ -43,7 +43,7 @@ export default () => {
   }, []);
 
   return (
-    <>
+    <Container component='main'>
       <ul>
         {group.map((el: any, index: number) => (
           <div key={index}>
@@ -51,6 +51,6 @@ export default () => {
           </div>
         ))}
       </ul>
-    </>
+    </Container>
   );
 };

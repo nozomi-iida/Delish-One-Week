@@ -12,6 +12,7 @@ import {
   CardContent,
   CardActions,
   Button,
+  Container,
 } from '@material-ui/core';
 import ModalMenues from './ConfirmModal';
 import { useSelector, useDispatch } from 'react-redux';
@@ -108,7 +109,7 @@ export default function SimpleAccordion() {
   };
 
   return (
-    <>
+    <Container component='main'>
       <ModalMenues onClick={shuffleFavorites} />
       <Link to='/shoppinglists'>
         <Button variant='contained' color='primary'>
@@ -160,6 +161,6 @@ export default function SimpleAccordion() {
           </Accordion>
         ))}
       </div>
-    </>
+    </Container>
   );
 }

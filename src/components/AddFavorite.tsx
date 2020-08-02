@@ -1,5 +1,5 @@
 import React, { useState, useContext } from 'react';
-import { TextField, Button, IconButton } from '@material-ui/core';
+import { TextField, Button, IconButton, Container } from '@material-ui/core';
 import firebase, { fireStore } from '../firebase/firebase';
 import { AuthStore } from '../stores/AuthStore';
 import { useHistory } from 'react-router-dom';
@@ -145,7 +145,8 @@ export default () => {
     }
   };
   return (
-    <>
+    <Container component='main'>
+
       {addFromErr && <p>{addFromErr}</p>}
       <form onSubmit={onSubmit}>
         <TextField
@@ -196,6 +197,6 @@ export default () => {
           登録
         </Button>
       </form>
-    </>
+    </Container>
   );
 };
