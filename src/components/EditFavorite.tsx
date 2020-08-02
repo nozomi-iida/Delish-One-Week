@@ -92,13 +92,13 @@ export default (props: any) => {
   const onSubmit = (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
 
-    const newMaterials = materials.filter((material: any) => {
+    const newMaterials = materials.filter((material: IMaterial) => {
       return [material.materialName];
     });
 
     if (
       foodName.trim() !== '' &&
-      foodImg ===
+      foodImg === 
         'https://firebasestorage.googleapis.com/v0/b/delish-one-week.appspot.com/o/noimage.png?alt=media&token=6177267d-6991-46f8-b999-ba505d38e927'
     ) {
       let foodImgUrl: string = '';

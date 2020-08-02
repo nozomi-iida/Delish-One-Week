@@ -78,7 +78,7 @@ export default () => {
   const onSubmit = (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
 
-    const newMaterials = materials.filter((material: any) => {
+    const newMaterials = materials.filter((material: IMaterial) => {
       return material.materialName;
     });
 

@@ -90,7 +90,7 @@ export default function SimpleAccordion() {
       });
     } else {
       newFavoritesArray.map((favorite: IFavorite, index: number) => {
-        return fireStore
+        fireStore
           .collection('users')
           .doc(`${user.uid}`)
           .collection('menues')

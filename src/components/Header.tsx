@@ -6,10 +6,9 @@ import {
   makeStyles,
   Theme,
   createStyles,
-  IconButton,
 } from '@material-ui/core';
 import firebase from '../firebase/firebase';
-import { lime, green } from '@material-ui/core/colors';
+import { green } from '@material-ui/core/colors';
 import ExitToAppIcon from '@material-ui/icons/ExitToApp';
 import { AuthStore } from '../stores/AuthStore';
 

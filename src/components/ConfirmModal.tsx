@@ -8,6 +8,7 @@ import { IFavorite } from '../interfaces/favorites';
 import { fireStore } from '../firebase/firebase';
 import { AuthStore } from '../stores/AuthStore';
 import { editMenu } from '../actions/menues';
+import { IMenu } from '../interfaces/menues';
 
 function getModalStyle() {
   const top = 50;
@@ -31,7 +32,13 @@ const useStyles = makeStyles(theme => ({
   },
 }));
 
+interface IProps {
+  favorite: IFavorite,
+  selectedMenu: IMenu
+};
+
 export default function SimpleModal({ onClick, favorite, selectedMenu }: any) {
+  console.log(onClick);
   const classes = useStyles();
   // getModalStyle is not a pure function, we roll the style only on the first render
   const [modalStyle] = React.useState(getModalStyle);
