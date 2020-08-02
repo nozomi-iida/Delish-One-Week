@@ -36,6 +36,10 @@ const useStyles = makeStyles(theme => ({
     display: 'flex',
     flexDirection: 'column',
     alignItems: 'center',
+    backgroundColor: '#fff',
+    position: 'relative',
+    padding: theme.spacing(3),
+    borderRadius: '4px',
   },
   avatar: {
     margin: theme.spacing(1),
@@ -110,112 +114,115 @@ export default function SignUp() {
   );
 
   return (
-    <Container component='main' maxWidth='xs'>
-      <CssBaseline />
-      <div className={classes.paper}>
-        <Avatar className={classes.avatar}>
-          <LockOutlinedIcon />
-        </Avatar>
-        <Typography component='h1' variant='h5'>
-          新規登録
-        </Typography>
-        {signUpErr && <p>{signUpErr}</p>}
-        <form className={classes.form} noValidate onSubmit={onSubmit}>
-          <Grid container spacing={2}>
-            <Grid item xs={12}>
-              <TextField
-                name='name'
-                variant='outlined'
-                required
-                fullWidth
-                id='name'
-                label='名前'
-                autoFocus
-                inputRef={register}
-                autoComplete='user-name'
-              />
-            </Grid>
-            <Grid item xs={12}>
-              <TextField
-                variant='outlined'
-                autoComplete='email'
-                required
-                fullWidth
-                id='email'
-                label='メールアドレス'
-                name='email'
-                inputRef={register}
-              />
-            </Grid>
-            <Grid item xs={12}>
-              <FormControl variant='outlined' fullWidth required>
-                <InputLabel>パスワード</InputLabel>
-                <OutlinedInput
-                  type={showPassword ? 'text' : 'password'}
-                  name='password'
-                  inputRef={register}
-                  autoComplete='current-password'
-                  endAdornment={
-                    <InputAdornment position='end'>
-                      <IconButton
-                        aria-label='toggle password visibility'
-                        onClick={handleClickShowPassword}
-                        edge='end'
-                      >
-                        {showPassword ? <Visibility /> : <VisibilityOff />}
-                      </IconButton>
-                    </InputAdornment>
-                  }
-                  labelWidth={95}
-                />
-              </FormControl>
-            </Grid>
-            <Grid item xs={12}>
-              <FormControl variant='outlined' fullWidth required>
-                <InputLabel>パスワード（確認用）</InputLabel>
-                <OutlinedInput
-                  type={showConfirmPassword ? 'text' : 'password'}
-                  name='confirmPassword'
-                  autoComplete='confirm-password'
-                  inputRef={register}
-                  endAdornment={
-                    <InputAdornment position='end'>
-                      <IconButton
-                        aria-label='toggle confirmPassword visibility'
-                        onClick={handleClickShowConfirmPassword}
-                        edge='end'
-                      >
-                        {showConfirmPassword ? (
-                          <Visibility />
-                        ) : (
-                          <VisibilityOff />
-                        )}
-                      </IconButton>
-                    </InputAdornment>
-                  }
-                  labelWidth={95}
-                />
-              </FormControl>
-            </Grid>
-          </Grid>
-          <Button
-            type='submit'
-            fullWidth
-            variant='contained'
-            color='primary'
-            className={classes.submit}
-          >
+    <div className='authContainer'>
+      <div className='bg'></div>
+      <Container component='main' maxWidth='xs'>
+        <CssBaseline />
+        <div className={classes.paper}>
+          <Avatar className={classes.avatar}>
+            <LockOutlinedIcon />
+          </Avatar>
+          <Typography component='h1' variant='h5'>
             新規登録
-          </Button>
-          <Grid container justify='flex-end'>
-            <Grid item>
-              <Link to='/login' className={classes.linkFont}>
-                ログイン画面へ
-              </Link>
+          </Typography>
+          {signUpErr && <p>{signUpErr}</p>}
+          <form className={classes.form} noValidate onSubmit={onSubmit}>
+            <Grid container spacing={2}>
+              <Grid item xs={12}>
+                <TextField
+                  name='name'
+                  variant='outlined'
+                  required
+                  fullWidth
+                  id='name'
+                  label='名前'
+                  autoFocus
+                  inputRef={register}
+                  autoComplete='user-name'
+                />
+              </Grid>
+              <Grid item xs={12}>
+                <TextField
+                  variant='outlined'
+                  autoComplete='email'
+                  required
+                  fullWidth
+                  id='email'
+                  label='メールアドレス'
+                  name='email'
+                  inputRef={register}
+                />
+              </Grid>
+              <Grid item xs={12}>
+                <FormControl variant='outlined' fullWidth required>
+                  <InputLabel>パスワード</InputLabel>
+                  <OutlinedInput
+                    type={showPassword ? 'text' : 'password'}
+                    name='password'
+                    inputRef={register}
+                    autoComplete='current-password'
+                    endAdornment={
+                      <InputAdornment position='end'>
+                        <IconButton
+                          aria-label='toggle password visibility'
+                          onClick={handleClickShowPassword}
+                          edge='end'
+                        >
+                          {showPassword ? <Visibility /> : <VisibilityOff />}
+                        </IconButton>
+                      </InputAdornment>
+                    }
+                    labelWidth={95}
+                  />
+                </FormControl>
+              </Grid>
+              <Grid item xs={12}>
+                <FormControl variant='outlined' fullWidth required>
+                  <InputLabel>パスワード（確認用）</InputLabel>
+                  <OutlinedInput
+                    type={showConfirmPassword ? 'text' : 'password'}
+                    name='confirmPassword'
+                    autoComplete='confirm-password'
+                    inputRef={register}
+                    endAdornment={
+                      <InputAdornment position='end'>
+                        <IconButton
+                          aria-label='toggle confirmPassword visibility'
+                          onClick={handleClickShowConfirmPassword}
+                          edge='end'
+                        >
+                          {showConfirmPassword ? (
+                            <Visibility />
+                          ) : (
+                            <VisibilityOff />
+                          )}
+                        </IconButton>
+                      </InputAdornment>
+                    }
+                    labelWidth={95}
+                  />
+                </FormControl>
+              </Grid>
             </Grid>
-          </Grid>
-        </form>
-      </div>
-    </Container>
+            <Button
+              type='submit'
+              fullWidth
+              variant='contained'
+              color='primary'
+              className={classes.submit}
+            >
+              新規登録
+            </Button>
+            <Grid container justify='flex-end'>
+              <Grid item>
+                <Link to='/login' className={classes.linkFont}>
+                  ログイン画面へ
+                </Link>
+              </Grid>
+            </Grid>
+          </form>
+        </div>
+      </Container>
+    </div>
   );
 }

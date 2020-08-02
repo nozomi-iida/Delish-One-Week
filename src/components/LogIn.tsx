@@ -29,6 +29,10 @@ const useStyles = makeStyles(theme => ({
     display: 'flex',
     flexDirection: 'column',
     alignItems: 'center',
+    backgroundColor: '#fff',
+    position: 'relative',
+    padding: theme.spacing(3),
+    borderRadius: '4px',
   },
   avatar: {
     margin: theme.spacing(1),
@@ -63,7 +67,7 @@ export default function SignIn() {
   const history = useHistory();
   const [signInErr, setSignInErr] = useState('');
   const user = useContext(AuthStore);
-  
+
   const handleClickShowPassword = () => {
     setShowPassword(!showPassword);
   };
@@ -92,74 +96,75 @@ export default function SignIn() {
   }
 
   return (
-    <Container component='main' maxWidth='xs'>
-      <CssBaseline />
-      <div className={classes.paper}>
-        <Avatar className={classes.avatar}>
-          <LockOutlinedIcon />
-        </Avatar>
-        <Typography component='h1' variant='h5'>
-          ログイン
-        </Typography>
-        {signInErr && <p>{signInErr}</p>}
-        <form className={classes.form} noValidate onSubmit={onSubmit}>
-          <TextField
-            variant='outlined'
-            margin='normal'
-            required
-            fullWidth
-            id='email'
-            label='メールアドレス'
-            name='email'
-            autoComplete='email'
-            autoFocus
-            inputRef={register}
-          />
-          <FormControl  variant='outlined' fullWidth required>
-            <InputLabel>
-              パスワード
-            </InputLabel>
-            <OutlinedInput
-              type={showPassword ? 'text' : 'password'}
-              name='password'
-              autoComplete='current-password'
-              inputRef={register}
-              endAdornment={
-                <InputAdornment position='end'>
-                  <IconButton
-                    aria-label='toggle password visibility'
-                    onClick={handleClickShowPassword}
-                    edge='end'
-                  >
-                    {showPassword ? <Visibility /> : <VisibilityOff />}
-                  </IconButton>
-                </InputAdornment>
-              }
-              labelWidth={95}
-            />
-          </FormControl>
-          <Button
-            type='submit'
-            fullWidth
-            variant='contained'
-            className={classes.submit}
-          >
+    <div className='authContainer'>
+      <div className='bg'></div>
+      <Container component='main' maxWidth='xs'>
+        <CssBaseline />
+        <div className={classes.paper}>
+          <Avatar className={classes.avatar}>
+            <LockOutlinedIcon />
+          </Avatar>
+          <Typography component='h1' variant='h5'>
             ログイン
-          </Button>
-          <Grid container>
-            <Grid item xs>
-              <Link to='/signup' className={classes.linkFont}>
-                パスワード忘れましたか？
-              </Link>
+          </Typography>
+          {signInErr && <p>{signInErr}</p>}
+          <form className={classes.form} noValidate onSubmit={onSubmit}>
+            <TextField
+              variant='outlined'
+              margin='normal'
+              required
+              fullWidth
+              id='email'
+              label='メールアドレス'
+              name='email'
+              autoComplete='email'
+              autoFocus
+              inputRef={register}
+            />
+            <FormControl variant='outlined' fullWidth required>
+              <InputLabel>パスワード</InputLabel>
+              <OutlinedInput
+                type={showPassword ? 'text' : 'password'}
+                name='password'
+                autoComplete='current-password'
+                inputRef={register}
+                endAdornment={
+                  <InputAdornment position='end'>
+                    <IconButton
+                      aria-label='toggle password visibility'
+                      onClick={handleClickShowPassword}
+                      edge='end'
+                    >
+                      {showPassword ? <Visibility /> : <VisibilityOff />}
+                    </IconButton>
+                  </InputAdornment>
+                }
+                labelWidth={95}
+              />
+            </FormControl>
+            <Button
+              type='submit'
+              fullWidth
+              variant='contained'
+              className={classes.submit}
+            >
+              ログイン
+            </Button>
+            <Grid container>
+              <Grid item xs>
+                <Link to='/signup' className={classes.linkFont}>
+                  パスワード忘れましたか？
+                </Link>
+              </Grid>
+              <Grid item>
+                <Link to='/signup' className={classes.linkFont}>
+                  新規登録
+                </Link>
+              </Grid>
             </Grid>
-            <Grid item>
-              <Link to='/signup' className={classes.linkFont}>
-                新規登録
-              </Link>
-            </Grid>
-          </Grid>
-        </form>
-      </div>
-    </Container>
+          </form>
+        </div>
+      </Container>
+    </div>
   );
 }

@@ -18,20 +18,23 @@ const useStyles = makeStyles((theme: Theme) =>
       position: 'fixed',
       width: '100vw',
       color: '#fff',
+      zIndex: 100,
+      textAlign: 'center',
     },
     titleContainer: {
-      backgroundColor: green[400],
-
+      backgroundColor: '#fff',
+      color: green[400],
     },
     title: {
       fontWeight: 'bold',
-      margin: theme.spacing(1, 10),
+      margin: '8px 5%',
       display: 'inline-block',
+      fontFamily: 'serif, Roboto, Helvetica, sans-serif',
     },
     btn: {
       backgroundColor: green[600],
       position: 'absolute',
-      right: '10%',
+      right: '5%',
       top: '30%',
       '&:hover': {
         backgroundColor: green[400],
@@ -39,7 +42,7 @@ const useStyles = makeStyles((theme: Theme) =>
       color: '#fff',
     },
     menuContainer: {
-      backgroundColor: green[200],
+      backgroundColor: green[300],
       display: "flex",
       justifyContent: "space-around",
       padding: theme.spacing(1, 0),

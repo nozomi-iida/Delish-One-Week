@@ -5,9 +5,30 @@ import { Link } from 'react-router-dom';
 
 const RAKUTEN_API_KEY = process.env.REACT_APP_RAKUTEN_API_KEY;
 
+interface ILargeCategory {
+  parentCategoryId: string
+  categoryId: string,
+  categoryName: string,
+  categoryUrl: string,
+};
+
+interface ICategory {
+  parentCategoryId: string
+  categoryId: string,
+  categoryName: string,
+  categoryUrl: string,
+};
+
+interface ICategories {
+  large: ILargeCategory[] 
+  medium: ICategory[] 
+  small: ICategory[];
+}
+
 export default () => {
   const [category, setCategory] = useState<any>([]);
   const [selectedCategory, setSelectedCategory] = useState([]);
+  console.log(category);
 
   const fetchDataAction = () => {
     const url = `https://app.rakuten.co.jp/services/api/Recipe/CategoryList/20170426?format=json&applicationId=${RAKUTEN_API_KEY}`;
@@ -25,10 +46,11 @@ export default () => {
 
   useEffect(() => {
     category.length === 0 && fetchDataAction();
+    // eslint-disable-next-line
   }, []);
 
   const onLargeRecipeClick = (id: string) => {
-    const mediumRecipes = category.medium.filter((recipe: any) => {
+    const mediumRecipes = category.medium.filter((recipe: ICategory) => {
       return recipe.parentCategoryId === id;
     });
     setSelectedCategory(mediumRecipes);
@@ -36,8 +58,8 @@ export default () => {
 
   return (
     <Container component='main'>
-      {selectedCategory.map((recipe: any) => (
-        <div key={recipe.categoryId}>
+      {selectedCategory.map((recipe: ICategory) => (
+        <span key={recipe.categoryId}>
           {recipe.parentCategoryId ? (
             <Link
               to={`cookingLists/${recipe.parentCategoryId}-${recipe.categoryId}`}
@@ -55,7 +77,7 @@ export default () => {
               {recipe.categoryName}
             </Button>
           )}
-        </div>
+        </span>
       ))}
     </Container>
   );
