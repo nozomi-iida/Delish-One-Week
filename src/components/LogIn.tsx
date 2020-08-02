@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useContext } from 'react';
 import Avatar from '@material-ui/core/Avatar';
 import Button from '@material-ui/core/Button';
 import CssBaseline from '@material-ui/core/CssBaseline';
@@ -20,11 +20,12 @@ import Visibility from '@material-ui/icons/Visibility';
 import VisibilityOff from '@material-ui/icons/VisibilityOff';
 import { useForm } from 'react-hook-form';
 import firebase from '../firebase/firebase';
-import { useHistory, Link } from 'react-router-dom';
+import { useHistory, Link, Redirect } from 'react-router-dom';
+import { AuthStore } from '../stores/AuthStore';
 
 const useStyles = makeStyles(theme => ({
   paper: {
-    paddingTop: theme.spacing(16),
+    marginTop: theme.spacing(8),
     display: 'flex',
     flexDirection: 'column',
     alignItems: 'center',
@@ -57,18 +58,14 @@ interface FormData {
 
 export default function SignIn() {
   const classes = useStyles();
-  const [password, setPassword] = useState('');
   const [showPassword, setShowPassword] = useState(false);
   const { register, handleSubmit } = useForm<FormData>();
   const history = useHistory();
   const [signInErr, setSignInErr] = useState('');
-
+  const user = useContext(AuthStore);
+  
   const handleClickShowPassword = () => {
     setShowPassword(!showPassword);
-  };
-
-  const handleMouseDownPassword = (e: React.MouseEvent) => {
-    e.preventDefault();
   };
 
   const onSubmit = handleSubmit(({ email, password }) => {
@@ -90,6 +87,10 @@ export default function SignIn() {
       });
   });
 
+  if (user) {
+    return <Redirect to='/' />;
+  }
+
   return (
     <Container component='main' maxWidth='xs'>
       <CssBaseline />
@@ -100,6 +101,7 @@ export default function SignIn() {
         <Typography component='h1' variant='h5'>
           ログイン
         </Typography>
+        {signInErr && <p>{signInErr}</p>}
         <form className={classes.form} noValidate onSubmit={onSubmit}>
           <TextField
             variant='outlined'
@@ -120,13 +122,13 @@ export default function SignIn() {
             <OutlinedInput
               type={showPassword ? 'text' : 'password'}
               name='password'
+              autoComplete='current-password'
               inputRef={register}
               endAdornment={
                 <InputAdornment position='end'>
                   <IconButton
                     aria-label='toggle password visibility'
                     onClick={handleClickShowPassword}
-                    onMouseDown={handleMouseDownPassword}
                     edge='end'
                   >
                     {showPassword ? <Visibility /> : <VisibilityOff />}
