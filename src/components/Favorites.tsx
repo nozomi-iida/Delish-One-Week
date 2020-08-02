@@ -11,6 +11,7 @@ import {
   createStyles,
   Theme,
   Button,
+  Container,
 } from '@material-ui/core';
 import { Link } from 'react-router-dom';
 import { IFavorite } from '../interfaces/favorites';
@@ -80,7 +81,7 @@ export default () => {
 
   if (favorites.length !== 0) {
     return (
-      <div>
+      <Container component='main'>
         <Link to='addFavorite'>
           <Button variant='contained' color='primary'>
             追加
@@ -109,15 +110,17 @@ export default () => {
             </Card>
           </div>
         ))}
-      </div>
+      </Container>
     );
   } else {
     return (
-      <Link to='addFavorite'>
-        <Button variant='contained' color='primary'>
-          追加
-        </Button>
-      </Link>
+      <Container component='main'>
+        <Link to='addFavorite'>
+          <Button variant='contained' color='primary'>
+            追加
+          </Button>
+        </Link>
+      </Container>
     );
   }
 };

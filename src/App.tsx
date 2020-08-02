@@ -5,7 +5,7 @@ import Header from './components/Header';
 import LogIn from './components/LogIn';
 import SignUp from './components/SignUp';
 import LoggedInRouter from './routers/LoggedInRouter';
-import Faborites from './components/Favorites';
+import Favorites from './components/Favorites';
 import { Provider } from 'react-redux';
 import ReduxStore from './stores/ReduxStore';
 import AddFavorite from './components/AddFavorite';
@@ -27,7 +27,7 @@ export default () => {
         <BrowserRouter>
           <Header />
           <Switch>
-            <LoggedInRouter path='/' component={Faborites} exact />
+            <LoggedInRouter path='/' component={Favorites} exact />
             <LoggedInRouter path='/addFavorite' component={AddFavorite} />
             <LoggedInRouter path='/detail/:id' component={DetailFavorite} />
             <LoggedInRouter path='/edit/:id' component={EditFavorite} />
