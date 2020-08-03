@@ -2,7 +2,6 @@ import React, { useEffect, useState } from 'react';
 import axios from 'axios';
 import {
   Button,
-  Container,
   makeStyles,
   Theme,
   Divider,
@@ -10,7 +9,6 @@ import {
 } from '@material-ui/core';
 import { Link } from 'react-router-dom';
 import { green } from '@material-ui/core/colors';
-import ChevronRightIcon from '@material-ui/icons/ChevronRight';
 
 const RAKUTEN_API_KEY = process.env.REACT_APP_RAKUTEN_API_KEY;
 
@@ -80,13 +78,13 @@ export default () => {
   };
 
   return (
-    <Grid container component='main' spacing={3}>
+    <Grid container component='main'>
       {selectedCategory.map((recipe: ICategory) => (
         <Grid item key={recipe.categoryId} xs={12} sm={6} >
           <Link
             to={
-              recipe.parentCategoryId &&
-              `cookingLists/${recipe.parentCategoryId}-${recipe.categoryId}`
+              recipe.parentCategoryId ?
+              `cookingLists/${recipe.parentCategoryId}-${recipe.categoryId}`: `cooking`
             }
           >
             <Button
