@@ -6,6 +6,7 @@ import {
   Theme,
   Divider,
   Grid,
+  Container,
 } from '@material-ui/core';
 import { Link } from 'react-router-dom';
 import { green } from '@material-ui/core/colors';
@@ -78,27 +79,29 @@ export default () => {
   };
 
   return (
-    <Grid container component='main'>
-      {selectedCategory.map((recipe: ICategory) => (
-        <Grid item key={recipe.categoryId} xs={12} sm={6} >
-          <Link
-            to={
-              recipe.parentCategoryId ?
-              `cookingLists/${recipe.parentCategoryId}-${recipe.categoryId}`: `cooking`
-            }
-          >
-            <Button
-              size='large'
-              onClick={() => onLargeRecipeClick(recipe.categoryId)}
-              // endIcon={<ChevronRightIcon />}
-              fullWidth={true}
+    <Container component='main'>
+      <Grid container spacing={2}>
+        {selectedCategory.map((recipe: ICategory) => (
+          <Grid item key={recipe.categoryId} xs={12} sm={6} >
+            <Link
+              to={
+                recipe.parentCategoryId ?
+                `cookingLists/${recipe.parentCategoryId}-${recipe.categoryId}`: `cooking`
+              }
             >
-              {recipe.categoryName}
-            </Button>
-            <Divider light={false} />
-          </Link>
-        </Grid>
-      ))}
-    </Grid>
+              <Button
+                size='large'
+                onClick={() => onLargeRecipeClick(recipe.categoryId)}
+                // endIcon={<ChevronRightIcon />}
+                fullWidth={true}
+              >
+                {recipe.categoryName}
+              </Button>
+              <Divider light={false} />
+            </Link>
+          </Grid>
+        ))}
+      </Grid>
+    </Container>
   );
 };
