@@ -46,6 +46,8 @@ const useStyles = makeStyles((theme: Theme) =>
       display: "flex",
       justifyContent: "space-around",
       padding: theme.spacing(1, 0),
+      fontSize: '14px',
+      lineHeight: '20px'
     },
   })
 );

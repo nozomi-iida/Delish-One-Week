@@ -3,3 +3,11 @@ main {
   padding-left: 24px;
   padding-right: 24px;
 }
+
+.btn {
+  background-color: #66bb6a;
+  color: #fff;
+  &hover {
+    background-color: #66bb6a;
+  }
+}

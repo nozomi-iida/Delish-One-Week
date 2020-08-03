@@ -1,126 +1,133 @@
-import React, { useContext } from 'react';
+import React, { useState, useContext, useEffect } from 'react';
+import Axios from 'axios';
+import Card from '@material-ui/core/Card';
+import CardActions from '@material-ui/core/CardActions';
+import CardContent from '@material-ui/core/CardContent';
+import CardMedia from '@material-ui/core/CardMedia';
+import CssBaseline from '@material-ui/core/CssBaseline';
+import Grid from '@material-ui/core/Grid';
+import Typography from '@material-ui/core/Typography';
+import { makeStyles } from '@material-ui/core/styles';
+import Container from '@material-ui/core/Container';
 import { useSelector, useDispatch } from 'react-redux';
-import {
-  Card,
-  CardActionArea,
-  CardMedia,
-  CardContent,
-  Typography,
-  CardActions,
-  makeStyles,
-  createStyles,
-  Theme,
-  Button,
-  Container,
-} from '@material-ui/core';
-import { Link } from 'react-router-dom';
-import { IFavorite } from '../interfaces/favorites';
 import { AuthStore } from '../stores/AuthStore';
 import firebase, { fireStore } from '../firebase/firebase';
-import { removeFavorite } from '../actions/favorites';
+import { IFavorite } from '../interfaces/favorites';
 import { IState } from '../interfaces/state';
 import ConfirmModal from './ConfirmModal';
+import { removeFavorite } from '../actions/favorites';
+import { Link } from 'react-router-dom';
+import { Button, CardActionArea } from '@material-ui/core';
+import { green } from '@material-ui/core/colors';
 
-const useStyles = makeStyles((theme: Theme) =>
-  createStyles({
-    root: {
-      maxWidth: 345,
+const useStyles = makeStyles(theme => ({
+  icon: {
+    marginRight: theme.spacing(2),
+  },
+  heroContent: {
+    backgroundColor: theme.palette.background.paper,
+    padding: theme.spacing(8, 0, 6),
+  },
+  heroButtons: {
+    marginTop: theme.spacing(4),
+  },
+  cardGrid: {
+    paddingTop: theme.spacing(8),
+    paddingBottom: theme.spacing(8),
+  },
+  card: {
+    height: '100%',
+    display: 'flex',
+    flexDirection: 'column',
+  },
+  cardMedia: {
+    paddingTop: '56.25%', // 16:9
+  },
+  cardContent: {
+    flexGrow: 1,
+  },
+  footer: {
+    backgroundColor: theme.palette.background.paper,
+    padding: theme.spacing(6),
+  },
+  btn: {
+    backgroundColor: green[600],
+    '&:hover': {
+      backgroundColor: green[400],
     },
-    media: {
-      height: 140,
-    },
-    paper: {
-      position: 'absolute',
-      width: 400,
-      backgroundColor: theme.palette.background.paper,
-      border: '2px solid #000',
-      boxShadow: theme.shadows[5],
-      padding: theme.spacing(2, 4, 3),
-    },
-  })
-);
+    color: '#fff',
+  },
+  cardActions: {
+    textAlign: 'right',
+    display: 'block',
+  },
+}));
 
-export default () => {
+export default function Favorites() {
   const classes = useStyles();
   const user = useContext(AuthStore);
   const favorites = useSelector((state: IState) => state.favorites);
   const dispatch = useDispatch();
 
   const onDeleteClick = (favorite: IFavorite) => {
-    if (
-      favorite.foodImg ===
-      'https://firebasestorage.googleapis.com/v0/b/delish-one-week.appspot.com/o/noimage.png?alt=media&token=7d10ebb8-eca8-4795-8129-0ae6118b8944'
-    ) {
-      fireStore
-        .collection('users')
-        .doc(`${user.uid}`)
-        .collection('favorites')
-        .doc(`${favorite.id}`)
-        .delete()
-        .then(() => {
-          dispatch(removeFavorite(favorite.id));
-        });
-    } else {
+    {favorite.foodImg.includes('firebasestorage') &&
       firebase
         .storage()
         .refFromURL(favorite.foodImg)
         .delete()
         .then(() => {
-          fireStore
-            .collection('users')
-            .doc(`${user.uid}`)
-            .collection('favorites')
-            .doc(`${favorite.id}`)
-            .delete()
-            .then(() => {
-              dispatch(removeFavorite(favorite.id));
-            });
         });
     }
+    fireStore
+      .collection('users')
+      .doc(`${user.uid}`)
+      .collection('favorites')
+      .doc(`${favorite.id}`)
+      .delete()
+      .then(() => {
+        dispatch(removeFavorite(favorite.id));
+      });
   };
 
-  if (favorites.length !== 0) {
-    return (
-      <Container component='main'>
-        <Link to='addFavorite'>
-          <Button variant='contained' color='primary'>
-            追加
-          </Button>
-        </Link>
-        {favorites.map((favorite: IFavorite) => (
-          <div key={favorite.id}>
-            <Card className={classes.root}>
-              <Link to={`/detail/${favorite.id}`}>
+  return (
+    <Container component='main'>
+      <CssBaseline />
+      <Link to='addFavorite'>
+        <Button className={classes.btn}>
+          追加
+        </Button>
+      </Link>
+      <div className={classes.cardGrid}>
+        <Grid container spacing={4}>
+          {favorites.map((favorite: IFavorite) => (
+            <Grid item key={favorite.id} xs={12} sm={6} md={4}>
+              <Card className={classes.card}>
+                <Link to={`/detail/${favorite.id}`}>
                 <CardActionArea>
-                  <CardMedia
-                    className={classes.media}
-                    image={favorite.foodImg}
-                    title='Contemplative Reptile'
-                  />
-                  <CardContent>
-                    <Typography gutterBottom variant='h5' component='h2'>
-                      {favorite.foodName}
-                    </Typography>
-                  </CardContent>
-                </CardActionArea>
-              </Link>
-              <CardActions>
-                <ConfirmModal onClick={onDeleteClick} favorite={favorite} />
-              </CardActions>
-            </Card>
-          </div>
-        ))}
-      </Container>
-    );
-  } else {
-    return (
-      <Container component='main'>
-        <Link to='addFavorite'>
-          <Button variant='contained' color='primary'>
-            追加
-          </Button>
-        </Link>
-      </Container>
-    );
-  }
-};
+                    <CardMedia
+                      className={classes.cardMedia}
+                      image={favorite.foodImg}
+                      title='Image title'
+                    />
+                    <CardContent className={classes.cardContent}>
+                      <Typography gutterBottom variant='h5' component='h2'>
+                        {favorite.foodName}
+                      </Typography>
+                      <Typography>
+                        This is a media card. You can use this section to describe
+                        the content.
+                      </Typography>
+                    </CardContent>
+                  </CardActionArea>
+                </Link>
+                  <CardActions className={classes.cardActions}>
+                    <ConfirmModal onClick={onDeleteClick} favorite={favorite} />
+                  </CardActions>
+              </Card>
+            </Grid>
+          ))}
+        </Grid>
+      </div>
+    </Container>
+  );
+}

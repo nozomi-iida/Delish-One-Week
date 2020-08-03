@@ -9,6 +9,7 @@ import { fireStore } from '../firebase/firebase';
 import { AuthStore } from '../stores/AuthStore';
 import { editMenu } from '../actions/menues';
 import { IMenu } from '../interfaces/menues';
+import { green } from '@material-ui/core/colors';
 
 function getModalStyle() {
   const top = 50;
@@ -29,6 +30,13 @@ const useStyles = makeStyles(theme => ({
     border: '2px solid #000',
     boxShadow: theme.shadows[5],
     padding: theme.spacing(2, 4, 3),
+  },
+  btn: {
+    backgroundColor: green[600],
+    '&:hover': {
+      backgroundColor: green[400],
+    },
+    color: '#fff',
   },
 }));
 
@@ -133,27 +141,17 @@ export default function SimpleModal({ onClick, favorite, selectedMenu }: any) {
   );
 
   return (
-    <div>
+    <React.Fragment>
       {onClick !== undefined ? (
-        favorite === undefined ? (
           <Button
             variant='contained'
             color='primary'
             type='button'
             onClick={handleOpen}
+            className={classes.btn}
           >
-            表示する
+            {favorite === undefined ? '表示する' : '削除する'}
           </Button>
-        ) : (
-          <Button
-            type='button'
-            variant='contained'
-            color='primary'
-            onClick={handleOpen}
-          >
-            削除する
-          </Button>
-        )
       ) : (
         <Button
           variant='contained'
@@ -172,6 +170,6 @@ export default function SimpleModal({ onClick, favorite, selectedMenu }: any) {
       >
         {body}
       </Modal>
-    </div>
+    </React.Fragment>
   );
 };
