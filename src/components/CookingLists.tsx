@@ -1,40 +1,59 @@
-import React, { useState, useEffect, useContext } from 'react';
-import { useParams } from 'react-router-dom';
+import React, { useState, useContext, useEffect } from 'react';
 import Axios from 'axios';
-import { Card, CardActionArea, CardMedia, CardContent, Typography, CardActions, makeStyles, createStyles, Theme, Fab, Container} from '@material-ui/core';
-import FavoriteIcon from '@material-ui/icons/Favorite';
-import { fireStore } from '../firebase/firebase';
+import Card from '@material-ui/core/Card';
+import CardActions from '@material-ui/core/CardActions';
+import CardContent from '@material-ui/core/CardContent';
+import CardMedia from '@material-ui/core/CardMedia';
+import CssBaseline from '@material-ui/core/CssBaseline';
+import Grid from '@material-ui/core/Grid';
+import Typography from '@material-ui/core/Typography';
+import { makeStyles } from '@material-ui/core/styles';
+import Container from '@material-ui/core/Container';
+import { useParams } from 'react-router-dom';
+import { useSelector, useDispatch } from 'react-redux';
 import { AuthStore } from '../stores/AuthStore';
-import { v4 as uuid } from 'uuid';
-import { useDispatch, useSelector } from 'react-redux';
+import { fireStore } from '../firebase/firebase';
 import { addFavorite } from '../actions/favorites';
+import { v4 as uuid } from 'uuid';
+import { Fab } from '@material-ui/core';
 import { IFavorite } from '../interfaces/favorites';
+import FavoriteIcon from '@material-ui/icons/Favorite';
+
+const useStyles = makeStyles((theme) => ({
+  icon: {
+    marginRight: theme.spacing(2),
+  },
+  heroContent: {
+    backgroundColor: theme.palette.background.paper,
+    padding: theme.spacing(8, 0, 6),
+  },
+  heroButtons: {
+    marginTop: theme.spacing(4),
+  },
+  cardGrid: {
+    paddingTop: theme.spacing(8),
+    paddingBottom: theme.spacing(8),
+  },
+  card: {
+    height: '100%',
+    display: 'flex',
+    flexDirection: 'column',
+  },
+  cardMedia: {
+    paddingTop: '56.25%', // 16:9
+  },
+  cardContent: {
+    flexGrow: 1,
+  },
+  footer: {
+    backgroundColor: theme.palette.background.paper,
+    padding: theme.spacing(6),
+  },
+}));
 
 const RAKUTEN_API_KEY = process.env.REACT_APP_RAKUTEN_API_KEY;
 
-const useStyles = makeStyles((theme: Theme) =>
-createStyles({
-    root: {
-      maxWidth: 345,
-    },
-    media: {
-      height: 140,
-    },
-    paper: {
-      position: 'absolute',
-      width: 400,
-      backgroundColor: theme.palette.background.paper,
-      border: '2px solid #000',
-      boxShadow: theme.shadows[5],
-      padding: theme.spacing(2, 4, 3),
-    },
-    margin: {
-      margin: theme.spacing(1),
-    },
-  }),
-);
-
-export default () => {
+export default function CookingLists() {
   const classes = useStyles();
   const {id} = useParams();
   const [recipes, setRecipes] = useState([]);
@@ -70,7 +89,7 @@ export default () => {
       })
     });
 
-    return fireStore.collection('users').doc(`${user.uid}`).collection("favorites").add(
+    fireStore.collection('users').doc(`${user.uid}`).collection("favorites").add(
       {
         foodName: recipe.recipeTitle,
         foodImg: recipe.foodImageUrl,
@@ -90,31 +109,35 @@ export default () => {
 
   return (
     <Container component='main'>
-      {recipes.map((recipe: any) => (
-        <div key={recipe.recipeId}>
-          <Card className={classes.root}>
-            <a href={recipe.recipeUrl}  target="_blank" rel="noopener noreferrer">
-              <CardActionArea>
+      <CssBaseline />
+      <div className={classes.cardGrid}>
+        <Grid container spacing={4}>
+          {recipes.map((recipe: any) => (
+            <Grid item key={recipe.recipeId} xs={12} sm={6} md={4}>
+              <Card className={classes.card}>
                 <CardMedia
-                  className={classes.media}
+                  className={classes.cardMedia}
                   image={recipe.foodImageUrl}
-                  title="Contemplative Reptile"
+                  title="Image title"
                 />
-                <CardContent>
+                <CardContent className={classes.cardContent}>
                   <Typography gutterBottom variant="h5" component="h2">
                     {recipe.recipeTitle}
                   </Typography>
+                  <Typography>
+                    This is a media card. You can use this section to describe the content.
+                  </Typography>
                 </CardContent>
-              </CardActionArea>
-            </a>
-            <CardActions>
-              <Fab size="small" color ={favorites.find((favorite: IFavorite) => favorite.foodName === recipe.recipeTitle) ? "secondary" : "default"} aria-label="add" className={classes.margin} onClick={() => onFavClick(recipe)}>
-                <FavoriteIcon />
-              </Fab>
-            </CardActions>
-          </Card>
-        </div>
-      ))}
+                <CardActions>
+                  <Fab size="small" color ={favorites.find((favorite: IFavorite) => favorite.foodName === recipe.recipeTitle) ? "secondary" : "default"} aria-label="add" onClick={() => onFavClick(recipe)}>
+                    <FavoriteIcon />
+                  </Fab>
+                </CardActions>
+              </Card>
+            </Grid>
+          ))}
+        </Grid>
+      </div>
     </Container>
   );
 };
