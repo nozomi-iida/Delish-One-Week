@@ -1,10 +1,8 @@
-import React, { useState, useContext, useEffect } from 'react';
-import Axios from 'axios';
+import React, { useContext } from 'react';
 import Card from '@material-ui/core/Card';
 import CardActions from '@material-ui/core/CardActions';
 import CardContent from '@material-ui/core/CardContent';
 import CardMedia from '@material-ui/core/CardMedia';
-import CssBaseline from '@material-ui/core/CssBaseline';
 import Grid from '@material-ui/core/Grid';
 import Typography from '@material-ui/core/Typography';
 import { makeStyles } from '@material-ui/core/styles';
@@ -12,7 +10,7 @@ import Container from '@material-ui/core/Container';
 import { useSelector, useDispatch } from 'react-redux';
 import { AuthStore } from '../stores/AuthStore';
 import firebase, { fireStore } from '../firebase/firebase';
-import { IFavorite, IMaterial } from '../interfaces/favorites';
+import { IFavorite } from '../interfaces/favorites';
 import { IState } from '../interfaces/state';
 import ConfirmModal from './ConfirmModal';
 import { removeFavorite } from '../actions/favorites';
@@ -69,6 +67,10 @@ const useStyles = makeStyles(theme => ({
     textAlign: 'right',
     display: 'block',
   },
+  buttonContainer: {
+    display: 'flex',
+    justifyContent: 'space-between',
+  },
 }));
 
 export default function Favorites() {
@@ -77,9 +79,9 @@ export default function Favorites() {
   const favorites = useSelector((state: IState) => state.favorites);
   const dispatch = useDispatch();
 
-  function renderRow(props: ListChildComponentProps,) {
+  function renderRow(props: ListChildComponentProps) {
     const { index, style, data } = props;
-    
+
     return (
       <ListItem button style={style} key={index} disabled divider dense>
         <ListItemText primary={`${data.materials[index].materialName}`} />
@@ -145,10 +147,14 @@ export default function Favorites() {
                   >
                     {renderRow}
                   </FixedSizeList>
-                  <Link to={`/edit/${favorite.id}`}>
-                    <Button variant='contained' className={classes.btn}>編集する</Button>
-                  </Link>
-                  <ConfirmModal onClick={onDeleteClick} favorite={favorite} />
+                  <div className={classes.buttonContainer} style={{margin: '0'}}>
+                    <Link to={`/edit/${favorite.id}`}>
+                      <Button variant='contained' className={classes.btn}>
+                        編集する
+                      </Button>
+                    </Link>
+                    <ConfirmModal onClick={onDeleteClick} favorite={favorite} />
+                  </div>
                 </CardActions>
               </Card>
             </Grid>

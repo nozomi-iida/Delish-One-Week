@@ -15,9 +15,10 @@ import { AuthStore } from '../stores/AuthStore';
 import { fireStore } from '../firebase/firebase';
 import { addFavorite } from '../actions/favorites';
 import { v4 as uuid } from 'uuid';
-import { Fab } from '@material-ui/core';
+import { Fab, ListItem, ListItemText } from '@material-ui/core';
 import { IFavorite } from '../interfaces/favorites';
 import FavoriteIcon from '@material-ui/icons/Favorite';
+import { FixedSizeList, ListChildComponentProps } from 'react-window';
 
 const useStyles = makeStyles((theme) => ({
   icon: {
@@ -49,6 +50,10 @@ const useStyles = makeStyles((theme) => ({
     backgroundColor: theme.palette.background.paper,
     padding: theme.spacing(6),
   },
+  cardActions: {
+    textAlign: 'center',
+    display: 'block',
+  },
 }));
 
 const RAKUTEN_API_KEY = process.env.REACT_APP_RAKUTEN_API_KEY;
@@ -61,6 +66,16 @@ export default function CookingLists() {
   const user = useContext(AuthStore);
   const dispatch = useDispatch();
   const [created_at] = useState(new Date().valueOf());
+
+  function renderRow(props: ListChildComponentProps,) {
+    const { index, style, data } = props;
+    
+    return (
+      <ListItem button style={style} key={index} disabled divider dense>
+        <ListItemText primary={`${data[index]}`} />
+      </ListItem>
+    );
+  }
 
   const fetchData = () => {
     const url = `https://app.rakuten.co.jp/services/api/Recipe/CategoryRanking/20170426?format=json&categoryId=${id}&applicationId=${RAKUTEN_API_KEY}`;
@@ -82,7 +97,7 @@ export default function CookingLists() {
   const onFavClick = (recipe: any) => {
     const newMaterials: Array<any> = [];
     recipe.recipeMaterial.map((material: any) =>{
-      newMaterials.push({
+      return newMaterials.push({
         materialNum: uuid(),
         materialName: material,
         checked: false,
@@ -124,11 +139,17 @@ export default function CookingLists() {
                   <Typography gutterBottom variant="h5" component="h2">
                     {recipe.recipeTitle}
                   </Typography>
-                  <Typography>
-                    This is a media card. You can use this section to describe the content.
-                  </Typography>
                 </CardContent>
-                <CardActions>
+                <CardActions className={classes.cardActions}>
+                  <FixedSizeList
+                    height={150}
+                    width='100%'
+                    itemSize={30}
+                    itemCount={recipe.recipeMaterial.length}
+                    itemData={recipe.recipeMaterial}
+                  >
+                    {renderRow}
+                  </FixedSizeList>
                   <Fab size="small" color ={favorites.find((favorite: IFavorite) => favorite.foodName === recipe.recipeTitle) ? "secondary" : "default"} aria-label="add" onClick={() => onFavClick(recipe)}>
                     <FavoriteIcon />
                   </Fab>
