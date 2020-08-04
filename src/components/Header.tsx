@@ -32,6 +32,7 @@ const useStyles = makeStyles((theme: Theme) =>
       fontFamily: 'serif, Roboto, Helvetica, sans-serif',
     },
     btn: {
+      color: '#fff',
       backgroundColor: green[600],
       position: 'absolute',
       right: '5%',
@@ -39,7 +40,6 @@ const useStyles = makeStyles((theme: Theme) =>
       '&:hover': {
         backgroundColor: green[400],
       },
-      color: '#fff',
     },
     menuContainer: {
       backgroundColor: green[300],

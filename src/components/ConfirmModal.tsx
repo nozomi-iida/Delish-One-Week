@@ -155,7 +155,6 @@ export default function SimpleModal({ onClick, favorite, selectedMenu }: any) {
       ) : (
         <Button
           variant='contained'
-          color='primary'
           type='button'
           onClick={handleOpen}
         >

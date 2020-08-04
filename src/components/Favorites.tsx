@@ -12,13 +12,21 @@ import Container from '@material-ui/core/Container';
 import { useSelector, useDispatch } from 'react-redux';
 import { AuthStore } from '../stores/AuthStore';
 import firebase, { fireStore } from '../firebase/firebase';
-import { IFavorite } from '../interfaces/favorites';
+import { IFavorite, IMaterial } from '../interfaces/favorites';
 import { IState } from '../interfaces/state';
 import ConfirmModal from './ConfirmModal';
 import { removeFavorite } from '../actions/favorites';
 import { Link } from 'react-router-dom';
-import { Button, CardActionArea } from '@material-ui/core';
+import {
+  Button,
+  CardActionArea,
+  IconButton,
+  ListItem,
+  ListItemText,
+} from '@material-ui/core';
 import { green } from '@material-ui/core/colors';
+import AddIcon from '@material-ui/icons/Add';
+import { FixedSizeList, ListChildComponentProps } from 'react-window';
 
 const useStyles = makeStyles(theme => ({
   icon: {
@@ -69,14 +77,24 @@ export default function Favorites() {
   const favorites = useSelector((state: IState) => state.favorites);
   const dispatch = useDispatch();
 
+  function renderRow(props: ListChildComponentProps,) {
+    const { index, style, data } = props;
+    
+    return (
+      <ListItem button style={style} key={index} disabled divider dense>
+        <ListItemText primary={`${data.materials[index].materialName}`} />
+      </ListItem>
+    );
+  }
+
   const onDeleteClick = (favorite: IFavorite) => {
-    {favorite.foodImg.includes('firebasestorage') &&
-      firebase
-        .storage()
-        .refFromURL(favorite.foodImg)
-        .delete()
-        .then(() => {
-        });
+    {
+      favorite.foodImg.includes('firebasestorage') &&
+        firebase
+          .storage()
+          .refFromURL(favorite.foodImg)
+          .delete()
+          .then(() => {});
     }
     fireStore
       .collection('users')
@@ -91,19 +109,20 @@ export default function Favorites() {
 
   return (
     <Container component='main'>
-      <CssBaseline />
-      <Link to='addFavorite'>
-        <Button className={classes.btn}>
-          追加
-        </Button>
-      </Link>
       <div className={classes.cardGrid}>
-        <Grid container spacing={4}>
+        <Grid container spacing={4} alignItems='center'>
+          <Grid item xs={12} sm={6} md={4} style={{ textAlign: 'center' }}>
+            <Link to='addFavorite'>
+              <IconButton aria-label='delete'>
+                <AddIcon fontSize='large' />
+              </IconButton>
+            </Link>
+          </Grid>
           {favorites.map((favorite: IFavorite) => (
             <Grid item key={favorite.id} xs={12} sm={6} md={4}>
               <Card className={classes.card}>
                 <Link to={`/detail/${favorite.id}`}>
-                <CardActionArea>
+                  <CardActionArea>
                     <CardMedia
                       className={classes.cardMedia}
                       image={favorite.foodImg}
@@ -113,16 +132,24 @@ export default function Favorites() {
                       <Typography gutterBottom variant='h5' component='h2'>
                         {favorite.foodName}
                       </Typography>
-                      <Typography>
-                        This is a media card. You can use this section to describe
-                        the content.
-                      </Typography>
                     </CardContent>
                   </CardActionArea>
                 </Link>
-                  <CardActions className={classes.cardActions}>
-                    <ConfirmModal onClick={onDeleteClick} favorite={favorite} />
-                  </CardActions>
+                <CardActions className={classes.cardActions}>
+                  <FixedSizeList
+                    height={150}
+                    width='100%'
+                    itemSize={30}
+                    itemCount={favorite.materials.length}
+                    itemData={favorite}
+                  >
+                    {renderRow}
+                  </FixedSizeList>
+                  <Link to={`/edit/${favorite.id}`}>
+                    <Button variant='contained' className={classes.btn}>編集する</Button>
+                  </Link>
+                  <ConfirmModal onClick={onDeleteClick} favorite={favorite} />
+                </CardActions>
               </Card>
             </Grid>
           ))}
