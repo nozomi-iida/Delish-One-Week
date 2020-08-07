@@ -1,4 +1,4 @@
-import React, { useState, useContext, useEffect } from 'react';
+import React, { useState, useEffect } from 'react';
 import Axios from 'axios';
 import Card from '@material-ui/core/Card';
 import CardActions from '@material-ui/core/CardActions';
@@ -10,14 +10,7 @@ import Typography from '@material-ui/core/Typography';
 import { makeStyles } from '@material-ui/core/styles';
 import Container from '@material-ui/core/Container';
 import { useParams } from 'react-router-dom';
-import { useSelector, useDispatch } from 'react-redux';
-import { AuthStore } from '../stores/AuthStore';
-import { fireStore } from '../firebase/firebase';
-import { addFavorite } from '../actions/favorites';
-import { v4 as uuid } from 'uuid';
-import { Fab, ListItem, ListItemText, CardActionArea, Link } from '@material-ui/core';
-import { IFavorite } from '../interfaces/favorites';
-import FavoriteIcon from '@material-ui/icons/Favorite';
+import { ListItem, ListItemText, CardActionArea } from '@material-ui/core';
 import { FixedSizeList, ListChildComponentProps } from 'react-window';
 
 const useStyles = makeStyles((theme) => ({
@@ -62,10 +55,6 @@ export default function CookingLists() {
   const classes = useStyles();
   const {id} = useParams();
   const [recipes, setRecipes] = useState([]);
-  const favorites = useSelector((state: any) => state.favorites)
-  const user = useContext(AuthStore);
-  const dispatch = useDispatch();
-  const [created_at] = useState(new Date().valueOf());
 
   function renderRow(props: ListChildComponentProps,) {
     const { index, style, data } = props;
@@ -93,35 +82,6 @@ export default function CookingLists() {
   useEffect(() => {
     recipes.length === 0 && fetchData()
   }, []);
-
-  const onFavClick = (recipe: any) => {
-    const newMaterials: Array<any> = [];
-    recipe.recipeMaterial.map((material: any) =>{
-      return newMaterials.push({
-        materialNum: uuid(),
-        materialName: material,
-        checked: false,
-      })
-    });
-
-    fireStore.collection('users').doc(`${user.uid}`).collection("favorites").add(
-      {
-        foodName: recipe.recipeTitle,
-        foodImg: recipe.foodImageUrl,
-        materials: newMaterials,
-        created_at,
-      }
-    ).then((docRef) => {
-      dispatch(addFavorite({
-        id: docRef.id,
-        foodName: recipe.recipeTitle,
-        foodImg: recipe.foodImageUrl,
-        materials: newMaterials,
-        created_at,
-      }));
-    });
-  };
-  console.log(recipes);
 
   return (
     <Container component='main'>
@@ -155,9 +115,6 @@ export default function CookingLists() {
                   >
                     {renderRow}
                   </FixedSizeList>
-                  {/* <Fab size="small" color ={favorites.find((favorite: IFavorite) => favorite.foodName === recipe.recipeTitle) ? "secondary" : "default"} aria-label="add" onClick={() => onFavClick(recipe)}>
-                    <FavoriteIcon />
-                  </Fab> */}
                 </CardActions>
               </Card>
             </Grid>

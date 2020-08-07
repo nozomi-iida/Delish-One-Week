@@ -1,9 +1,8 @@
-import React, { useState, useContext } from 'react'
+import React, { useState } from 'react'
 import AvatarEditor from 'react-avatar-editor'
 import Dropzone from 'react-dropzone'
 import { Button, makeStyles, Modal, Grid, Slider } from '@material-ui/core';
 import { green } from '@material-ui/core/colors';
-import { AuthStore } from '../../stores/AuthStore';
 
 function getModalStyle() {
   const top = 50;
