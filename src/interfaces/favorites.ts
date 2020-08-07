@@ -7,7 +7,9 @@ export interface IFavorite {
 }
 
 export interface IMaterial {
-  materialName: string;
-  materialNum: string;
-  checked: boolean;
+  materialName: string,
+  materialNum: string,
+  materialUnit: string,
+  materialWeight: string,
+  checked: boolean,
 }

@@ -15,7 +15,7 @@ import { AuthStore } from '../stores/AuthStore';
 import { fireStore } from '../firebase/firebase';
 import { addFavorite } from '../actions/favorites';
 import { v4 as uuid } from 'uuid';
-import { Fab, ListItem, ListItemText } from '@material-ui/core';
+import { Fab, ListItem, ListItemText, CardActionArea, Link } from '@material-ui/core';
 import { IFavorite } from '../interfaces/favorites';
 import FavoriteIcon from '@material-ui/icons/Favorite';
 import { FixedSizeList, ListChildComponentProps } from 'react-window';
@@ -121,6 +121,7 @@ export default function CookingLists() {
       }));
     });
   };
+  console.log(recipes);
 
   return (
     <Container component='main'>
@@ -130,16 +131,20 @@ export default function CookingLists() {
           {recipes.map((recipe: any) => (
             <Grid item key={recipe.recipeId} xs={12} sm={6} md={4}>
               <Card className={classes.card}>
-                <CardMedia
-                  className={classes.cardMedia}
-                  image={recipe.foodImageUrl}
-                  title="Image title"
-                />
-                <CardContent className={classes.cardContent}>
-                  <Typography gutterBottom variant="h5" component="h2">
-                    {recipe.recipeTitle}
-                  </Typography>
-                </CardContent>
+                <CardActionArea>
+                  <a href={recipe.recipeUrl} target="_blank" rel="noopener noreferrer">
+                    <CardMedia
+                      className={classes.cardMedia}
+                      image={recipe.foodImageUrl}
+                      title="Image title"
+                    />
+                    <CardContent className={classes.cardContent}>
+                      <Typography gutterBottom variant="h5" component="h2">
+                        {recipe.recipeTitle}
+                      </Typography>
+                    </CardContent>
+                  </a>
+                </CardActionArea>
                 <CardActions className={classes.cardActions}>
                   <FixedSizeList
                     height={150}
@@ -150,9 +155,9 @@ export default function CookingLists() {
                   >
                     {renderRow}
                   </FixedSizeList>
-                  <Fab size="small" color ={favorites.find((favorite: IFavorite) => favorite.foodName === recipe.recipeTitle) ? "secondary" : "default"} aria-label="add" onClick={() => onFavClick(recipe)}>
+                  {/* <Fab size="small" color ={favorites.find((favorite: IFavorite) => favorite.foodName === recipe.recipeTitle) ? "secondary" : "default"} aria-label="add" onClick={() => onFavClick(recipe)}>
                     <FavoriteIcon />
-                  </Fab>
+                  </Fab> */}
                 </CardActions>
               </Card>
             </Grid>

@@ -30,6 +30,10 @@ const useStyles = makeStyles((theme: Theme) =>
       margin: '8px 5%',
       display: 'inline-block',
       fontFamily: 'serif, Roboto, Helvetica, sans-serif',
+      fontSize: '3.75rem',
+      [theme.breakpoints.down('xs')]: {
+        fontSize: '40px',
+      }
     },
     btn: {
       color: '#fff',

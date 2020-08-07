@@ -24,9 +24,11 @@ export default (props: any) => {
   const [addFromErr, setAddFromErr] = useState('');
   const [materials, setMaterials] = useState([
     {
-      materialNum: uuid(),
+      materialNum: '1',
       materialName: '',
-      checked: false,
+      materialWeight: '',
+      materialUnit: '個',
+      checked: false
     },
   ]);
 
@@ -73,9 +75,11 @@ export default (props: any) => {
 
   const onPlusClick = () => {
     const addMaterial = {
-      materialNum: uuid(),
+      materialNum: '1',
       materialName: '',
-      checked: false,
+      materialWeight: '',
+      materialUnit: '個',
+      checked: false
     };
     const newmaterial = [...materials, addMaterial];
     setMaterials(newmaterial);

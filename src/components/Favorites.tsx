@@ -25,6 +25,7 @@ import {
 import { green } from '@material-ui/core/colors';
 import AddIcon from '@material-ui/icons/Add';
 import { FixedSizeList, ListChildComponentProps } from 'react-window';
+import noImg from '../images/noimage.png';
 
 const useStyles = makeStyles(theme => ({
   icon: {
@@ -115,7 +116,7 @@ export default function Favorites() {
         <Grid container spacing={4} alignItems='center'>
           <Grid item xs={12} sm={6} md={4} style={{ textAlign: 'center' }}>
             <Link to='addFavorite'>
-              <IconButton aria-label='delete'>
+              <IconButton aria-label='add'>
                 <AddIcon fontSize='large' />
               </IconButton>
             </Link>
@@ -123,20 +124,16 @@ export default function Favorites() {
           {favorites.map((favorite: IFavorite) => (
             <Grid item key={favorite.id} xs={12} sm={6} md={4}>
               <Card className={classes.card}>
-                <Link to={`/detail/${favorite.id}`}>
-                  <CardActionArea>
-                    <CardMedia
-                      className={classes.cardMedia}
-                      image={favorite.foodImg}
-                      title='Image title'
-                    />
-                    <CardContent className={classes.cardContent}>
-                      <Typography gutterBottom variant='h5' component='h2'>
-                        {favorite.foodName}
-                      </Typography>
-                    </CardContent>
-                  </CardActionArea>
-                </Link>
+                <CardMedia
+                  className={classes.cardMedia}
+                  image={favorite.foodImg === '' ? noImg : favorite.foodImg}
+                  title='Image title'
+                />
+                <CardContent className={classes.cardContent}>
+                  <Typography gutterBottom variant='h5' component='h2'>
+                    {favorite.foodName}
+                  </Typography>
+                </CardContent>
                 <CardActions className={classes.cardActions}>
                   <FixedSizeList
                     height={150}
