@@ -7,12 +7,13 @@ import Typography from '@material-ui/core/Typography';
 import ExpandMoreIcon from '@material-ui/icons/ExpandMore';
 import {
   Card,
-  CardActionArea,
   CardMedia,
   CardContent,
   CardActions,
   Button,
   Container,
+  ListItem,
+  ListItemText,
 } from '@material-ui/core';
 import ModalMenues from './ConfirmModal';
 import { useSelector, useDispatch } from 'react-redux';
@@ -23,14 +24,13 @@ import { fireStore } from '../firebase/firebase';
 import { AuthStore } from '../stores/AuthStore';
 import { addMenues, updateMenues } from '../actions/menues';
 import { Link } from 'react-router-dom';
+import { FixedSizeList, ListChildComponentProps } from 'react-window';
+import noImg from '../images/noimage.png';
 
 const useStyles = makeStyles((theme: Theme) =>
   createStyles({
     root: {
       width: '100%',
-    },
-    card: {
-      maxWidth: 345,
     },
     heading: {
       fontSize: theme.typography.pxToRem(15),
@@ -42,6 +42,22 @@ const useStyles = makeStyles((theme: Theme) =>
     container: {
       justifyContent: 'center',
     },
+    card: {
+      height: '100%',
+      display: 'flex',
+      flexDirection: 'column',
+      width: 345,
+    },
+    cardMedia: {
+      paddingTop: '56.25%', // 16:9
+    },
+    cardContent: {
+      flexGrow: 1,
+    },
+    cardActions: {
+      textAlign: 'right',
+      display: 'block',
+    },
   })
 );
 
@@ -51,6 +67,16 @@ export default function SimpleAccordion() {
   const favorites = useSelector((state: IState) => state.favorites);
   const user = useContext(AuthStore);
   const dispatch = useDispatch();
+
+  function renderRow(props: ListChildComponentProps) {
+    const { index, style, data } = props;
+
+    return (
+      <ListItem button style={style} key={index} disabled divider dense>
+        <ListItemText primary={`${data.materials[index].materialName}`} />
+      </ListItem>
+    );
+  }
 
   const shuffleFavorites = () => {
     // let newFavoritesArray = favorites;
@@ -130,30 +156,26 @@ export default function SimpleAccordion() {
             </AccordionSummary>
             <AccordionDetails className={classes.container}>
               <Card className={classes.card}>
-                <Link to={`/detail/${menu.id}`}>
-                  <CardActionArea>
-                    <CardMedia
-                      className={classes.media}
-                      image={menu.foodImg}
-                      title='Contemplative Reptile'
-                    />
-                    <CardContent>
-                      <Typography gutterBottom variant='h5' component='h2'>
-                        {menu.foodName}
-                      </Typography>
-                      <Typography
-                        variant='body2'
-                        color='textSecondary'
-                        component='p'
-                      >
-                        Lizards are a widespread group of squamate reptiles,
-                        with over 6,000 species, ranging across all continents
-                        except Antarctica
-                      </Typography>
-                    </CardContent>
-                  </CardActionArea>
-                </Link>
-                <CardActions>
+                <CardMedia
+                  className={classes.cardMedia}
+                  image={menu.foodImg === '' ? noImg : menu.foodImg}
+                  title='Image title'
+                />
+                <CardContent className={classes.cardContent}>
+                  <Typography gutterBottom variant='h5' component='h2'>
+                    {menu.foodName}
+                  </Typography>
+                </CardContent>
+                <CardActions className={classes.cardActions}>
+                  <FixedSizeList
+                    height={150}
+                    width='100%'
+                    itemSize={30}
+                    itemCount={menu.materials.length}
+                    itemData={menu}
+                  >
+                    {renderRow}
+                  </FixedSizeList>
                   <ModalMenues selectedMenu={menu} />
                 </CardActions>
               </Card>

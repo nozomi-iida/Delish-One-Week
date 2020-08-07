@@ -17,7 +17,6 @@ import { removeFavorite } from '../actions/favorites';
 import { Link } from 'react-router-dom';
 import {
   Button,
-  CardActionArea,
   IconButton,
   ListItem,
   ListItemText,
@@ -28,16 +27,6 @@ import { FixedSizeList, ListChildComponentProps } from 'react-window';
 import noImg from '../images/noimage.png';
 
 const useStyles = makeStyles(theme => ({
-  icon: {
-    marginRight: theme.spacing(2),
-  },
-  heroContent: {
-    backgroundColor: theme.palette.background.paper,
-    padding: theme.spacing(8, 0, 6),
-  },
-  heroButtons: {
-    marginTop: theme.spacing(4),
-  },
   cardGrid: {
     paddingTop: theme.spacing(8),
     paddingBottom: theme.spacing(8),
@@ -52,10 +41,6 @@ const useStyles = makeStyles(theme => ({
   },
   cardContent: {
     flexGrow: 1,
-  },
-  footer: {
-    backgroundColor: theme.palette.background.paper,
-    padding: theme.spacing(6),
   },
   btn: {
     backgroundColor: green[600],
