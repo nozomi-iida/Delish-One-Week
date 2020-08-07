@@ -1,163 +1,143 @@
 import React, { useContext, useState } from 'react';
-import { AuthStore } from '../stores/AuthStore';
-import { Button, Link, Container } from '@material-ui/core';
-import { useForm } from 'react-hook-form';
+import {
+  Container,
+  Typography,
+  TextField,
+  makeStyles,
+  Theme,
+  Button,
+} from '@material-ui/core';
+import { green } from '@material-ui/core/colors';
+import ExitToAppIcon from '@material-ui/icons/ExitToApp';
 import firebase from '../firebase/firebase';
+import PasswordSetting from './atoms/PasswordSetting';
+import { AuthStore } from '../stores/AuthStore';
+import { useForm } from 'react-hook-form';
 
 type FormData = {
-  userName: string;
-  userEmail: string;
-  nowPassword: string;
-  newPassword: string;
-  confirmPassword: string;
+  name: string;
+  email: string;
 };
 
+interface IError {
+  code: string;
+  message: string;
+}
+
+const useStyles = makeStyles((theme: Theme) => ({
+  myPageContainer: {
+    border: 'solid 2px',
+    borderColor: green[600],
+    backgroundColor: '#F7F7F7',
+    borderRadius: '4px',
+    padding: '10px',
+    width: '288px',
+    display: 'block',
+    margin: '80px auto',
+  },
+  btn: {
+    color: '#fff',
+    backgroundColor: green[600],
+    '&:hover': {
+      backgroundColor: green[400],
+    },
+  },
+  changeBtn: {
+    color: green[600],
+    borderColor: green[600],
+  },
+}));
+
 export default () => {
+  const classes = useStyles();
   const user = useContext(AuthStore);
-  const [nameOpen, setNameOpen] = useState(false);
-  const [emailOpen, setEmailOpen] = useState(false);
-  const [passwordOpen, setPasswordOpen] = useState(false);
-
-  const [errMessage, setErrMessage] = useState('');
   const { register, handleSubmit } = useForm<FormData>();
+  const [errMessage, setErrMessage] = useState('');
 
-  const onNameClick = () => {
-    setNameOpen(true);
+  const onLogOutClick = () => {
+    firebase.auth().signOut();
+    console.log('sign out');
   };
 
-  const onEmailClick = () => {
-    setEmailOpen(true);
-  };
-
-  const onPasswordClick = () => {
-    setPasswordOpen(true);
-  };
-
-  const onNameSubmit = handleSubmit(({ userName }) => {
-    if (userName.trim() !== '') {
+  const onSubmit = handleSubmit(({ name, email }) => {
+    if (name.trim() !== '') {
       user
         .updateProfile({
-          displayName: userName,
+          displayName: name,
         })
-        .then(function () {
-          window.location.reload();
-        })
-        .catch(function (error: any) {
-          console.log('failed!');
-        });
-    } else {
-      setNameOpen(false);
-    }
-  });
-
-  const onEmailSubmit = handleSubmit(({ userEmail }) => {
-    if (userEmail.trim() !== '') {
-      user
-        .updateEmail(userEmail)
-        .then(function () {
-          window.location.reload();
+        .then(() => {
           console.log('success!');
         })
-        .catch(function (error: any) {
-          console.log(error); //ユーザーが再度ログインしないと変更できない場合の文を作る
-          setErrMessage('メールアドレスが正しくありません。');
+        .catch((error: IError) => {
+          console.log('failed!');
         });
-    } else {
-      setEmailOpen(false);
+    }
+
+    if (email.trim() !== '') {
+      user
+        .updateEmail(email)
+        .then(() => {
+          console.log('success!');
+        })
+        .catch((err: IError) => {
+          if (err.code === 'auth/requires-recent-login') {
+            setErrMessage('再ログインする必要があります。');
+          } else {
+            setErrMessage('アドレスが正しくありません。');
+          }
+        });
     }
   });
-
-  const onPasswordSubmit = handleSubmit(
-    ({ nowPassword, newPassword, confirmPassword }) => {
-      const credentials = firebase.auth.EmailAuthProvider.credential(
-        user.email,
-        nowPassword
-      );
-      if (nowPassword.trim() !== '') {
-        user
-          .reauthenticateWithCredential(credentials)
-          .then(function () {
-            if (newPassword === confirmPassword) {
-              user
-                .updatePassword(newPassword)
-                .then(function () {
-                  window.location.reload();
-                  console.log('passwrod update!');
-                })
-                .catch(function (error: any) {
-                  console.log(error);
-                });
-            } else {
-              setErrMessage('パスワードが違います。');
-            }
-          })
-          .catch(function (error: any) {
-            setErrMessage('パスワードが違います。');
-            console.log(error);
-          });
-      } else {
-        setPasswordOpen(false);
-      }
-    }
-  );
 
   return (
     <Container component='main'>
-      {errMessage !== '' && <p>{errMessage}</p>}
-      <p>
-        {user.displayName}{' '}
-        {!nameOpen && (
-          <Button variant='contained' color='primary' onClick={onNameClick}>
-            変更する
-          </Button>
-        )}
-      </p>
-      {nameOpen && (
-        <form onSubmit={onNameSubmit}>
-          <input name='userName' ref={register} />
-          <Button type='submit' variant='contained' color='primary'>
-            変更する
-          </Button>
-        </form>
-      )}
-      <p>
-        {user.email}{' '}
-        {!emailOpen && (
-          <Button variant='contained' color='primary' onClick={onEmailClick}>
-            変更する
-          </Button>
-        )}
-      </p>
-      {emailOpen && (
-        <form onSubmit={onEmailSubmit}>
-          <input name='userEmail' ref={register} />
-          <Button type='submit' variant='contained' color='primary'>
-            変更する
-          </Button>
-        </form>
-      )}
-      <Link href='#' color='inherit' onClick={onPasswordClick}>
-        パスワードを変更する
-      </Link>
-      {passwordOpen && (
-        <form onSubmit={onPasswordSubmit}>
+      <div className={classes.myPageContainer}>
+        <form onSubmit={onSubmit}>
           <div>
-            <label>現在のパスワード</label>
-            <input name='nowPassword' ref={register} />
+            <Typography variant='h6'>名前</Typography>
+            <TextField
+              placeholder={user.displayName}
+              fullWidth
+              id='outlined-basic'
+              variant='outlined'
+              margin='dense'
+              name='name'
+              inputRef={register}
+            />
           </div>
           <div>
-            <label>新しいパスワード</label>
-            <input name='newPassword' ref={register} />
+            <Typography variant='h6'>メールアドレス</Typography>
+            <TextField
+              placeholder={user.email}
+              fullWidth
+              id='outlined-basic'
+              variant='outlined'
+              margin='dense'
+              name='email'
+              inputRef={register}
+            />
           </div>
-          <div>
-            <label>新しいパスワード（確認用）</label>
-            <input name='confirmPassword' ref={register} />
+          {errMessage && <p>{errMessage}</p>}
+          <div style={{ textAlign: 'center', marginTop: '10px' }}>
+            <Button
+              type='submit'
+              variant='outlined'
+              className={classes.changeBtn}
+            >
+              変更する
+            </Button>
           </div>
-          <Button type='submit' variant='contained' color='primary'>
-            変更する
-          </Button>
         </form>
-      )}
+        <PasswordSetting />
+        <Button
+          startIcon={<ExitToAppIcon />}
+          className={classes.btn}
+          onClick={onLogOutClick}
+          fullWidth
+        >
+          ログアウト
+        </Button>
+      </div>
     </Container>
   );
 };

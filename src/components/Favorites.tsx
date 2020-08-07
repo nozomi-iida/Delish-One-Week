@@ -76,14 +76,13 @@ export default function Favorites() {
   }
 
   const onDeleteClick = (favorite: IFavorite) => {
-    {
-      favorite.foodImg.includes('firebasestorage') &&
-        firebase
-          .storage()
-          .refFromURL(favorite.foodImg)
-          .delete()
-          .then(() => {});
-    }
+    favorite.foodImg.includes('firebasestorage') &&
+      firebase
+        .storage()
+        .refFromURL(favorite.foodImg)
+        .delete()
+        .then(() => {});
+        
     fireStore
       .collection('users')
       .doc(`${user.uid}`)

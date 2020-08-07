@@ -1,15 +1,12 @@
 import React, { useContext } from 'react';
 import { NavLink, Link } from 'react-router-dom';
-import Button from '@material-ui/core/Button';
 import {
   Typography,
   makeStyles,
   Theme,
   createStyles,
 } from '@material-ui/core';
-import firebase from '../firebase/firebase';
 import { green } from '@material-ui/core/colors';
-import ExitToAppIcon from '@material-ui/icons/ExitToApp';
 import { AuthStore } from '../stores/AuthStore';
 
 const useStyles = makeStyles((theme: Theme) =>
@@ -60,11 +57,6 @@ export default () => {
   const classes = useStyles();
   const user = useContext(AuthStore);
 
-  const onLogOutClick = () => {
-    firebase.auth().signOut();
-    console.log('sign out');
-  };
-
   return (
     <header className={classes.header}>
       <div className={classes.titleContainer}>
@@ -73,16 +65,6 @@ export default () => {
             一週間の献立表
           </Typography>
         </Link>
-        {user && (
-          <Button
-            startIcon={<ExitToAppIcon />}
-            className={classes.btn}
-            onClick={onLogOutClick}
-          >
-            ログアウト
-          </Button>
-        )}
-
       </div>
       {user && (
         <div className={classes.menuContainer}>

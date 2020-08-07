@@ -3,7 +3,6 @@ import AvatarEditor from 'react-avatar-editor'
 import Dropzone from 'react-dropzone'
 import { Button, makeStyles, Modal, Grid, Slider } from '@material-ui/core';
 import { green } from '@material-ui/core/colors';
-import firebase from '../../firebase/firebase';
 import { AuthStore } from '../../stores/AuthStore';
 
 function getModalStyle() {
@@ -45,8 +44,6 @@ export default ({setConfirmImg, setBlob}: any) => {
   const [image, setImage] = useState<File>();
   const [modalStyle] = useState(getModalStyle);
   const [editRef, setEditRef] = useState<any>();
-  const [metadata] = useState({ contentType: 'image/jpeg' });
-  const user = useContext(AuthStore);
   const [open, setOpen] = useState(false);
   const [imageWidth, setImageWidth] = useState(12);
 
