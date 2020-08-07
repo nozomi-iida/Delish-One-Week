@@ -17,6 +17,7 @@ import MyPage from './components/MyPage';
 import './styles/styles.scss';
 import Cooking from './components/Cooking';
 import CookingLists from './components/CookingLists';
+import Footer from './components/Footer';
 
 const store = ReduxStore();
 
@@ -39,6 +40,7 @@ export default () => {
             <Route path='/login' component={LogIn} />
             <Route path='/signUp' component={SignUp} />
           </Switch>
+          <Footer />
         </BrowserRouter>
       </Provider>
     </AuthStoreProvider>

@@ -5,6 +5,7 @@ import {
   makeStyles,
   Theme,
   createStyles,
+  Hidden,
 } from '@material-ui/core';
 import { green } from '@material-ui/core/colors';
 import { AuthStore } from '../stores/AuthStore';
@@ -19,7 +20,7 @@ const useStyles = makeStyles((theme: Theme) =>
       textAlign: 'center',
     },
     titleContainer: {
-      backgroundColor: '#fff',
+      backgroundColor: '#F7F7F7',
       color: green[400],
     },
     title: {
@@ -66,14 +67,16 @@ export default () => {
           </Typography>
         </Link>
       </div>
-      {user && (
-        <div className={classes.menuContainer}>
-          <NavLink to='/'>お気に入り</NavLink>
-          <NavLink to='/menues'>メニュー</NavLink>
-          <NavLink to='/cooking'>レシピ集</NavLink>
-          <NavLink to='/mypage'>設定</NavLink>
-        </div>
-      )}
+      <Hidden xsDown>
+        {user && (
+            <div className={classes.menuContainer}>
+              <NavLink to='/'>お気に入り</NavLink>
+              <NavLink to='/menues'>メニュー</NavLink>
+              <NavLink to='/cooking'>レシピ集</NavLink>
+              <NavLink to='/mypage'>設定</NavLink>
+            </div>
+        )}
+      </Hidden>
     </header>
   );
 };
