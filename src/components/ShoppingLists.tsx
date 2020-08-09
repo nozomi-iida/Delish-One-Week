@@ -33,8 +33,8 @@ export default function DenseTable() {
   const menues = useSelector((state: IState) => state.menues);
   const materialLists: IGroup[] = [];
   menues.map((menu: IMenu) => {
-    menu.materials.map((material: IMaterial) => {
-      materialLists.push({
+    return menu.materials.map((material: IMaterial) => {
+      return materialLists.push({
         materialName: material.materialName,
         count: Number(material.materialWeight),
         materialUnit: material.materialUnit,

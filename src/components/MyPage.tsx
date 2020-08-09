@@ -13,6 +13,7 @@ import firebase from '../firebase/firebase';
 import PasswordSetting from './atoms/PasswordSetting';
 import { AuthStore } from '../stores/AuthStore';
 import { useForm } from 'react-hook-form';
+import Footer from '../components/Footer';
 
 type FormData = {
   name: string;
@@ -91,55 +92,58 @@ export default () => {
   });
 
   return (
-    <Container component='main'>
-      <div className={classes.myPageContainer}>
-        <form onSubmit={onSubmit}>
-          {successMes && <Typography align='center'>{successMes}</Typography>}
-          <div>
-            <Typography variant='h6'>名前</Typography>
-            <TextField
-              placeholder={user.displayName}
-              fullWidth
-              id='outlined-basic'
-              variant='outlined'
-              margin='dense'
-              name='name'
-              inputRef={register}
-            />
-          </div>
-          <div>
-            <Typography variant='h6'>メールアドレス</Typography>
-            <TextField
-              placeholder={user.email}
-              fullWidth
-              id='outlined-basic'
-              variant='outlined'
-              margin='dense'
-              name='email'
-              inputRef={register}
-            />
-          </div>
-          {errMessage && <p>{errMessage}</p>}
-          <div style={{ textAlign: 'center', marginTop: '10px' }}>
-            <Button
-              type='submit'
-              variant='outlined'
-              className={classes.changeBtn}
-            >
-              変更する
-            </Button>
-          </div>
-        </form>
-        <PasswordSetting />
-        <Button
-          startIcon={<ExitToAppIcon />}
-          className={classes.btn}
-          onClick={onLogOutClick}
-          fullWidth
-        >
-          ログアウト
-        </Button>
-      </div>
-    </Container>
+    <>
+      <Container component='main'>
+        <div className={classes.myPageContainer}>
+          <form onSubmit={onSubmit}>
+            {successMes && <Typography align='center'>{successMes}</Typography>}
+            <div>
+              <Typography variant='h6'>名前</Typography>
+              <TextField
+                placeholder={user.displayName}
+                fullWidth
+                id='outlined-basic'
+                variant='outlined'
+                margin='dense'
+                name='name'
+                inputRef={register}
+              />
+            </div>
+            <div>
+              <Typography variant='h6'>メールアドレス</Typography>
+              <TextField
+                placeholder={user.email}
+                fullWidth
+                id='outlined-basic'
+                variant='outlined'
+                margin='dense'
+                name='email'
+                inputRef={register}
+              />
+            </div>
+            {errMessage && <p>{errMessage}</p>}
+            <div style={{ textAlign: 'center', marginTop: '10px' }}>
+              <Button
+                type='submit'
+                variant='outlined'
+                className={classes.changeBtn}
+              >
+                変更する
+              </Button>
+            </div>
+          </form>
+          <PasswordSetting />
+          <Button
+            startIcon={<ExitToAppIcon />}
+            className={classes.btn}
+            onClick={onLogOutClick}
+            fullWidth
+          >
+            ログアウト
+          </Button>
+        </div>
+      </Container>
+      <Footer />
+    </>
   );
 };

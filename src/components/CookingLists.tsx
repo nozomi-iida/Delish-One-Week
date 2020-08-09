@@ -12,6 +12,7 @@ import Container from '@material-ui/core/Container';
 import { useParams } from 'react-router-dom';
 import { ListItem, ListItemText, CardActionArea } from '@material-ui/core';
 import { FixedSizeList, ListChildComponentProps } from 'react-window';
+import Footer from '../components/Footer';
 
 const useStyles = makeStyles((theme) => ({
   icon: {
@@ -84,43 +85,46 @@ export default function CookingLists() {
   }, []);
 
   return (
-    <Container component='main'>
-      <CssBaseline />
-      <div className={classes.cardGrid}>
-        <Grid container spacing={4}>
-          {recipes.map((recipe: any) => (
-            <Grid item key={recipe.recipeId} xs={12} sm={6} md={4}>
-              <Card className={classes.card}>
-                <CardActionArea>
-                  <a href={recipe.recipeUrl} target="_blank" rel="noopener noreferrer">
-                    <CardMedia
-                      className={classes.cardMedia}
-                      image={recipe.foodImageUrl}
-                      title="Image title"
-                    />
-                    <CardContent className={classes.cardContent}>
-                      <Typography gutterBottom variant="h5" component="h2">
-                        {recipe.recipeTitle}
-                      </Typography>
-                    </CardContent>
-                  </a>
-                </CardActionArea>
-                <CardActions className={classes.cardActions}>
-                  <FixedSizeList
-                    height={150}
-                    width='100%'
-                    itemSize={30}
-                    itemCount={recipe.recipeMaterial.length}
-                    itemData={recipe.recipeMaterial}
-                  >
-                    {renderRow}
-                  </FixedSizeList>
-                </CardActions>
-              </Card>
-            </Grid>
-          ))}
-        </Grid>
-      </div>
-    </Container>
+    <>
+      <Container component='main'>
+        <CssBaseline />
+        <div className={classes.cardGrid}>
+          <Grid container spacing={4}>
+            {recipes.map((recipe: any) => (
+              <Grid item key={recipe.recipeId} xs={12} sm={6} md={4}>
+                <Card className={classes.card}>
+                  <CardActionArea>
+                    <a href={recipe.recipeUrl} target="_blank" rel="noopener noreferrer">
+                      <CardMedia
+                        className={classes.cardMedia}
+                        image={recipe.foodImageUrl}
+                        title="Image title"
+                      />
+                      <CardContent className={classes.cardContent}>
+                        <Typography gutterBottom variant="h5" component="h2">
+                          {recipe.recipeTitle}
+                        </Typography>
+                      </CardContent>
+                    </a>
+                  </CardActionArea>
+                  <CardActions className={classes.cardActions}>
+                    <FixedSizeList
+                      height={150}
+                      width='100%'
+                      itemSize={30}
+                      itemCount={recipe.recipeMaterial.length}
+                      itemData={recipe.recipeMaterial}
+                    >
+                      {renderRow}
+                    </FixedSizeList>
+                  </CardActions>
+                </Card>
+              </Grid>
+            ))}
+          </Grid>
+        </div>
+      </Container>
+      <Footer />
+    </>
   );
 };

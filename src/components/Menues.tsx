@@ -26,7 +26,8 @@ import { AuthStore } from '../stores/AuthStore';
 import { addMenues, updateMenues } from '../actions/menues';
 import { Link } from 'react-router-dom';
 import { FixedSizeList, ListChildComponentProps } from 'react-window';
-import noImg from '../images/noimage.png';
+import noImg from '../images/noimage.png'; 
+import Footer from '../components/Footer';
 
 const useStyles = makeStyles((theme: Theme) =>
   createStyles({
@@ -136,56 +137,59 @@ export default function SimpleAccordion() {
   };
 
   return (
-    <Container component='main'>
-      <Box display='flex' justifyContent='space-between'>
-        <ModalMenues onClick={shuffleFavorites} />
-        <Link to='/shoppinglists'>
-          <Button variant='contained' color='primary'>
-            買い物リスト
-          </Button>
-        </Link>
-      </Box>
-      <div className={classes.root}>
-        {menues.map((menu: IMenu, index: number) => (
-          <Accordion key={index}>
-            <AccordionSummary
-              expandIcon={<ExpandMoreIcon />}
-              aria-controls='panel1a-content'
-              id='panel1a-header'
-            >
-              <Typography className={classes.heading}>
-                {index + 1}日目{menu.foodName}
-              </Typography>
-            </AccordionSummary>
-            <AccordionDetails className={classes.container}>
-              <Card className={classes.card}>
-                <CardMedia
-                  className={classes.cardMedia}
-                  image={menu.foodImg === '' ? noImg : menu.foodImg}
-                  title='Image title'
-                />
-                <CardContent className={classes.cardContent}>
-                  <Typography gutterBottom variant='h5' component='h2'>
-                    {menu.foodName}
-                  </Typography>
-                </CardContent>
-                <CardActions className={classes.cardActions}>
-                  <FixedSizeList
-                    height={150}
-                    width='100%'
-                    itemSize={30}
-                    itemCount={menu.materials.length}
-                    itemData={menu}
-                  >
-                    {renderRow}
-                  </FixedSizeList>
-                  <ModalMenues selectedMenu={menu} />
-                </CardActions>
-              </Card>
-            </AccordionDetails>
-          </Accordion>
-        ))}
-      </div>
-    </Container>
+    <>
+      <Container component='main'>
+        <Box display='flex' justifyContent='space-between'>
+          <ModalMenues onClick={shuffleFavorites} />
+          <Link to='/shoppinglists'>
+            <Button variant='contained' color='primary'>
+              買い物リスト
+            </Button>
+          </Link>
+        </Box>
+        <div className={classes.root}>
+          {menues.map((menu: IMenu, index: number) => (
+            <Accordion key={index}>
+              <AccordionSummary
+                expandIcon={<ExpandMoreIcon />}
+                aria-controls='panel1a-content'
+                id='panel1a-header'
+              >
+                <Typography className={classes.heading}>
+                  {index + 1}日目{menu.foodName}
+                </Typography>
+              </AccordionSummary>
+              <AccordionDetails className={classes.container}>
+                <Card className={classes.card}>
+                  <CardMedia
+                    className={classes.cardMedia}
+                    image={menu.foodImg === '' ? noImg : menu.foodImg}
+                    title='Image title'
+                  />
+                  <CardContent className={classes.cardContent}>
+                    <Typography gutterBottom variant='h5' component='h2'>
+                      {menu.foodName}
+                    </Typography>
+                  </CardContent>
+                  <CardActions className={classes.cardActions}>
+                    <FixedSizeList
+                      height={150}
+                      width='100%'
+                      itemSize={30}
+                      itemCount={menu.materials.length}
+                      itemData={menu}
+                    >
+                      {renderRow}
+                    </FixedSizeList>
+                    <ModalMenues selectedMenu={menu} />
+                  </CardActions>
+                </Card>
+              </AccordionDetails>
+            </Accordion>
+          ))}
+        </div>
+      </Container>
+      <Footer />
+    </>
   );
 }
