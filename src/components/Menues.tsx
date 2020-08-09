@@ -14,6 +14,7 @@ import {
   Container,
   ListItem,
   ListItemText,
+  Box,
 } from '@material-ui/core';
 import ModalMenues from './ConfirmModal';
 import { useSelector, useDispatch } from 'react-redux';
@@ -136,12 +137,14 @@ export default function SimpleAccordion() {
 
   return (
     <Container component='main'>
-      <ModalMenues onClick={shuffleFavorites} />
-      <Link to='/shoppinglists'>
-        <Button variant='contained' color='primary'>
-          買い物リスト
-        </Button>
-      </Link>
+      <Box display='flex' justifyContent='space-between'>
+        <ModalMenues onClick={shuffleFavorites} />
+        <Link to='/shoppinglists'>
+          <Button variant='contained' color='primary'>
+            買い物リスト
+          </Button>
+        </Link>
+      </Box>
       <div className={classes.root}>
         {menues.map((menu: IMenu, index: number) => (
           <Accordion key={index}>

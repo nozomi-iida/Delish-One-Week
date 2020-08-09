@@ -27,10 +27,6 @@ import { FixedSizeList, ListChildComponentProps } from 'react-window';
 import noImg from '../images/noimage.png';
 
 const useStyles = makeStyles(theme => ({
-  cardGrid: {
-    paddingTop: theme.spacing(8),
-    paddingBottom: theme.spacing(8),
-  },
   card: {
     height: '100%',
     display: 'flex',
@@ -40,7 +36,7 @@ const useStyles = makeStyles(theme => ({
     paddingTop: '56.25%', // 16:9
   },
   cardContent: {
-    flexGrow: 1,
+    padding: '10px',
   },
   btn: {
     backgroundColor: green[600],
@@ -96,7 +92,7 @@ export default function Favorites() {
 
   return (
     <Container component='main'>
-      <div className={classes.cardGrid}>
+      <div>
         <Grid container spacing={4} alignItems='center'>
           <Grid item xs={12} sm={6} md={4} style={{ textAlign: 'center' }}>
             <Link to='addFavorite'>
@@ -128,7 +124,7 @@ export default function Favorites() {
                   >
                     {renderRow}
                   </FixedSizeList>
-                  <div className={classes.buttonContainer} style={{margin: '0'}}>
+                  <div className={classes.buttonContainer} style={{margin: '5px 0 0'}}>
                     <Link to={`/edit/${favorite.id}`}>
                       <Button variant='contained' className={classes.btn}>
                         編集する

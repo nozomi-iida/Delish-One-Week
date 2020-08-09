@@ -1,42 +1,62 @@
-import React, { useState } from 'react';
+import React from 'react';
+import { makeStyles } from '@material-ui/core/styles';
+import Table from '@material-ui/core/Table';
+import TableBody from '@material-ui/core/TableBody';
+import TableCell from '@material-ui/core/TableCell';
+import TableContainer from '@material-ui/core/TableContainer';
+import TableHead from '@material-ui/core/TableHead';
+import TableRow from '@material-ui/core/TableRow';
+import Paper from '@material-ui/core/Paper';
+import { Container, Checkbox } from '@material-ui/core';
 import { useSelector } from 'react-redux';
 import { IState } from '../interfaces/state';
 import { IMenu } from '../interfaces/menues';
-import { Typography, Container } from '@material-ui/core';
 import { IMaterial } from '../interfaces/favorites';
 
-interface IMaterialList {
-  materialName: string
-  checked: boolean
-}
+const useStyles = makeStyles({
+  table: {
+    minWidth: '100%',
+  },
+});
 
 interface IGroup {
-  materialName: string,
-  checked: boolean,
-  count: number,
+  materialName: string;
+  materialNum: string;
+  materialUnit: string;
+  count: number;
+  checked: boolean;
 }
 
-export default () => {
-  const menues = useSelector((state: IState) => state.menues)
+export default function DenseTable() {
+  const classes = useStyles();
 
-  const materialLists: IMaterialList[] = [];
+  const menues = useSelector((state: IState) => state.menues);
+  const materialLists: IGroup[] = [];
   menues.map((menu: IMenu) => {
     menu.materials.map((material: IMaterial) => {
-      materialLists.push({materialName: material.materialName, checked: false});
+      materialLists.push({
+        materialName: material.materialName,
+        count: Number(material.materialWeight),
+        materialUnit: material.materialUnit,
+        materialNum: material.materialNum,
+        checked: false,
+      });
     });
   });
 
-  const group = materialLists.reduce((result: IGroup[], current: IMaterialList) => {
+  const group = materialLists.reduce((result: IGroup[], current: IGroup) => {
     const element = result.find(function (p: IGroup) {
-      return p.materialName === current.materialName
+      return p.materialName === current.materialName;
     });
     if (element) {
-      element.count ++; // count
+      element.count = element.count + current.count;
     } else {
       result.push({
         materialName: current.materialName,
+        count: current.count,
+        materialUnit: current.materialUnit,
+        materialNum: current.materialNum,
         checked: false,
-        count: 1,
       });
     }
     return result;
@@ -44,13 +64,35 @@ export default () => {
 
   return (
     <Container component='main'>
-      <ul>
-        {group.map((el: any, index: number) => (
-          <div key={index}>
-            <p><input type="checkbox" />{el.materialName}<span>{el.count}</span></p>
-          </div>
-        ))}
-      </ul>
+      <TableContainer component={Paper}>
+        <Table
+          className={classes.table}
+          size='small'
+          aria-label='a dense table'
+        >
+          <TableHead>
+            <TableRow>
+              <TableCell></TableCell>
+              <TableCell>買い物リスト</TableCell>
+              <TableCell align='right'></TableCell>
+            </TableRow>
+          </TableHead>
+          <TableBody>
+            {group.map((materialList: IGroup) => (
+              <TableRow key={materialList.materialNum}>
+                <TableCell component='th' scope='row'>
+                  <Checkbox />
+                </TableCell>
+                <TableCell align='right'>{materialList.materialName}</TableCell>
+                <TableCell align='right'>
+                  {materialList.count}
+                  {materialList.materialUnit}
+                </TableCell>
+              </TableRow>
+            ))}
+          </TableBody>
+        </Table>
+      </TableContainer>
     </Container>
   );
-};
+}

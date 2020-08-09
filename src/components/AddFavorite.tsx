@@ -30,7 +30,7 @@ const useStyles = makeStyles((theme: Theme) => ({
     padding: '20px',
   },
   foodName: {
-    width: '200px',
+    width: '300px',
     marginBottom: '10px',
     display: 'block',
   },
@@ -59,7 +59,7 @@ export default () => {
       materialNum: uuid(),
       materialName: '',
       materialWeight: '',
-      materialUnit: '本',
+      materialUnit: '',
       checked: false,
     },
   ]);
@@ -85,10 +85,7 @@ export default () => {
 
   const onMaterialWeightChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const newMaterials = materials.map((material: IMaterial) => {
-      if (
-        material.materialNum === e.target.name &&
-        e.target.value.match(/^\d*(\.\d{0,2})*(\/\d{0,1})*$/)
-      ) {
+      if (material.materialNum === e.target.name) {
         return { ...material, materialWeight: e.target.value };
       } else {
         return material;
@@ -100,7 +97,8 @@ export default () => {
   const onMaterialUnitChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const newMaterials = materials.map((material: any) => {
       if (material.materialNum === e.target.name) {
-        return { ...material, materialUnit: e.target.value };
+        // return { ...material, materialUnit: e.target.value };
+        return { ...material, materialUnit: Number(e.target.value) };
       } else {
         return material;
       }
@@ -114,7 +112,7 @@ export default () => {
       materialNum: uuid(),
       materialName: '',
       materialWeight: '',
-      materialUnit: '本',
+      materialUnit: '',
       checked: false,
     };
     const newmaterial = [...materials, addMaterial];
@@ -211,6 +209,7 @@ export default () => {
           className={classes.foodName}
           required
           autoFocus
+          fullWidth
         />
 
         {confirmImg && (
@@ -245,7 +244,7 @@ export default () => {
               </Grid>
               <Grid item xs={2}>
                 <TextField
-                  type='text'
+                  type='number'
                   name={material.materialNum}
                   value={material.materialWeight}
                   onChange={onMaterialWeightChange}
@@ -254,17 +253,12 @@ export default () => {
               </Grid>
               <Grid item xs={2}>
                 <TextField
+                  type='text'
                   name={material.materialNum}
-                  onChange={onMaterialUnitChange}
-                  select
                   value={material.materialUnit}
-                  className={classes.materialUnit}
-                >
-                  <MenuItem value='本'>本</MenuItem>
-                  <MenuItem value='g'>g</MenuItem>
-                  <MenuItem value='束'>束</MenuItem>
-                  <MenuItem value='袋'>袋</MenuItem>
-                </TextField>
+                  onChange={onMaterialUnitChange}
+                  required
+                />
               </Grid>
               <Grid item xs={2}>
                 <IconButton

@@ -63,7 +63,7 @@ export default (props: any) => {
       materialNum: uuid(),
       materialName: '',
       materialWeight: '',
-      materialUnit: '本',
+      materialUnit: '',
       checked: false,
     },
   ]);
@@ -124,7 +124,7 @@ export default (props: any) => {
       materialNum: uuid(),
       materialName: '',
       materialWeight: '',
-      materialUnit: '本',
+      materialUnit: '',
       checked: false,
     };
     const newmaterial = [...materials, addMaterial];
@@ -265,17 +265,12 @@ export default (props: any) => {
               </Grid>
               <Grid item xs={2}>
                 <TextField
+                  type='text'
                   name={material.materialNum}
-                  onChange={onMaterialUnitChange}
-                  select
                   value={material.materialUnit}
-                  className={classes.materialUnit}
-                >
-                  <MenuItem value='本'>本</MenuItem>
-                  <MenuItem value='g'>g</MenuItem>
-                  <MenuItem value='束'>束</MenuItem>
-                  <MenuItem value='袋'>袋</MenuItem>
-                </TextField>
+                  onChange={onMaterialUnitChange}
+                  required
+                />
               </Grid>
               <Grid item xs={2}>
                 <IconButton

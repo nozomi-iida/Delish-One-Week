@@ -29,15 +29,15 @@ export default function SimpleBottomNavigation() {
   const [value, setValue] = React.useState(0);
   const history = useHistory();
 
-  if(value === 0) {
-    history.push('/');
-  } else if(value === 1) {
-    history.push('/menues');
-  } else if(value === 2) {
-    history.push('/cooking');
-  } else {
-    history.push('/mypage');
-  } 
+  // if(value === 0) {
+  //   history.push('/');
+  // } else if(value === 1) {
+  //   history.push('/menues');
+  // } else if(value === 2) {
+  //   history.push('/cooking');
+  // } else {
+  //   history.push('/mypage');
+  // } 
 
   return (
     <Hidden smUp>

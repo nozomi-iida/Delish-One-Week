@@ -53,6 +53,7 @@ export default () => {
   const user = useContext(AuthStore);
   const { register, handleSubmit } = useForm<FormData>();
   const [errMessage, setErrMessage] = useState('');
+  const [successMes, setSuccessMes] = useState('');
 
   const onLogOutClick = () => {
     firebase.auth().signOut();
@@ -66,7 +67,7 @@ export default () => {
           displayName: name,
         })
         .then(() => {
-          console.log('success!');
+          setSuccessMes('更新されました。')
         })
         .catch((error: IError) => {
           console.log('failed!');
@@ -77,7 +78,7 @@ export default () => {
       user
         .updateEmail(email)
         .then(() => {
-          console.log('success!');
+          setSuccessMes('更新されました。')
         })
         .catch((err: IError) => {
           if (err.code === 'auth/requires-recent-login') {
@@ -93,6 +94,7 @@ export default () => {
     <Container component='main'>
       <div className={classes.myPageContainer}>
         <form onSubmit={onSubmit}>
+          {successMes && <Typography align='center'>{successMes}</Typography>}
           <div>
             <Typography variant='h6'>名前</Typography>
             <TextField
