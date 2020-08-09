@@ -12,10 +12,11 @@ import { useSelector } from 'react-redux';
 import { IState } from '../interfaces/state';
 import { IMenu } from '../interfaces/menues';
 import { IMaterial } from '../interfaces/favorites';
+import Footer from '../components/Footer';
 
 const useStyles = makeStyles({
   table: {
-    minWidth: '100%',
+    width: '100%',
   },
 });
 
@@ -63,36 +64,39 @@ export default function DenseTable() {
   }, []);
 
   return (
-    <Container component='main'>
-      <TableContainer component={Paper}>
-        <Table
-          className={classes.table}
-          size='small'
-          aria-label='a dense table'
-        >
-          <TableHead>
-            <TableRow>
-              <TableCell></TableCell>
-              <TableCell>買い物リスト</TableCell>
-              <TableCell align='right'></TableCell>
-            </TableRow>
-          </TableHead>
-          <TableBody>
-            {group.map((materialList: IGroup) => (
-              <TableRow key={materialList.materialNum}>
-                <TableCell component='th' scope='row'>
-                  <Checkbox />
-                </TableCell>
-                <TableCell align='right'>{materialList.materialName}</TableCell>
-                <TableCell align='right'>
-                  {materialList.count}
-                  {materialList.materialUnit}
-                </TableCell>
+    <>
+      <Container component='main'>
+        <TableContainer component={Paper}>
+          <Table
+            className={classes.table}
+            size='small'
+            aria-label='a dense table'
+          >
+            <TableHead>
+              <TableRow>
+                <TableCell></TableCell>
+                <TableCell>買い物リスト</TableCell>
+                <TableCell align='right'></TableCell>
               </TableRow>
-            ))}
-          </TableBody>
-        </Table>
-      </TableContainer>
-    </Container>
+            </TableHead>
+            <TableBody>
+              {group.map((materialList: IGroup) => (
+                <TableRow key={materialList.materialNum}>
+                  <TableCell component='th' scope='row'>
+                    <Checkbox />
+                  </TableCell>
+                  <TableCell align='right'>{materialList.materialName}</TableCell>
+                  <TableCell align='right'>
+                    {materialList.count}
+                    {materialList.materialUnit}
+                  </TableCell>
+                </TableRow>
+              ))}
+            </TableBody>
+          </Table>
+        </TableContainer>
+      </Container>
+      <Footer />
+    </>
   );
 }

@@ -11,7 +11,7 @@ import {
 } from '@material-ui/core';
 import firebase, { fireStore } from '../firebase/firebase';
 import { AuthStore } from '../stores/AuthStore';
-import { useHistory } from 'react-router-dom';
+import { useHistory, Link } from 'react-router-dom';
 import { addFavorite } from '../actions/favorites';
 import { useDispatch } from 'react-redux';
 import AddCircleIcon from '@material-ui/icons/AddCircle';
@@ -20,6 +20,7 @@ import { v4 as uuid } from 'uuid';
 import RemoveIcon from '@material-ui/icons/Remove';
 import FoodImageSetting from './atoms/FoodImageSetting';
 import { green } from '@material-ui/core/colors';
+import KeyboardBackspaceIcon from '@material-ui/icons/KeyboardBackspace';
 
 const useStyles = makeStyles((theme: Theme) => ({
   form: {
@@ -40,6 +41,11 @@ const useStyles = makeStyles((theme: Theme) => ({
   materialUnit: {
     width: '100%',
   },
+  returnBtn: {
+    '&:hover': {
+      textDecoration: 'underline',
+    }
+  }
 }));
 
 interface IBlob {
@@ -199,6 +205,7 @@ export default () => {
   };
   return (
     <Container component='main'>
+      <Link to='/'><Button startIcon={<KeyboardBackspaceIcon />} className={classes.returnBtn}>戻る</Button></Link>
       {addFromErr && <p>{addFromErr}</p>}
       <form onSubmit={onSubmit} className={classes.form}>
         <TextField
