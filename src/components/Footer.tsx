@@ -18,10 +18,18 @@ const useStyles = makeStyles({
     width: '100vw',
     position: 'fixed',
     bottom: '0',
+    borderTop: 'solid 1px #E0E0E0',
   },
   select: {
     color: '#43a047!important',
   },
+  border: {
+    borderLeft: 'solid 1px #E0E0E0',
+    borderRight: 'solid 1px #E0E0E0',
+  },
+  borderMenu: {
+    borderRight: 'solid 1px #E0E0E0',
+  }
 });
 
 export default function SimpleBottomNavigation() {
@@ -50,8 +58,8 @@ export default function SimpleBottomNavigation() {
         className={classes.root}
       > 
           <BottomNavigationAction label="お気に" icon={<StarIcon />} classes={{selected: classes.select}} />
-          <BottomNavigationAction label="メニュー" icon={<LocalDiningIcon />} classes={{selected: classes.select}} />
-          <BottomNavigationAction label="レシピ" icon={<ImportContactsIcon />} classes={{selected: classes.select}} />
+          <BottomNavigationAction label="メニュー" icon={<LocalDiningIcon />} classes={{selected: classes.select}} className={classes.border} />
+          <BottomNavigationAction label="レシピ" icon={<ImportContactsIcon />} classes={{selected: classes.select}} className={classes.borderMenu} />
 
           <BottomNavigationAction label="設定" icon={<SettingsIcon />} classes={{selected: classes.select}} />
 

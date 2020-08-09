@@ -45,7 +45,14 @@ const useStyles = makeStyles((theme: Theme) => ({
     '&:hover': {
       textDecoration: 'underline',
     }
-  }
+  },
+  btn: {
+    backgroundColor: green[600],
+    '&:hover': {
+      backgroundColor: green[400],
+    },
+    color: '#fff',
+  },
 }));
 
 interface IBlob {
@@ -285,7 +292,7 @@ export default () => {
           </IconButton>
         </div>
         <div style={{ textAlign: 'center' }}>
-          <Button type='submit' variant='contained' color='primary'>
+          <Button type='submit' variant='contained' className={classes.btn}>
             登録
           </Button>
         </div>
