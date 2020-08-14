@@ -78,7 +78,7 @@ export default function SimpleAccordion() {
         <ListItemText primary={`${data.materials[index].materialName}`} />
       </ListItem>
     );
-  }
+  };
 
   const shuffleFavorites = () => {
     // let newFavoritesArray = favorites;
@@ -133,7 +133,7 @@ export default function SimpleAccordion() {
             dispatch(addMenues({ ...favorite, id: `day${index + 1}` }));
           });
       });
-    }
+    };
   };
 
   return (
@@ -156,7 +156,7 @@ export default function SimpleAccordion() {
                 id='panel1a-header'
               >
                 <Typography className={classes.heading}>
-                  {index + 1}日目{menu.foodName}
+                  <span style={{fontWeight: 'bold'}}>{index + 1}日目</span>{menu.foodName}
                 </Typography>
               </AccordionSummary>
               <AccordionDetails className={classes.container}>

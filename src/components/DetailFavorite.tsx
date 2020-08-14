@@ -2,7 +2,6 @@ import React from 'react';
 import { useSelector } from 'react-redux';
 import { Link } from 'react-router-dom';
 import { IMaterial, IFavorite } from '../interfaces/favorites';
-import Loading from './Loading';
 import { IState } from '../interfaces/state';
 import { Container } from '@material-ui/core';
 
@@ -43,12 +42,6 @@ export default (props: any) => {
             )
         )}
       </Container>
-    );
-  } else {
-    return (
-      <>
-        <Loading />
-      </>
     );
   }
 };

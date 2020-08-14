@@ -25,7 +25,7 @@ function getModalStyle() {
 const useStyles = makeStyles(theme => ({
   paper: {
     position: 'absolute',
-    width: 400,
+    width: 350,
     backgroundColor: theme.palette.background.paper,
     border: '2px solid #000',
     boxShadow: theme.shadows[5],
@@ -46,7 +46,7 @@ interface IProps {
 };
 
 export default function SimpleModal({ onClick, favorite, selectedMenu }: any) {
-  console.log(onClick);
+  // console.log(onClick);
   const classes = useStyles();
   // getModalStyle is not a pure function, we roll the style only on the first render
   const [modalStyle] = React.useState(getModalStyle);
@@ -101,30 +101,38 @@ export default function SimpleModal({ onClick, favorite, selectedMenu }: any) {
         favorite === undefined ? (
           <div>
             <h2 id='simple-modal-title'>本当に再表示しますか？</h2>
-            <Button
-              variant='contained'
-              color='primary'
-              onClick={handleYesClick}
-            >
-              はい
-            </Button>
-            <Button variant='contained' color='primary' onClick={handleClose}>
-              いいえ
-            </Button>
+            <div style={{textAlign: 'center', marginTop: '10px'}}>
+              <Button
+                variant='contained'
+                color='primary'
+                onClick={handleYesClick}
+                className={classes.btn}
+                style={{marginRight: '10px'}}
+              >
+                はい
+              </Button>
+              <Button variant='contained' color='primary' onClick={handleClose}>
+                いいえ
+              </Button>
+            </div>
           </div>
         ) : (
           <div>
             <h2 id='simple-modal-title'>本当に削除しますか？</h2>
-            <Button
-              variant='contained'
-              color='primary'
-              onClick={handleYesClick}
-            >
-              はい
-            </Button>
-            <Button variant='contained' color='primary' onClick={handleClose}>
-              いいえ
-            </Button>
+            <div style={{textAlign: 'center', marginTop: '10px'}}>
+              <Button
+                variant='contained'
+                color='primary'
+                onClick={handleYesClick}
+                className={classes.btn}
+                style={{marginRight: '10px'}}
+              >
+                はい
+              </Button>
+              <Button variant='contained' color='primary' onClick={handleClose}>
+                いいえ
+              </Button>
+            </div>
           </div>
         )
       ) : (

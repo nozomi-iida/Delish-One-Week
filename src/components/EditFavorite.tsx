@@ -270,7 +270,7 @@ export default (props: any) => {
               </Grid>
               <Grid item xs={2}>
                 <TextField
-                  type='text'
+                  type='number'
                   name={material.materialNum}
                   value={material.materialWeight}
                   onChange={onMaterialWeightChange}

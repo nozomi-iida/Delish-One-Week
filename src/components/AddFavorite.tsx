@@ -111,7 +111,7 @@ export default () => {
     const newMaterials = materials.map((material: any) => {
       if (material.materialNum === e.target.name) {
         // return { ...material, materialUnit: e.target.value };
-        return { ...material, materialUnit: Number(e.target.value) };
+        return { ...material, materialUnit: e.target.value };
       } else {
         return material;
       }
