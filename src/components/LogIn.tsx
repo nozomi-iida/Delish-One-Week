@@ -14,12 +14,13 @@ import {
   InputAdornment,
   FormControl,
   InputLabel,
+  Divider,
 } from '@material-ui/core';
 import IconButton from '@material-ui/core/IconButton';
 import Visibility from '@material-ui/icons/Visibility';
 import VisibilityOff from '@material-ui/icons/VisibilityOff';
 import { useForm } from 'react-hook-form';
-import firebase from '../firebase/firebase';
+import firebase, { googleAuthProvider } from '../firebase/firebase';
 import { useHistory, Link, Redirect } from 'react-router-dom';
 import { AuthStore } from '../stores/AuthStore';
 
@@ -49,6 +50,10 @@ const useStyles = makeStyles(theme => ({
     '&:hover': {
       backgroundColor: green[400],
     },
+  },
+  google: {
+    margin: theme.spacing(3, 0, 2),
+    textTransform: 'none',
   },
   linkFont: {
     color: green[600],
@@ -90,6 +95,10 @@ export default function SignIn() {
         console.log(error);
       });
   });
+
+  const onGoogleClick = () => {
+    firebase.auth().signInWithPopup(googleAuthProvider);
+  }
 
   if (user) {
     return <Redirect to='/' />;
@@ -150,19 +159,30 @@ export default function SignIn() {
             >
               ログイン
             </Button>
-            <Grid container>
-              <Grid item xs>
-                <Link to='/signup' className={classes.linkFont}>
-                  パスワード忘れましたか？
-                </Link>
-              </Grid>
-              <Grid item>
-                <Link to='/signup' className={classes.linkFont}>
-                  新規登録
-                </Link>
-              </Grid>
-            </Grid>
+            <Divider />
           </form>
+          <Button
+            type='submit'
+            fullWidth
+            variant='contained'
+            className={classes.google}
+            color='primary'
+            onClick={onGoogleClick}
+          >
+            Googleアカウント
+          </Button>
+          <Grid container>
+            <Grid item xs>
+              <Link to='/signup' className={classes.linkFont}>
+                パスワード忘れましたか？
+              </Link>
+            </Grid>
+            <Grid item>
+              <Link to='/signup' className={classes.linkFont}>
+                新規登録
+              </Link>
+            </Grid>
+          </Grid>
         </div>
       </Container>
     </div>
