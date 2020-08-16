@@ -199,7 +199,7 @@ export default function SignUp() {
                         </IconButton>
                       </InputAdornment>
                     }
-                    labelWidth={95}
+                    labelWidth={175}
                   />
                 </FormControl>
               </Grid>

@@ -69,6 +69,7 @@ export default function SimpleAccordion() {
   const favorites = useSelector((state: IState) => state.favorites);
   const user = useContext(AuthStore);
   const dispatch = useDispatch();
+  // const [newFavoritesArray, setNewFavoritesArray] = useState(menues);
 
   function renderRow(props: ListChildComponentProps) {
     const { index, style, data } = props;
@@ -81,18 +82,20 @@ export default function SimpleAccordion() {
   };
 
   const shuffleFavorites = () => {
-    // let newFavoritesArray = favorites;
-    // newFavoritesArray = newFavoritesArray.map((a: any) => {return {weight: Math.random(), value:a}}).sort((a, b) => {
-    //   return a.weight - b.weight
-    // }).map((a: any) => {
-    //   return a.value
-    // }).slice(0, 7);
-
-    const newFavoritesArray = [];
-
-    for (let i = 0; i < 7; i++) {
-      let num = Math.floor(Math.random() * favorites.length);
-      newFavoritesArray.push(favorites[num]);
+    let newFavoritesArray = []
+    if(favorites.length <= 7) {
+      const randomArray: IFavorite[] = favorites.map((a: IFavorite) => {return {weight: Math.random(), value:a}}).sort((a, b) => {
+        return a.weight - b.weight
+      }).map((a: any) => {
+        console.log(a);
+        return a.value
+      }).slice(0, 7);
+      newFavoritesArray = randomArray;
+    } else {
+      for (let i = 0; i < 7; i++) {
+        let num = Math.floor(Math.random() * favorites.length);
+        newFavoritesArray.push(favorites[num]);
+      }
     }
 
     if (menues[0]) {
@@ -119,7 +122,7 @@ export default function SimpleAccordion() {
       });
     } else {
       newFavoritesArray.map((favorite: IFavorite, index: number) => {
-        fireStore
+        return fireStore
           .collection('users')
           .doc(`${user.uid}`)
           .collection('menues')

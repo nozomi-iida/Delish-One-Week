@@ -110,7 +110,6 @@ export default () => {
   const onMaterialUnitChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const newMaterials = materials.map((material: any) => {
       if (material.materialNum === e.target.name) {
-        // return { ...material, materialUnit: e.target.value };
         return { ...material, materialUnit: e.target.value };
       } else {
         return material;
@@ -223,7 +222,6 @@ export default () => {
           className={classes.foodName}
           required
           autoFocus
-          fullWidth
         />
 
         {confirmImg && (

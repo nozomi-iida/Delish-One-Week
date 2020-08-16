@@ -58,7 +58,7 @@ export default function SimpleBottomNavigation() {
         className={classes.root}
       > 
           <BottomNavigationAction label="お気に" icon={<StarIcon />} classes={{selected: classes.select}} />
-          <BottomNavigationAction label="メニュー" icon={<LocalDiningIcon />} classes={{selected: classes.select}} className={classes.border} />
+          <BottomNavigationAction label="献立" icon={<LocalDiningIcon />} classes={{selected: classes.select}} className={classes.border} />
           <BottomNavigationAction label="レシピ" icon={<ImportContactsIcon />} classes={{selected: classes.select}} className={classes.borderMenu} />
 
           <BottomNavigationAction label="設定" icon={<SettingsIcon />} classes={{selected: classes.select}} />
