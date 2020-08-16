@@ -143,7 +143,7 @@ export default () => {
           </Button>
         </div>
       </Container>
-      <Footer />
+      <Footer pageValue={3} />
     </>
   );
 };

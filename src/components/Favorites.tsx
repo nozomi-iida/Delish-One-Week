@@ -141,7 +141,7 @@ export default function Favorites() {
           </Grid>
         </div>
       </Container>
-      <Footer />
+      <Footer pageValue={0} />
     </>
   );
 }

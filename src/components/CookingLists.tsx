@@ -124,7 +124,7 @@ export default function CookingLists() {
           </Grid>
         </div>
       </Container>
-      <Footer />
+      <Footer pageValue={2}/>
     </>
   );
 };

@@ -192,7 +192,7 @@ export default function SimpleAccordion() {
           ))}
         </div>
       </Container>
-      <Footer />
+      <Footer pageValue={1}/>
     </>
   );
 }

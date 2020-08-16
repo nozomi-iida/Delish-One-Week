@@ -51,7 +51,6 @@ export default () => {
   const classes = useStyles();
   const [category, setCategory] = useState<any>([]);
   const [selectedCategory, setSelectedCategory] = useState([]);
-  console.log(category);
 
   const fetchDataAction = () => {
     const url = `https://app.rakuten.co.jp/services/api/Recipe/CategoryList/20170426?format=json&applicationId=${RAKUTEN_API_KEY}`;
@@ -105,7 +104,7 @@ export default () => {
           ))}
         </Grid>
       </Container>
-      <Footer />
+      <Footer pageValue={2} />
     </>
   );
 };

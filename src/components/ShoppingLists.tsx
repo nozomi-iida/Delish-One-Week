@@ -146,7 +146,7 @@ export default function DenseTable() {
           </Table>
         </TableContainer>
       </Container>
-      <Footer />
+      <Footer pageValue={1} />
     </>
   );
 }
