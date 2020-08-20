@@ -1,53 +1,91 @@
-import * as React from "react";
-import clsx from 'clsx';
-import { useForm } from "react-hook-form";
-import { createStyles, Theme, makeStyles } from '@material-ui/core/styles';
+import React, { useState, useContext } from 'react';
+import Avatar from '@material-ui/core/Avatar';
+import Button from '@material-ui/core/Button';
+import CssBaseline from '@material-ui/core/CssBaseline';
 import TextField from '@material-ui/core/TextField';
+import Grid from '@material-ui/core/Grid';
+import LockOutlinedIcon from '@material-ui/icons/LockOutlined';
+import Typography from '@material-ui/core/Typography';
+import { makeStyles } from '@material-ui/core/styles';
+import Container from '@material-ui/core/Container';
+import { green } from '@material-ui/core/colors';
+import {
+  OutlinedInput,
+  InputAdornment,
+  FormControl,
+  InputLabel,
+  Divider,
+} from '@material-ui/core';
+import IconButton from '@material-ui/core/IconButton';
 import Visibility from '@material-ui/icons/Visibility';
 import VisibilityOff from '@material-ui/icons/VisibilityOff';
-import { InputLabel, FormControl, Input, InputAdornment, IconButton, Button, Typography } from "@material-ui/core";
-import firebase from '../firebase/firebase';
-import { useHistory, Redirect, Link } from "react-router-dom";
-import { AuthStore } from "../stores/AuthStore";
+import { useForm } from 'react-hook-form';
+import firebase, { googleAuthProvider } from '../firebase/firebase';
+import { useHistory, Link, Redirect } from 'react-router-dom';
+import { AuthStore } from '../stores/AuthStore';
+
+const useStyles = makeStyles(theme => ({
+  paper: {
+    marginTop: theme.spacing(4),
+    display: 'flex',
+    flexDirection: 'column',
+    alignItems: 'center',
+    backgroundColor: '#fff',
+    position: 'relative',
+    padding: theme.spacing(3),
+    borderRadius: '4px',
+  },
+  avatar: {
+    margin: theme.spacing(1),
+    backgroundColor: green[400],
+  },
+  form: {
+    width: '100%', // Fix IE 11 issue.
+    marginTop: theme.spacing(1),
+  },
+  submit: {
+    margin: theme.spacing(3, 0, 2),
+    color: '#fff',
+    backgroundColor: green[600],
+    '&:hover': {
+      backgroundColor: green[400],
+    },
+  },
+  google: {
+    margin: theme.spacing(3, 0, 2),
+    textTransform: 'none',
+  },
+  linkFont: {
+    color: green[600],
+  },
+}));
 
 interface FormData {
   email: string;
   password: string;
-};
+}
 
-const useStyles = makeStyles((theme: Theme) =>
-  createStyles({
-    root: {
-      display: 'flex',
-      flexWrap: 'wrap',
-    },
-    margin: {
-      margin: theme.spacing(1),
-    },
-    withoutLabel: {
-      marginTop: theme.spacing(3),
-    },
-    textField: {
-      width: '25ch',
-    },
-  }),
-);
-
-export default () => {
+export default function SignIn() {
   const classes = useStyles();
-  const [showPassword, setShowPassword] = React.useState(false);
-  const [signInErr, setSignInErr] = React.useState('');
-  const history = useHistory();
-  const user = React.useContext(AuthStore);
-
+  const [showPassword, setShowPassword] = useState(false);
   const { register, handleSubmit } = useForm<FormData>();
+  const history = useHistory();
+  const [signInErr, setSignInErr] = useState('');
+  const user = useContext(AuthStore);
+
+  const handleClickShowPassword = () => {
+    setShowPassword(!showPassword);
+  };
+
   const onSubmit = handleSubmit(({ email, password }) => {
-    firebase.auth().signInWithEmailAndPassword(email, password)
+    firebase
+      .auth()
+      .signInWithEmailAndPassword(email, password)
       .then(() => {
-        history.push('/')
-        console.log("log in!")
+        history.push('/');
+        console.log('log in!');
       })
-      .catch(function(error) {
+      .catch(function (error) {
         var errorCode = error.code;
         if (errorCode === 'auth/wrong-password') {
           setSignInErr('パスワードが違います。');
@@ -56,48 +94,97 @@ export default () => {
         }
         console.log(error);
       });
-  }); 
+  });
 
-  const handleClickShowPassword = () => {
-    setShowPassword(!showPassword)
-  };
+  const onGoogleClick = () => {
+    firebase.auth().signInWithPopup(googleAuthProvider);
+  }
 
   if (user) {
-    return <Redirect to='/addFavorite' />
+    return <Redirect to='/' />;
   }
 
   return (
-    <>
-      <Typography variant="h4" >ログインする</Typography>
-      <form onSubmit={onSubmit}>
-        <div className={classes.margin}>
-          <TextField label="メールアドレス" name="email" inputRef={register} />
-        </div>
-        <div className={classes.margin}>
-          <FormControl className={clsx(classes.margin, classes.textField)}>
-            <InputLabel htmlFor="standard-adornment-password">パスワード</InputLabel>
-            <Input
-              type={showPassword ? 'text' : 'password'}
-              name="password"
+    <div className='authContainer'>
+      <div className='bg'></div>
+      <Container component='main' maxWidth='xs'>
+        <CssBaseline />
+        <div className={classes.paper}>
+          <Avatar className={classes.avatar}>
+            <LockOutlinedIcon />
+          </Avatar>
+          <Typography component='h1' variant='h5'>
+            ログイン
+          </Typography>
+          {signInErr && <p>{signInErr}</p>}
+          <form className={classes.form} noValidate onSubmit={onSubmit}>
+            <TextField
+              variant='outlined'
+              margin='normal'
+              required
+              fullWidth
+              id='email'
+              label='メールアドレス'
+              name='email'
+              autoComplete='email'
+              autoFocus
               inputRef={register}
-              endAdornment={
-                <InputAdornment position="end">
-                  <IconButton
-                    aria-label="toggle password visibility"
-                    onClick={handleClickShowPassword}
-                  >
-                    {showPassword ? <Visibility /> : <VisibilityOff />}
-                  </IconButton>
-                </InputAdornment>
-              }
             />
-          </FormControl>
+            <FormControl variant='outlined' fullWidth required>
+              <InputLabel>パスワード</InputLabel>
+              <OutlinedInput
+                type={showPassword ? 'text' : 'password'}
+                name='password'
+                autoComplete='current-password'
+                inputRef={register}
+                endAdornment={
+                  <InputAdornment position='end'>
+                    <IconButton
+                      aria-label='toggle password visibility'
+                      onClick={handleClickShowPassword}
+                      edge='end'
+                    >
+                      {showPassword ? <Visibility /> : <VisibilityOff />}
+                    </IconButton>
+                  </InputAdornment>
+                }
+                labelWidth={95}
+              />
+            </FormControl>
+            <Button
+              type='submit'
+              fullWidth
+              variant='contained'
+              className={classes.submit}
+            >
+              ログイン
+            </Button>
+            <Divider />
+          </form>
+          <Button
+            type='submit'
+            fullWidth
+            variant='contained'
+            className={classes.google}
+            color='primary'
+            onClick={onGoogleClick}
+          >
+            Googleアカウント
+          </Button>
+          <Grid container>
+            <Grid item xs>
+              <Link to='/signup' className={classes.linkFont}>
+                パスワード忘れましたか？
+              </Link>
+            </Grid>
+            <Grid item>
+              <Link to='/signup' className={classes.linkFont}>
+                新規登録
+              </Link>
+            </Grid>
+          </Grid>
         </div>
-        <Button type="submit" variant="contained" color="primary">ログイン</Button>
-      </form>
-      { signInErr && <p>{signInErr}</p>}
-      <p>アカウントを持っていませんか？</p>
-      <Link to="/signup">登録画面へ</Link>
-    </>
+      </Container>
+    </div>
   );
 }

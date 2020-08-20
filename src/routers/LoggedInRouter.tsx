@@ -11,40 +11,50 @@ export default ({ component: Component, ...rest }: any): JSX.Element => {
   const dispatch = useDispatch();
 
   useEffect(() => {
-    const getFavorites: Array<any> = [];
-    fireStore.collection("users").doc(`${user.uid}`).collection("favorites").get().then((snapshot) => {
-      snapshot.forEach((favorite) => {
-        getFavorites.push({
-          ...favorite.data(),
-          id: favorite.id
+    if (user) {
+      const getFavorites: Array<any> = [];
+      fireStore
+        .collection('users')
+        .doc(`${user.uid}`)
+        .collection('favorites')
+        .get()
+        .then(snapshot => {
+          snapshot.forEach(favorite => {
+            getFavorites.push({
+              ...favorite.data(),
+              id: favorite.id,
+            });
+          });
+        })
+        .then(() => {
+          dispatch(setFavorites(getFavorites));
         });
-      });
-    }).then(() => {
-      dispatch(setFavorites(getFavorites))
-    });
-    const getMenues: Array<any> = [];
-    fireStore.collection("users").doc(`${user.uid}`).collection("menues").get().then((snapshot) => {
-      snapshot.forEach((menue) => {
-        getMenues.push({
-          ...menue.data(),
-          id: menue.id
+      const getMenues: Array<any> = [];
+      fireStore
+        .collection('users')
+        .doc(`${user.uid}`)
+        .collection('menues')
+        .get()
+        .then(snapshot => {
+          snapshot.forEach(menue => {
+            getMenues.push({
+              ...menue.data(),
+              id: menue.id,
+            });
+          });
+        })
+        .then(() => {
+          dispatch(setMenues(getMenues));
         });
-      });
-    }).then(() => {
-      dispatch(setMenues(getMenues))
-    });
-  // eslint-disable-next-line
-  },[user]);
+    }
+    // eslint-disable-next-line
+  }, [user]);
 
   return (
-    <Route 
+    <Route
       {...rest}
       render={props => {
-        return user ? (
-          <Component {...props} />
-        ) : (
-          <Redirect to='/login' />
-        )
+        return user ? <Component {...props} /> : <Redirect to='/login' />;
       }}
     />
   );
