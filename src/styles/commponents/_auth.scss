@@ -1,0 +1,17 @@
+.authContainer {
+  background-image: url(../../images/backgroundCook.jpg);
+  background-size: cover;
+  height: 100vh;
+  position: relative;
+  background-position: center;
+}
+
+.bg {
+  width: 100vw;
+  height: 100vh;
+  position: absolute;
+  top: 0;
+  left: 0;
+  background-color: #fff;
+  opacity: .8;
+}
