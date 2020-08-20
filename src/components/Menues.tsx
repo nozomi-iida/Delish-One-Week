@@ -1,4 +1,4 @@
-import React, { useContext } from 'react';
+import React, { useContext, useState } from 'react';
 import { Theme, createStyles, makeStyles } from '@material-ui/core/styles';
 import Accordion from '@material-ui/core/Accordion';
 import AccordionDetails from '@material-ui/core/AccordionDetails';
@@ -68,6 +68,7 @@ export default function SimpleAccordion() {
   const menues = useSelector((state: IState) => state.menues);
   const favorites = useSelector((state: IState) => state.favorites);
   const user = useContext(AuthStore);
+  const [errMes, setErrMes] = useState('');
   const dispatch = useDispatch();
   // const [newFavoritesArray, setNewFavoritesArray] = useState(menues);
 
@@ -82,61 +83,66 @@ export default function SimpleAccordion() {
   };
 
   const shuffleFavorites = () => {
-    let newFavoritesArray = []
-    if(favorites.length <= 7) {
-      const randomArray: IFavorite[] = favorites.map((a: IFavorite) => {return {weight: Math.random(), value:a}}).sort((a, b) => {
-        return a.weight - b.weight
-      }).map((a: any) => {
-        console.log(a);
-        return a.value
-      }).slice(0, 7);
-      newFavoritesArray = randomArray;
+    if(favorites.length === 0) {
+      setErrMes('お気に入りに料理を登録してください。')
     } else {
-      for (let i = 0; i < 7; i++) {
-        let num = Math.floor(Math.random() * favorites.length);
-        newFavoritesArray.push(favorites[num]);
+      setErrMes('');
+      let newFavoritesArray = []
+      if(favorites.length >= 7) {
+        const randomArray: IFavorite[] = favorites.map((a: IFavorite) => {return {weight: Math.random(), value:a}}).sort((a, b) => {
+          return a.weight - b.weight
+        }).map((a: any) => {
+          console.log(a);
+          return a.value
+        }).slice(0, 7);
+        newFavoritesArray = randomArray;
+      } else {
+        for (let i = 0; i < 7; i++) {
+          let num = Math.floor(Math.random() * favorites.length);
+          newFavoritesArray.push(favorites[num]);
+        }
       }
+  
+      if (menues[0]) {
+        newFavoritesArray.map((favorite: IFavorite, index: number) => {
+          return fireStore
+            .collection('users')
+            .doc(`${user.uid}`)
+            .collection('menues')
+            .doc(`day${index + 1}`)
+            .update({
+              foodName: favorite.foodName,
+              foodImg: favorite.foodImg,
+              materials: favorite.materials,
+            })
+            .then(() => {
+              dispatch(
+                updateMenues(`day${index + 1}`, {
+                  foodName: favorite.foodName,
+                  foodImg: favorite.foodImg,
+                  materials: favorite.materials,
+                })
+              );
+            });
+        });
+      } else {
+        newFavoritesArray.map((favorite: IFavorite, index: number) => {
+          return fireStore
+            .collection('users')
+            .doc(`${user.uid}`)
+            .collection('menues')
+            .doc(`day${index + 1}`)
+            .set({
+              foodName: favorite.foodName,
+              foodImg: favorite.foodImg,
+              materials: favorite.materials,
+            })
+            .then(() => {
+              dispatch(addMenues({ ...favorite, id: `day${index + 1}` }));
+            });
+        });
+      };
     }
-
-    if (menues[0]) {
-      newFavoritesArray.map((favorite: IFavorite, index: number) => {
-        return fireStore
-          .collection('users')
-          .doc(`${user.uid}`)
-          .collection('menues')
-          .doc(`day${index + 1}`)
-          .update({
-            foodName: favorite.foodName,
-            foodImg: favorite.foodImg,
-            materials: favorite.materials,
-          })
-          .then(() => {
-            dispatch(
-              updateMenues(`day${index + 1}`, {
-                foodName: favorite.foodName,
-                foodImg: favorite.foodImg,
-                materials: favorite.materials,
-              })
-            );
-          });
-      });
-    } else {
-      newFavoritesArray.map((favorite: IFavorite, index: number) => {
-        return fireStore
-          .collection('users')
-          .doc(`${user.uid}`)
-          .collection('menues')
-          .doc(`day${index + 1}`)
-          .set({
-            foodName: favorite.foodName,
-            foodImg: favorite.foodImg,
-            materials: favorite.materials,
-          })
-          .then(() => {
-            dispatch(addMenues({ ...favorite, id: `day${index + 1}` }));
-          });
-      });
-    };
   };
 
   return (
@@ -151,6 +157,7 @@ export default function SimpleAccordion() {
           </Link>
         </Box>
         <div className={classes.root}>
+          {errMes && <p style={{textAlign: 'center', marginTop: 10}}>{errMes}</p>}
           {menues.map((menu: IMenu, index: number) => (
             <Accordion key={index}>
               <AccordionSummary

@@ -25,7 +25,7 @@ function getModalStyle() {
 const useStyles = makeStyles(theme => ({
   paper: {
     position: 'absolute',
-    width: 350,
+    width: 290,
     backgroundColor: theme.palette.background.paper,
     border: '2px solid #000',
     boxShadow: theme.shadows[5],
@@ -138,8 +138,8 @@ export default function SimpleModal({ onClick, favorite, selectedMenu }: any) {
       ) : (
         <ul>
           {favorites.map((favorite: IFavorite) => (
-            <li key={favorite.id}>
-              <span>{favorite.foodName}</span>
+            <li key={favorite.id} style={{listStyle: 'inside',}}>
+              <span style={{marginRight: 20}}>{favorite.foodName}</span>
               <button onClick={() => onChoiceClick(favorite)}>選択</button>
             </li>
           ))}
@@ -165,6 +165,7 @@ export default function SimpleModal({ onClick, favorite, selectedMenu }: any) {
           variant='contained'
           type='button'
           onClick={handleOpen}
+          className={classes.btn}
         >
           選択する
         </Button>

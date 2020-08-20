@@ -17,6 +17,8 @@ import { green } from '@material-ui/core/colors';
 import favorites from '../reducers/favorites';
 import { fireStore } from '../firebase/firebase';
 import { AuthStore } from '../stores/AuthStore';
+import { Link } from 'react-router-dom';
+import KeyboardBackspaceIcon from '@material-ui/icons/KeyboardBackspace';
 
 const useStyles = makeStyles({
   table: {
@@ -31,6 +33,11 @@ const useStyles = makeStyles({
   },
   checkbox: {
     color: '#43a047!important',
+  },
+  returnBtn: {
+    '&:hover': {
+      textDecoration: 'underline',
+    }
   },
 });
 
@@ -114,9 +121,10 @@ export default function DenseTable() {
   return (
     <>
       <Container component='main'>
-        <Box display='flex' justifyContent='space-between' style={{marginBottom: '10px'}}>
+        <Box display='flex' style={{marginBottom: '10px'}}>
+          <Link to='/menues'><Button startIcon={<KeyboardBackspaceIcon />} className={classes.returnBtn} style={{marginRight: 30}}>戻る</Button></Link>
           <Typography variant='h6'>買い物リスト</Typography>
-          <Button variant='contained' className={classes.btn} onClick={onUpdateClick}>リストを更新する</Button>
+          {/* <Button variant='contained' className={classes.btn} onClick={onUpdateClick}>リストを更新する</Button> */}
         </Box>
         <TableContainer component={Paper}>
           <Table
@@ -129,11 +137,11 @@ export default function DenseTable() {
                 <>
                   {buyLists.map((buyList: IBuyList) => (
                     <TableRow key={buyList.materialNum}>
-                      <TableCell component='th' scope='row'>
+                      <TableCell component='th' scope='row' style={{padding: 0}}>
                         <Checkbox name={buyList.materialNum} checked={buyList.checked} onChange={onCheckboxChange} classes={{checked: classes.checkbox}} />
                       </TableCell>
-                      <TableCell align='right'>{buyList.materialName}</TableCell>
-                      <TableCell align='right'>
+                      <TableCell align='right' style={{width: '62%', padding: 0}}>{buyList.materialName}</TableCell>
+                      <TableCell align='right' style={{padding: '0 5px 0 0'}}>
                         {buyList.count}
                         {buyList.materialUnit}
                       </TableCell>
