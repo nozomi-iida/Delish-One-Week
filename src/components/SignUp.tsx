@@ -82,9 +82,12 @@ export default function SignUp() {
     return <Redirect to='/' />;
   }
 
+  const handleChange = () => {
+    setSignUpErr('');
+  }
+
   const onSubmit = handleSubmit(
     ({ name, email, password, confirmPassword }) => {
-      console.log(email);
       if (password === confirmPassword) {
         firebase
           .auth()
@@ -103,7 +106,7 @@ export default function SignUp() {
             if (errorCode === 'auth/weak-password') {
               setSignUpErr('パスワードは6文字以上にしてください。');
             } else {
-              setSignUpErr(errorMessage);
+              setSignUpErr('必要事項を記入してください。');
             }
             console.log(error);
           });
@@ -139,6 +142,7 @@ export default function SignUp() {
                   autoFocus
                   inputRef={register}
                   autoComplete='user-name'
+                  onChange={handleChange}
                 />
               </Grid>
               <Grid item xs={12}>
@@ -151,6 +155,7 @@ export default function SignUp() {
                   label='メールアドレス'
                   name='email'
                   inputRef={register}
+                  onChange={handleChange}
                 />
               </Grid>
               <Grid item xs={12}>
@@ -161,6 +166,7 @@ export default function SignUp() {
                     name='password'
                     inputRef={register}
                     autoComplete='current-password'
+                    onChange={handleChange}
                     endAdornment={
                       <InputAdornment position='end'>
                         <IconButton
@@ -184,6 +190,7 @@ export default function SignUp() {
                     name='confirmPassword'
                     autoComplete='confirm-password'
                     inputRef={register}
+                    onChange={handleChange}
                     endAdornment={
                       <InputAdornment position='end'>
                         <IconButton

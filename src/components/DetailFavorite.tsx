@@ -1,19 +1,20 @@
 import React from 'react';
 import { useSelector } from 'react-redux';
-import { Link } from 'react-router-dom';
+import { Link, useParams } from 'react-router-dom';
 import { IMaterial, IFavorite } from '../interfaces/favorites';
 import { IState } from '../interfaces/state';
 import { Container } from '@material-ui/core';
+import { IMenu } from '../interfaces/menues';
 
-export default (props: any) => {
+export default () => {
+  const {id} = useParams();
   const selectedFavorite = useSelector((state: IState) =>
     state.favorites.find(
-      (favorite: IFavorite) => favorite.id === props.match.params.id
+      (favorite: IFavorite) => favorite.id === id
     )
   );
-  console.log(selectedFavorite);
   const selectedMenu = useSelector((state: IState) =>
-    state.menues.find((menu: any) => menu.id === props.match.params.id)
+    state.menues.find((menu: IMenu) => menu.id === id)
   );
 
   if (selectedFavorite) {

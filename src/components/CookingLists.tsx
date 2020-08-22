@@ -52,10 +52,28 @@ const useStyles = makeStyles((theme) => ({
 
 const RAKUTEN_API_KEY = process.env.REACT_APP_RAKUTEN_API_KEY;
 
+interface IRecipe {
+  foodImageUrl: string;
+  mediumImageUrl: string;
+  nickname: string;
+  pickup: number;
+  rank: string;
+  recipeCost: string;
+  recipeDescription: string;
+  recipeId: number;
+  recipeIndication: string;
+  recipeMaterial: string[];
+  recipePublishday: string;
+  recipeTitle: string;
+  recipeUrl: string;
+  shop: number;
+  smallImageUrl: string;
+}
+
 export default function CookingLists() {
   const classes = useStyles();
   const {id} = useParams();
-  const [recipes, setRecipes] = useState([]);
+  const [recipes, setRecipes] = useState<IRecipe[]>([]);
 
   function renderRow(props: ListChildComponentProps,) {
     const { index, style, data } = props;
@@ -90,7 +108,7 @@ export default function CookingLists() {
         <CssBaseline />
         <div className={classes.cardGrid}>
           <Grid container spacing={4}>
-            {recipes.map((recipe: any) => (
+            {recipes.map((recipe: IRecipe) => (
               <Grid item key={recipe.recipeId} xs={12} sm={6} md={4}>
                 <Card className={classes.card}>
                   <CardActionArea>

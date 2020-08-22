@@ -49,7 +49,7 @@ const useStyles = makeStyles((theme: Theme) => ({
 
 export default () => {
   const classes = useStyles();
-  const [category, setCategory] = useState<any>([]);
+  const [category, setCategory] = useState<any>(undefined);
   const [selectedCategory, setSelectedCategory] = useState([]);
 
   const fetchDataAction = () => {
@@ -67,7 +67,7 @@ export default () => {
   };
 
   useEffect(() => {
-    category.length === 0 && fetchDataAction();
+    category === undefined && fetchDataAction();
     // eslint-disable-next-line
   }, []);
 

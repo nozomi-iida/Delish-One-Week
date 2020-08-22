@@ -17,6 +17,8 @@ import MyPage from './components/MyPage';
 import './styles/styles.scss';
 import Cooking from './components/Cooking';
 import CookingLists from './components/CookingLists';
+import Home from './components/Home';
+import ResetPassword from './components/ResetPassword';
 
 const store = ReduxStore();
 
@@ -36,8 +38,10 @@ export default () => {
             <LoggedInRouter path='/mypage' component={MyPage} />
             <LoggedInRouter path='/cooking' component={Cooking} />
             <LoggedInRouter path='/cookingLists/:id' component={CookingLists} />
+            <Route path='/home' component={Home} />
             <Route path='/login' component={LogIn} />
             <Route path='/signUp' component={SignUp} />
+            <Route path='/reset' component={ResetPassword} />
           </Switch>
         </BrowserRouter>
       </Provider>

@@ -11,7 +11,7 @@ import {
 } from '@material-ui/core';
 import firebase, { fireStore } from '../firebase/firebase';
 import { AuthStore } from '../stores/AuthStore';
-import { useHistory, Link } from 'react-router-dom';
+import { useHistory, Link, useParams } from 'react-router-dom';
 import { editFavorite } from '../actions/favorites';
 import { useDispatch, useSelector } from 'react-redux';
 import AddCircleIcon from '@material-ui/icons/AddCircle';
@@ -55,17 +55,14 @@ const useStyles = makeStyles((theme: Theme) => ({
   },
 }));
 
-interface IBlob {
-  size: number;
-  type: string;
-}
-
 export default (props: any) => {
   const classes = useStyles();
   const favorites = useSelector((state: any) => state.favorites); //anyやめたい
+  const {id} = useParams();
   const selectedFavorite: IFavorite = favorites.find(
-    (element: IFavorite) => element.id === props.match.params.id
+    (element: IFavorite) => element.id === id
   );
+
   const user = useContext(AuthStore);
   const [foodName, setFoodName] = useState('');
   const [confirmImg, setConfirmImg] = useState('');
@@ -83,7 +80,8 @@ export default (props: any) => {
   const history = useHistory();
   const dispatch = useDispatch();
   const [metadata] = useState({ contentType: 'image/jpeg' });
-  const [blob, setBlob] = useState<any>();
+  const [blob, setBlob] = useState<Blob>();
+  console.log(blob);
 
   useEffect(() => {
     if (selectedFavorite) {
@@ -123,7 +121,7 @@ export default (props: any) => {
   };
 
   const onMaterialUnitChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    const newMaterials = materials.map((material: any) => {
+    const newMaterials = materials.map((material: IMaterial) => {
       if (material.materialNum === e.target.name) {
         return { ...material, materialUnit: e.target.value };
       } else {
@@ -152,7 +150,6 @@ export default (props: any) => {
     setMaterials(newMaterials);
   };
 
-  console.log(blob);
   const onSubmit = (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
 

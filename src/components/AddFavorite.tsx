@@ -55,11 +55,6 @@ const useStyles = makeStyles((theme: Theme) => ({
   },
 }));
 
-interface IBlob {
-  size: number;
-  type: string;
-}
-
 export default () => {
   const classes = useStyles();
   const user = useContext(AuthStore);
@@ -79,7 +74,7 @@ export default () => {
   const history = useHistory();
   const dispatch = useDispatch();
   const [metadata] = useState({ contentType: 'image/jpeg' });
-  const [blob, setBlob] = useState<any>();
+  const [blob, setBlob] = useState<Blob>();
 
   const onFoodNameChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     setFoodName(e.target.value);
@@ -108,7 +103,7 @@ export default () => {
   };
 
   const onMaterialUnitChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    const newMaterials = materials.map((material: any) => {
+    const newMaterials = materials.map((material: IMaterial) => {
       if (material.materialNum === e.target.name) {
         return { ...material, materialUnit: e.target.value };
       } else {
@@ -116,7 +111,6 @@ export default () => {
       }
     });
     setMaterials(newMaterials);
-    console.log(newMaterials);
   };
 
   const onPlusClick = () => {

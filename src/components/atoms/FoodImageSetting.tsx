@@ -17,6 +17,11 @@ function getModalStyle() {
   };
 }
 
+interface IBlob {
+  size: number
+  type: string
+}
+
 const useStyles = makeStyles((theme) => ({
   paper: {
     position: 'absolute',
@@ -33,19 +38,18 @@ const useStyles = makeStyles((theme) => ({
   },
 }));
 
-interface IBlob {
-  size: number,
-  type: string,
-};
+interface IProps {
+  setConfirmImg: (url: string) => void;
+  setBlob: (blob: Blob) => void;
+ }
 
-export default ({setConfirmImg, setBlob}: any) => {
+export default ({setConfirmImg, setBlob}: IProps) => {
   const classes = useStyles();
   const [image, setImage] = useState<File>();
   const [modalStyle] = useState(getModalStyle);
-  const [editRef, setEditRef] = useState<any>();
+  const [editRef, setEditRef] = useState<AvatarEditor | null>(null);
   const [open, setOpen] = useState(false);
   const [imageWidth, setImageWidth] = useState(12);
-
   const handleOpen = () => {
     setOpen(true);
   };
@@ -58,20 +62,26 @@ export default ({setConfirmImg, setBlob}: any) => {
     setImage(dropped[0]);
   };
 
-  const handleChange = (event: React.ChangeEvent<{}>, newValue: any) => {
-    setImageWidth(newValue);
+  const handleChange = (event: React.ChangeEvent<{}>, newValue: number | number[]) => {
+    if(!Array.isArray(newValue)) {
+      setImageWidth(newValue);
+    }
   };
 
   const onClick = () => {
     if(editRef) {
-      editRef.getImageScaledToCanvas().toBlob((blob: IBlob) => {
-        setBlob(blob);
+      editRef.getImageScaledToCanvas().toBlob((blob: Blob | null) => {
+        if(blob !== null) {
+          setBlob(blob);
+        }
       });
       const url = editRef.getImageScaledToCanvas().toDataURL();
       setConfirmImg(url);
       setOpen(false);
     };
   };
+
+  console.log(editRef);
 
   const body = (
     <div style={modalStyle} className={classes.paper}>
@@ -84,7 +94,7 @@ export default ({setConfirmImg, setBlob}: any) => {
               {image && 
                 <>
                   <AvatarEditor 
-                    ref={setEditRef}
+                    ref={ref => {setEditRef(ref)}}
                     width={240} 
                     height={150} 
                     scale={imageWidth / 10}

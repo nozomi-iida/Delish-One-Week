@@ -173,7 +173,7 @@ export default function SignIn() {
           </Button>
           <Grid container>
             <Grid item xs>
-              <Link to='/signup' className={classes.linkFont}>
+              <Link to='/reset' className={classes.linkFont}>
                 パスワード忘れましたか？
               </Link>
             </Grid>

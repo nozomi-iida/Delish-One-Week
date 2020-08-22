@@ -31,8 +31,8 @@ export default ({ component: Component, ...rest }: any): JSX.Element => {
         });
       const getMenues: Array<any> = [];
       fireStore
-        .collection('users')
-        .doc(`${user.uid}`)
+      .collection('users')
+      .doc(`${user.uid}`)
         .collection('menues')
         .get()
         .then(snapshot => {

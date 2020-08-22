@@ -63,6 +63,11 @@ const useStyles = makeStyles((theme: Theme) =>
   })
 );
 
+interface Ia {
+  weight: number;
+  value: IFavorite;
+}
+
 export default function SimpleAccordion() {
   const classes = useStyles();
   const menues = useSelector((state: IState) => state.menues);
@@ -88,11 +93,10 @@ export default function SimpleAccordion() {
     } else {
       setErrMes('');
       let newFavoritesArray = []
-      if(favorites.length >= 7) {
+      if(favorites.length <= 7) {
         const randomArray: IFavorite[] = favorites.map((a: IFavorite) => {return {weight: Math.random(), value:a}}).sort((a, b) => {
           return a.weight - b.weight
-        }).map((a: any) => {
-          console.log(a);
+        }).map((a: Ia) => {
           return a.value
         }).slice(0, 7);
         newFavoritesArray = randomArray;

@@ -41,14 +41,13 @@ const useStyles = makeStyles(theme => ({
 }));
 
 interface IProps {
-  favorite: IFavorite,
-  selectedMenu: IMenu
+  onClick: (favorite: IFavorite) => void | undefined;
+  favorite?: IFavorite;
+  selectedMenu?: IMenu
 };
 
 export default function SimpleModal({ onClick, favorite, selectedMenu }: any) {
-  // console.log(onClick);
   const classes = useStyles();
-  // getModalStyle is not a pure function, we roll the style only on the first render
   const [modalStyle] = React.useState(getModalStyle);
   const [open, setOpen] = React.useState(false);
   const favorites = useSelector((state: IState) => state.favorites);
