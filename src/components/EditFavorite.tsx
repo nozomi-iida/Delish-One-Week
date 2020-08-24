@@ -7,7 +7,6 @@ import {
   makeStyles,
   Theme,
   Grid,
-  MenuItem,
 } from '@material-ui/core';
 import firebase, { fireStore } from '../firebase/firebase';
 import { AuthStore } from '../stores/AuthStore';

@@ -54,7 +54,7 @@ export default ({ component: Component, ...rest }: any): JSX.Element => {
     <Route
       {...rest}
       render={props => {
-        return user ? <Component {...props} /> : <Redirect to='/login' />;
+        return user ? <Component {...props} /> : <Redirect to='/home' />;
       }}
     />
   );

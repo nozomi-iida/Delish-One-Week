@@ -1,8 +1,32 @@
 import { IMenu } from '../interfaces/menues';
 
-type IMenuesActions = any;
+interface IAddMenuesAction {
+  type: 'ADD_MENUES';
+  menues: IMenu[];
+}
 
-const initialState: IMenu[] = [];
+interface ISetMenuesAction {
+  type: 'SET_MENUES';
+  menues: IMenu[];
+};
+
+interface IUpdateMenuesAction {
+  type: 'UPDATE_MENUES';
+  id: string;
+  updates: IMenu[];
+};
+
+interface IEditMenues {
+  type: 'EDIT_MENU';
+  id: string;
+  update: IMenu
+}
+
+type IMenuesActions = IAddMenuesAction | ISetMenuesAction | IUpdateMenuesAction | IEditMenues;
+
+const initialState: IMenu[] = [
+  
+];
 
 export default (state = initialState, action: IMenuesActions) => {
   switch (action.type) {

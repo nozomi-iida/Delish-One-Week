@@ -102,7 +102,6 @@ export default function SignUp() {
           })
           .catch(error => {
             const errorCode = error.code;
-            const errorMessage = error.message;
             if (errorCode === 'auth/weak-password') {
               setSignUpErr('パスワードは6文字以上にしてください。');
             } else {

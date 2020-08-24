@@ -93,7 +93,7 @@ export default function SimpleAccordion() {
     } else {
       setErrMes('');
       let newFavoritesArray = []
-      if(favorites.length <= 7) {
+      if(favorites.length >= 7) {
         const randomArray: IFavorite[] = favorites.map((a: IFavorite) => {return {weight: Math.random(), value:a}}).sort((a, b) => {
           return a.weight - b.weight
         }).map((a: Ia) => {

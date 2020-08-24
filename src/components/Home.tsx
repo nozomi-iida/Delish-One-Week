@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useContext } from 'react';
 import {
   Typography,
   Container,
@@ -7,8 +7,9 @@ import {
   Grid,
   Divider,
 } from '@material-ui/core';
-import { Link } from 'react-router-dom';
+import { Link, Redirect } from 'react-router-dom';
 import { green } from '@material-ui/core/colors';
+import { AuthStore } from '../stores/AuthStore';
 
 const useStyles = makeStyles(theme => ({
   paper: {
@@ -35,8 +36,14 @@ const useStyles = makeStyles(theme => ({
   }
 }));
 
+
 export default () => {
   const classes = useStyles();
+  const user = useContext(AuthStore);
+
+  if (user) {
+    return <Redirect to='/' />;
+  }
   return (
     <div className='authContainer'>
       <div className='bg'></div>
